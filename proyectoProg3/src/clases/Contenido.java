@@ -2,7 +2,7 @@ package clases;
 
 import java.util.Objects;
 
-public class Contenido {
+public abstract class Contenido {
 	
 	protected int contadorContenido;
 	protected String titulo;
