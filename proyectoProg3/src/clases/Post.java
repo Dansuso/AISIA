@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Post {
-	public static int contador = 1;
 	
 	protected int codigoPost;
 	protected String contenido;
@@ -13,6 +12,7 @@ public class Post {
 	protected int numRepost;
 	protected int numRespuestas;
 	protected Usuario creadorPost;
+	
 	public Post(int codigoPost, String contenido, LocalDate fechaPost, int numLikes, int numRepost, int numRespuestas,
 			Usuario creadorPost) {
 		super();
