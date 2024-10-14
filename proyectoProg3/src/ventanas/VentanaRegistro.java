@@ -151,6 +151,7 @@ public class VentanaRegistro extends JFrame{
 				});
 		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
 		 //Boton ocultar
+		 char valor = txt2.getEchoChar();
 	    	ocultar.addActionListener(new ActionListener() {
 				
 				@Override
@@ -158,14 +159,14 @@ public class VentanaRegistro extends JFrame{
 					// TODO Auto-generated method stub
 					
 					// Comprobamos en que modo de codificacion esta para cambiarlo de un a otro
-					if(txt2.getEchoChar() == '*') {
+					if(txt2.echoCharIsSet()) {
 						//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
 						 txt2.setEchoChar((char)0);
 						 ocultar.setText("Ocultar contraseña");
 						
 					}else {
 						//Y aqui al reves 
-						txt2.setEchoChar('*');
+						txt2.setEchoChar(valor);
 						ocultar.setText("Mostrar contraseña");
 					}
 	                 
