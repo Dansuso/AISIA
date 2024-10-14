@@ -38,6 +38,8 @@ public class VentanaInicio extends JFrame{
 		setTitle("Ventana Inicio");
 		setSize(312,300);
 		
+		
+		
 		//setIconImage(new ImageIcon(getClass().getResource("imagen2.png")).getImage());
 		
 		
@@ -83,6 +85,10 @@ public class VentanaInicio extends JFrame{
         
         JLabel contraseña = new JLabel("Contraseña:");
         JPasswordField txt2 = new JPasswordField(16);
+        
+          
+        
+        
 
         
         
@@ -147,12 +153,13 @@ public class VentanaInicio extends JFrame{
 			}
 		});
     	//Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
+    	char valor = txt2.getEchoChar();
     	ocultar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Comprobamos en que modo de codificacion esta para cambiarlo de un a otro
-				JPasswordField valor = txt2;
+				
 				if(txt2.echoCharIsSet()) {
 					//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
 					 txt2.setEchoChar((char) 0);
@@ -160,7 +167,7 @@ public class VentanaInicio extends JFrame{
 					
 				}else {
 					//Y aqui al reves 
-					txt2.setEchoChar('*');
+					txt2.setEchoChar(valor);
 					ocultar.setText("Mostrar contraseña");
 				}
 				
