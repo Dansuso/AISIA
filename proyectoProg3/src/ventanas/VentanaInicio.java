@@ -11,6 +11,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -26,11 +30,45 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 
 
 public class VentanaInicio extends JFrame{
 	protected 	Image fondo;
+	
+	//Añadimos el coreo y la contreseña a este mapa para luego preguntarle sio eesta 
+	protected static HashMap<String, String> mapa;
+	
+	
+	//Cargamos los datos para ver luego si esta en la base de tados 
+	public void cargarDatosCSV(){
+    	File f = new File("personas.csv");
+    	try {
+			Scanner sc = new Scanner(f);
+			while(sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				String[] campos =  linea.split(";");
+			
+				
+					
+					mapa.put(campos[3], campos[4]);
+					
+					
+					
+				}
+				 	
+			sc.close();
+					
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    }
+
 	
 
 	public  VentanaInicio() {
@@ -40,14 +78,19 @@ public class VentanaInicio extends JFrame{
 		setSize(312,300);
 		
 		
+		//Inicializamos el mapa
+		 mapa = new HashMap<>();
+	     cargarDatosCSV();
+	     
 		
-		//setIconImage(new ImageIcon(getClass().getResource("imagen2.png")).getImage());
 		
 		
 		this.setLocationRelativeTo(null);
         
         fondo = new ImageIcon("imagen1.jpeg").getImage();
         
+        
+        //Creamos el menu y sus diferentes opciones
         
 		JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -74,6 +117,8 @@ public class VentanaInicio extends JFrame{
 
         JMenuItem salir = new JMenuItem("Salir");
         fileMenu.add(salir);
+        
+        
         // Crear el panel personalizado para mostrar la imagen de fondo
        
 
@@ -126,6 +171,7 @@ public class VentanaInicio extends JFrame{
     
     	
     	//Inicioamos la ventana REgistro
+    	//Para que habra la ventana Registro
     	registro.addActionListener(new ActionListener() {
 			
 			@Override
@@ -136,6 +182,9 @@ public class VentanaInicio extends JFrame{
 				ventana.setVisible(true);
 			}
 		});
+    	
+    	
+    	
     	//Boton salir
     	salir.addActionListener(new ActionListener() {
 			
@@ -145,6 +194,8 @@ public class VentanaInicio extends JFrame{
 				dispose();
 			}
 		});
+    	
+    	
     	//Boton cerrar
     	botonCerrar.addActionListener(new ActionListener() {
 			
@@ -154,6 +205,9 @@ public class VentanaInicio extends JFrame{
 				dispose();
 			}
 		});
+    	
+    	
+    	
     	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
     	char valor = txt2.getEchoChar();
     	ocultar.addActionListener(new ActionListener() {
@@ -178,6 +232,38 @@ public class VentanaInicio extends JFrame{
 				
 			}
 		});;
+		
+		
+		//Recorre el mapa y compruba si el usuario que a escrito eCorreo y contrasña y abrir una nueva pensatña
+		botonAgregar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+				
+				String Correo = txt1.getText();
+				String contra = new String(txt2.getPassword());
+				
+				
+					if(mapa.containsKey(Correo) && mapa.get(Correo).equals(contra)) {
+						dispose();
+						
+						//Ventana pruba hasta que creemos la principal
+						VentanaCatalogo catalo = new VentanaCatalogo();
+						catalo.setVisible(true);
+						
+					}else {
+						System.out.println("El usuario no esta regitrado en esta aplicacion");
+					}
+					
+				
+				
+				
+				
+				
+				
+			}
+		});
     	
         
 		
@@ -188,6 +274,7 @@ public class VentanaInicio extends JFrame{
 	
 	public static void main(String[] args) {
         new VentanaInicio();
+        System.out.println(mapa);
     }
 	
 
