@@ -73,10 +73,11 @@ public class VentanaCatalogo extends JFrame {
 		
 		//Creacion de la barra de buscar
 		JTextField buscador = new JTextField("Buscador",10);
+		//Escuchador para la barra de buscar 
 		buscador.addMouseListener(new MouseAdapter() {
 			
 			public void mouseClicked(MouseEvent e) {
-                buscador.setText(""); // Borrar el contenido del JTextField
+                buscador.setText(""); // Borrar el contenido de la barra
             }
 		});
 		panelSuperior.add(buscador, BorderLayout.EAST);
