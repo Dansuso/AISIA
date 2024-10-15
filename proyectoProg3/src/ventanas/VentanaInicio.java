@@ -57,6 +57,7 @@ public class VentanaInicio extends JFrame{
 					
 					
 				}
+			
 				 	
 			sc.close();
 					
