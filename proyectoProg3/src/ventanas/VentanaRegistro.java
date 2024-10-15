@@ -1,6 +1,7 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 
 public class VentanaRegistro extends JFrame{
+	
+	private VentanaTablaUsuarios ventanaTabla;
 	
 	public VentanaRegistro() {
 
@@ -85,6 +88,7 @@ public class VentanaRegistro extends JFrame{
     	JButton botonAgregar = new JButton("Registrarme");
     	JButton botonCerrar = new JButton("Cerrar");
     	JButton ocultar = new JButton("Mostrar Contraseña");
+    	ocultar.setMinimumSize(new Dimension(20,20));
  
     	// Agregar los componentes a la ventana
     	
@@ -149,6 +153,51 @@ public class VentanaRegistro extends JFrame{
 						dispose();
 					}
 				});
+		 
+		 
+		 
+		 //ventanaTabla = new VentanaTablaUsuarios();
+		 botonAgregar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					   // Verificar si los campos obligatorios no están vacíos
+	                if (!txt1.getText().isEmpty() && txt2.getPassword().length > 0) {
+	                    // Concatenar los datos en el formato adecuado
+	                    String correo = txt1.getText();
+	                    String contraseña = new String(txt2.getPassword());
+	                    String nombre = txt3.getText();
+	                    String apellidos = txt4.getText();
+	                    String edad = txt5.getText();
+
+	                    // Crear un variable de los datos para añadirlos a la tabla
+	                    String[] datosUsuario = { nombre, apellidos, edad, correo, contraseña };
+
+	                    // Crear la ventana de la tabla y pasarle los datos
+	                    if (ventanaTabla == null) {
+	                        ventanaTabla = new VentanaTablaUsuarios();
+	                    }
+
+	                    // Agregar los datos a la tabla
+	                    ventanaTabla.agregarDatosATabla(datosUsuario);
+
+	                    // Mostrar la ventana de la tabla
+	                    ventanaTabla.setVisible(true);
+
+	                    // Ocultar la ventana actual de registro
+	                    dispose();
+	                    
+	                    
+					
+					
+	                }else {
+	                	System.out.println("No has escrito Correo o COntraseña");
+	                }
+					
+				}
+			});
+	    	
 		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
 		 //Boton ocultar
 		 char valor = txt2.getEchoChar();

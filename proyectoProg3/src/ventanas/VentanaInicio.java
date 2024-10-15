@@ -2,6 +2,7 @@ package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -96,7 +97,8 @@ public class VentanaInicio extends JFrame{
     	JButton botonAgregar = new JButton("Iniciar");
     	JButton botonCerrar = new JButton("Cerrar");
     	JButton ocultar = new JButton("Mostrar contraseña");
-    	ocultar.setLayout( new GridLayout(2,2,5,5));
+    	ocultar.setMinimumSize(new Dimension(20,20));
+
 
     	// Agregar los componentes a la ventana de inserción
     	jpanel.add(nombre);
@@ -152,7 +154,7 @@ public class VentanaInicio extends JFrame{
 				dispose();
 			}
 		});
-    	//Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
+    	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
     	char valor = txt2.getEchoChar();
     	ocultar.addActionListener(new ActionListener() {
 			

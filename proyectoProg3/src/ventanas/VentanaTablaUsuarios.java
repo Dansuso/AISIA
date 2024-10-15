@@ -37,13 +37,10 @@ import javax.swing.table.TableColumn;
 
 import clases.Usuario;
 
-public class VentanaTablaUsuarios extends JFrame{
-	private JTable tabla;
-    private JComboBox<String> comboBox;
-    private JList<String> listaPersonas;
-    private JList<String> persona = new JList<String>() ;
-    private DefaultListModel<String> modeloLista;
-    private  DefaultTableModel model;
+public class VentanaTablaUsuarios extends JFrame {
+	 private DefaultTableModel model;
+	
+    private  JTable tabla;
     protected JFrame frame;
     protected Usuario perso;
   
@@ -62,7 +59,7 @@ public class VentanaTablaUsuarios extends JFrame{
 				
 				HashMap<String,String> mapa = new HashMap<String, String>();
 
-					mapa.put(campos[2], campos[0] + "" +campos[1] + campos[3] + campos[4]);
+					mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]);
 					
 					
 				}
@@ -78,13 +75,6 @@ public class VentanaTablaUsuarios extends JFrame{
     	
     }
 
-   
-   
-  
-    
-
-
-	
 	public VentanaTablaUsuarios() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,86 +91,42 @@ public class VentanaTablaUsuarios extends JFrame{
 	    
 		 
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
-	        	
 	        cargarDatosCSV("personas.csv", model);
 
+	      	
 	      
-	        JTable tabla = new JTable(model);
+	        tabla = new JTable(model);
+	        
+	        JScrollPane scroll = new JScrollPane(tabla);
+	        add(scroll, BorderLayout.CENTER);
 	        getContentPane().add(new JScrollPane(tabla), BorderLayout.CENTER);
 	        
 	        
-	        
-	      
-
-	    	// Crear los botones
-	    	JButton botonInsertar = new JButton("Insertar");
-	    	JButton botonEliminar = new JButton("Eliminar");
-	    	JButton botonGuardar = new JButton("Guardar");
-	    	JButton botonModificar = new JButton("Modificcar");
-
-	    	JPanel panelBotones = new JPanel();
-	    	panelBotones.add(botonInsertar);
-	    	panelBotones.add(botonEliminar);
-	    	panelBotones.add(botonGuardar);
-	    	panelBotones.add(botonModificar);
-	    	getContentPane().add(panelBotones, BorderLayout.SOUTH);
-	   	 
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
+		
 		
 		setVisible(true);
+		
 	    		
 		
 	}
 	
-	public void guardarEnArchivo() {
-		// TODO Auto-generated method stub
-		try {
-			PrintWriter pw = new PrintWriter("tabla.csv");
-			for (int j = 0; j < model.getColumnCount(); j++) {
-				pw.print(model.getColumnName(j));
-				
-				if(j < model.getColumnCount() - 1) {
-					pw.print(";");
-				}
-				
-			}
-			pw.println();
-			
-			
-			for (int i = 0; i < model.getRowCount(); i++) {
-				for (int j = 0; j < model.getColumnCount(); j++) {
-					
-					
-					pw.println(model.getValueAt(i, j));
-					if(j < model.getColumnCount()- 1) {
-						pw.print(";");
-					}
-					
-				}
-				pw.println();
-				
-				
-			}
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 	
-	    	
+	  // Método para añadir datos a la tabla manualmente desde un array de strings
+    public void agregarDatosATabla(String[] datos) {
+        // Añadir la fila con los datos
+    	 if (model != null) {
+             model.addRow(datos);  // Añadir datos al modelo
+         } else {
+             System.out.println("Error");
+         }
+     }
 
 	public static void main(String[] args) {
-        new VentanaTablaUsuarios();
-        
+		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios();
+
+	       
     }
+
 	   
 }
 	
