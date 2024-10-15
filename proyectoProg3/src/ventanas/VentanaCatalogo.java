@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -36,11 +40,13 @@ public class VentanaCatalogo extends JFrame {
 			);
 
 	public VentanaCatalogo() {
+		//Creacion de las caracteristicas de la ventana
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Catalogo");
 		setSize(640, 480);
 		setLocationRelativeTo(null);
 		
+		//Creacion del menu de opciones arriba a la izquierda
 		JPanel panelSuperior = new JPanel();
 		add(panelSuperior, BorderLayout.NORTH);
 		panelSuperior.setLayout(new BorderLayout());
@@ -64,20 +70,30 @@ public class VentanaCatalogo extends JFrame {
 		
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
 		
+		
+		//Creacion de la barra de buscar
 		JTextField buscador = new JTextField("Buscador",10);
+		buscador.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent e) {
+                buscador.setText(""); // Borrar el contenido del JTextField
+            }
+		});
 		panelSuperior.add(buscador, BorderLayout.EAST);
 		
 		
-		JPanel panelCentral = new JPanel(new GridLayout(5,3,10,10));
+		
+		JPanel panelCentral = new JPanel(new GridLayout(4,5,10,10));
 		add(panelCentral, BorderLayout.CENTER);
 		
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 50; i++) {
             panelCentral.add(new JButton("Contenido " + i));
         }
 		
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelCentral);
 		add(panelScrollCatalogo, BorderLayout.CENTER);	
 		
+		//Para que el boton de opcion salir funcione
 		salir.addActionListener(new ActionListener() {
 
 			@Override
