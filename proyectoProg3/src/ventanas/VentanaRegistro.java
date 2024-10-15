@@ -176,11 +176,10 @@ public class VentanaRegistro extends JFrame{
 
 	                    // Crear la ventana de la tabla y pasarle los datos
 	                    if (ventanaTabla == null) {
-	                        ventanaTabla = new VentanaTablaUsuarios();
+	                        ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
 	                    }
 
-	                    // Agregar los datos a la tabla
-	                    ventanaTabla.agregarDatosATabla(datosUsuario);
+	                   
 
 	                    // Mostrar la ventana de la tabla
 	                    ventanaTabla.setVisible(true);
