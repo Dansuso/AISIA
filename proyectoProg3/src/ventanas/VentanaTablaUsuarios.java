@@ -38,9 +38,9 @@ import javax.swing.table.TableColumn;
 import clases.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
-	 private DefaultTableModel model;
+	 private  DefaultTableModel model;
 	
-    private  JTable tabla;
+    private static  JTable tabla;
     protected JFrame frame;
     protected Usuario perso;
   
@@ -75,7 +75,7 @@ public class VentanaTablaUsuarios extends JFrame {
     	
     }
 
-	public VentanaTablaUsuarios() {
+	public VentanaTablaUsuarios(String [] datosUser) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
@@ -92,17 +92,20 @@ public class VentanaTablaUsuarios extends JFrame {
 		 
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
 	        cargarDatosCSV("personas.csv", model);
-
+	        model.addRow(datosUser);
+	        
+	    
 	      	
 	      
 	        tabla = new JTable(model);
+	
 	        
 	        JScrollPane scroll = new JScrollPane(tabla);
 	        add(scroll, BorderLayout.CENTER);
 	        getContentPane().add(new JScrollPane(tabla), BorderLayout.CENTER);
 	        
-	        
-		
+	      
+	        guardarEnArchivo(tabla);
 		
 		setVisible(true);
 		
@@ -111,20 +114,51 @@ public class VentanaTablaUsuarios extends JFrame {
 	}
 	
 	
-	  // Método para añadir datos a la tabla manualmente desde un array de strings
-    public void agregarDatosATabla(String[] datos) {
-        // Añadir la fila con los datos
-    	 if (model != null) {
-             model.addRow(datos);  // Añadir datos al modelo
-         } else {
-             System.out.println("Error");
-         }
-     }
+	public void guardarEnArchivo(JTable c) {
+		// TODO Auto-generated method stub
+		try {
+			PrintWriter pw = new PrintWriter("tabla.csv");
+			for (int j = 0; j < c.getColumnCount(); j++) {
+				pw.print(c.getColumnName(j));
+				
+				if(j < c.getColumnCount() - 1) {
+					pw.print(";");
+				}
+				
+			}
+			pw.println();
+			
+			
+			for (int i = 0; i < c.getRowCount(); i++) {
+				for (int j = 0; j < c.getColumnCount(); j++) {
+					
+					
+					pw.println(c.getValueAt(i, j));
+					if(j < c.getColumnCount()- 1) {
+						pw.print(";");
+					}
+					
+				}
+				pw.println();
+				
+				
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+
 
 	public static void main(String[] args) {
-		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios();
-
-	       
+		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(args);
+		 
     }
 
 	   
