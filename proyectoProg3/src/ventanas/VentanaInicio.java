@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -76,7 +77,7 @@ public class VentanaInicio extends JFrame{
 	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Ventana Inicio");
-		setSize(312,300);
+		setSize(317,300);
 		
 		
 		//Inicializamos el mapa
@@ -126,9 +127,14 @@ public class VentanaInicio extends JFrame{
         
         JPanel jpanel = new JPanel();
         JPanel panelBotones = new JPanel();
+        JPanel cont = new JPanel();
+        
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         
         JLabel nombre = new JLabel("Correo:");
         JTextField txt1 = new JTextField(16);
+        
         
         JLabel contraseña = new JLabel("Contraseña:");
         JPasswordField txt2 = new JPasswordField(16);
@@ -142,26 +148,47 @@ public class VentanaInicio extends JFrame{
      // Crear los botones
     	JButton botonAgregar = new JButton("Iniciar");
     	JButton botonCerrar = new JButton("Cerrar");
-    	JButton ocultar = new JButton("Mostrar contraseña");
-    	ocultar.setMinimumSize(new Dimension(20,20));
+    	ImageIcon foto1 = new ImageIcon("fotover.png");
+	
+    	JButton ocultar = new JButton(foto1);
+    	
+    	//Le quita el borde a las imagenes
+    	 // Quitar el borde del botón
+    	ocultar.setBorderPainted(false);
+
+        // Quitar el relleno del botón
+    	ocultar.setContentAreaFilled(false);
+
+        // Quitar el efecto de enfoque
+    	ocultar.setFocusPainted(false);
+
+    	
+    	
 
 
     	// Agregar los componentes a la ventana de inserción
     	jpanel.add(nombre);
     	jpanel.add(txt1);
+    	//jpanel.setLayout(new GridLayout(1,1,5,5));
+    	//jpanel.setOpaque(false);    
     	
-    	jpanel.add(contraseña);
-    	jpanel.add(txt2);
-    	jpanel.add(ocultar);
-    	jpanel.setLayout(new GridLayout(4,4,10,10));
+    	cont.add(contraseña);
+    	cont.add(txt2);
+    	cont.add(ocultar);
+    	//jpanel.setOpaque(false);
+    	//cont.setLayout(new GridLayout(1,1,5,5));
     	
     	//Crea una separacion entre panel dde arriba y el central 
-    	jpanel.setBorder(new EmptyBorder(20, 0, 20, 0));
+    	jpanel.setBorder(new EmptyBorder(30, 0, 30, 0));
+    	//cont.setBorder(new EmptyBorder(0, 0, 0, 0));
+   
     	
     	
-    
+    	mainPanel.add(jpanel);
+        mainPanel.add(cont);
     	
-    	getContentPane().add(jpanel, BorderLayout.CENTER);
+        getContentPane().add(mainPanel, BorderLayout.CENTER);
+
     	
     	
     	panelBotones.add(botonAgregar);
@@ -207,7 +234,8 @@ public class VentanaInicio extends JFrame{
 			}
 		});
     	
-    	
+//    	ImageIcon foto = new ImageIcon();
+//    	boton.setIcon();
     	
     	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
     	char valor = txt2.getEchoChar();
@@ -216,16 +244,18 @@ public class VentanaInicio extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Comprobamos en que modo de codificacion esta para cambiarlo de un a otro
-				
+				//Ponemos la foto en depende de que modo este el formato del txt
 				if(txt2.echoCharIsSet()) {
 					//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
 					 txt2.setEchoChar((char) 0);
-					 ocultar.setText("Ocultar contraseña");
+					 ImageIcon foto1 = new ImageIcon("fotnover.png");
+					 ocultar.setIcon(foto1);
 					
 				}else {
 					//Y aqui al reves 
 					txt2.setEchoChar(valor);
-					ocultar.setText("Mostrar contraseña");
+					ImageIcon foto2 = new ImageIcon("fotover.png");
+					ocultar.setIcon(foto2);
 				}
 				
 				

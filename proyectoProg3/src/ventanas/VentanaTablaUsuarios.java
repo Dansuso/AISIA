@@ -92,9 +92,11 @@ public class VentanaTablaUsuarios extends JFrame {
 		 
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
 	        cargarDatosCSV("personas.csv", model);
+	        
+	        if(datosUser != null) {
 	        model.addRow(datosUser);
 	        
-	    
+	        }
 	      	
 	      
 	        tabla = new JTable(model);
@@ -117,7 +119,9 @@ public class VentanaTablaUsuarios extends JFrame {
 	public void guardarEnArchivo(JTable c) {
 		// TODO Auto-generated method stub
 		try {
-			PrintWriter pw = new PrintWriter("tabla.csv");
+			//El false ese rescrive lo que hay 
+			PrintWriter pw = new PrintWriter(new FileWriter("tabla.csv", false));
+			
 			for (int j = 0; j < c.getColumnCount(); j++) {
 				pw.print(c.getColumnName(j));
 				
