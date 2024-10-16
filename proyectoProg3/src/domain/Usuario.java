@@ -1,4 +1,4 @@
-package clases;
+package domain;
 
 import java.awt.Image;
 import java.time.LocalDate;

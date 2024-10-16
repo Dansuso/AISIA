@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import clases.Usuario;
+import domain.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
 	 private  DefaultTableModel model;

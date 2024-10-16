@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,9 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import clases.Contenido;
-import clases.Pelicula;
-import clases.Serie;
+import domain.Contenido;
+import domain.Pelicula;
+import domain.Serie;
 
 public class VentanaCatalogo extends JFrame {
 	
