@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -94,8 +95,19 @@ public class VentanaInicio extends JFrame{
 		
 		
 		this.setLocationRelativeTo(null);
+		
+		
+		 // Panel para la imagen de fondo
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
+                g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         
-       
+        mainPanel.setLayout(null);
         
         
         //Creamos el menu y sus diferentes opciones
@@ -130,36 +142,38 @@ public class VentanaInicio extends JFrame{
         // Crear el panel personalizado para mostrar la imagen de fondo
        
 
-        
-        JPanel jpanel = new JPanel();
-        jpanel.setOpaque(false);
-        JPanel panelBotones = new JPanel();
-      
-        JPanel cont = new JPanel();
-        cont.setOpaque(false);
-        
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        
-        JLabel nombre = new JLabel("Correo:");
-        JTextField txt1 = new JTextField(16);
-        
-        
-        JLabel contraseña = new JLabel("Contraseña:");
-        JPasswordField txt2 = new JPasswordField(16);
-        
-          
-        
-        
 
+       JPanel panelBotones = new JPanel();
+      
         
         
-     // Crear los botones
-    	JButton botonAgregar = new JButton("Iniciar");
-    	JButton botonCerrar = new JButton("Cerrar");
-    	ImageIcon foto1 = new ImageIcon("fotover.png");
-	
-    	JButton ocultar = new JButton(foto1);
+     // Etiqueta para el nombre de usuario
+        JLabel nombre = new JLabel("Correo:");
+        nombre.setForeground(Color.WHITE); // Color del texto
+        nombre.setBounds(30, 50, 80, 25); // Posición y tamaño del componente
+        mainPanel.add(nombre);
+
+        // Campo de texto para el nombre de usuario
+        JTextField txt1 = new JTextField(20);
+        txt1.setBounds(100, 50, 150, 25); // Posición y tamaño del componente
+        mainPanel.add(txt1);
+
+        // Etiqueta para la contraseña
+        JLabel contraseña = new JLabel("Contraseña:");
+        contraseña.setForeground(Color.WHITE); // Color del texto
+        contraseña.setBounds(30, 100, 80, 25); // Posición y tamaño del componente
+        mainPanel.add(contraseña);
+
+        // Campo de texto para la contraseña
+        JPasswordField txt2 = new JPasswordField(20);
+        txt2.setBounds(100, 100, 150, 25); // Posición y tamaño del componente
+        mainPanel.add(txt2);
+        
+        ImageIcon foto1 = new ImageIcon("fotover.png");
+        JButton ocultar = new JButton(foto1);
+        ocultar.setBounds(210, 100, 120, 30); // Posición y tamaño del componente
+        
+       
     	
     	//Le quita el borde a las imagenes
     	 // Quitar el borde del botón
@@ -171,46 +185,21 @@ public class VentanaInicio extends JFrame{
         // Quitar el efecto de enfoque
     	ocultar.setFocusPainted(false);
 
+        mainPanel.add(ocultar);
+
+      
+        
+  
+     // Crear los botones
+    	JButton botonAgregar = new JButton("Iniciar");
+    	JButton botonCerrar = new JButton("Cerrar");
     	
     	
 
-
-    	// Agregar los componentes a la ventana de inserción
-    	jpanel.add(nombre);
-    	jpanel.add(txt1);
-    	//jpanel.setLayout(new GridLayout(1,1,5,5));
-    	//jpanel.setOpaque(false);    
-    	
-    	cont.add(contraseña);
-    	cont.add(txt2);
-    	cont.add(ocultar);
-    	//jpanel.setOpaque(false);
-    	//cont.setLayout(new GridLayout(1,1,5,5));
-    	
-    	//Crea una separacion entre panel dde arriba y el central 
-    	jpanel.setBorder(new EmptyBorder(30, 0, 30, 0));
-    	//cont.setBorder(new EmptyBorder(0, 0, 0, 0));
-   
-    	
-    	
-    	mainPanel.add(jpanel);
-        mainPanel.add(cont);
-        mainPanel.setOpaque(false);
-        
-        
-      //Añadimos la imagen al fondo
-        PanelImagen imagen = new PanelImagen("fondo.jpg");
-        JSplitPane split = new JSplitPane();
-        
-        mainPanel.add(imagen);
-    	
         
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         
-       // fondo = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
-      
-
-    	
+    
     	
     	panelBotones.add(botonAgregar);
     	panelBotones.add(botonCerrar);
