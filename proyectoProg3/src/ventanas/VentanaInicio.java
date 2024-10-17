@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButtonMenuItem;
@@ -75,7 +78,7 @@ public class VentanaInicio extends JFrame{
 
 	public  VentanaInicio() {
 	
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Ventana Inicio");
 		setSize(317,300);
 		
@@ -89,7 +92,7 @@ public class VentanaInicio extends JFrame{
 		
 		this.setLocationRelativeTo(null);
         
-        fondo = new ImageIcon("imagen1.jpeg").getImage();
+       
         
         
         //Creamos el menu y sus diferentes opciones
@@ -187,7 +190,11 @@ public class VentanaInicio extends JFrame{
     	mainPanel.add(jpanel);
         mainPanel.add(cont);
     	
+        
         getContentPane().add(mainPanel, BorderLayout.CENTER);
+        
+        fondo = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
+      
 
     	
     	
@@ -218,10 +225,23 @@ public class VentanaInicio extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dispose();
-			}
-		});
+				JLabel etiqueta1 = new JLabel("Quieres salir de la aplicación");
+        		Object[] message = { etiqueta1};
+        		// Mostrar el JOptionPane con los componentes en un array
+        		int resultado = JOptionPane.showConfirmDialog(null, 
+        			message, 
+        			"Introduce los datos", 
+        			JOptionPane.YES_NO_OPTION
+        			
+        			
+        	
+        		);
+        		if (resultado == JOptionPane.YES_OPTION) {
+        			System.exit(0);
+        		}
+        		
+        	}
+        	});
     	
     	
     	//Boton cerrar
@@ -295,6 +315,30 @@ public class VentanaInicio extends JFrame{
 				
 			}
 		});
+		 
+        addWindowListener(new WindowAdapter() {
+        	
+        	@Override
+        	public void windowClosing(WindowEvent e) {
+        	// se llama cuando el usuario intenta cerrar la ventana
+        		JLabel etiqueta1 = new JLabel("Quieres salir de la aplicación");
+        		Object[] message = { etiqueta1};
+        		// Mostrar el JOptionPane con los componentes en un array
+        		int resultado = JOptionPane.showConfirmDialog(null, 
+        			message, 
+        			"Introduce los datos", 
+        			JOptionPane.YES_NO_OPTION
+        			
+        			
+        			
+        	
+        		);
+        		if (resultado == JOptionPane.YES_OPTION) {
+        			System.exit(0);
+        		}
+        		
+        	}
+        	});
     	
         
 		
