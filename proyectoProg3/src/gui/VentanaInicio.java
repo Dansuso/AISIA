@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -131,8 +132,11 @@ public class VentanaInicio extends JFrame{
 
         
         JPanel jpanel = new JPanel();
+        jpanel.setOpaque(false);
         JPanel panelBotones = new JPanel();
+      
         JPanel cont = new JPanel();
+        cont.setOpaque(false);
         
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -191,6 +195,14 @@ public class VentanaInicio extends JFrame{
     	
     	mainPanel.add(jpanel);
         mainPanel.add(cont);
+        mainPanel.setOpaque(false);
+        
+        
+      //Añadimos la imagen al fondo
+        PanelImagen imagen = new PanelImagen("fondo.jpg");
+        JSplitPane split = new JSplitPane();
+        
+        mainPanel.add(imagen);
     	
         
         getContentPane().add(mainPanel, BorderLayout.CENTER);
@@ -343,6 +355,8 @@ public class VentanaInicio extends JFrame{
         		
         	}
         	});
+        
+        
     	
         
 		
