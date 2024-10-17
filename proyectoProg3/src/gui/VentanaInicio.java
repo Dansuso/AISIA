@@ -195,7 +195,7 @@ public class VentanaInicio extends JFrame{
         
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         
-        fondo = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
+       // fondo = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
       
 
     	
@@ -258,6 +258,8 @@ public class VentanaInicio extends JFrame{
     	
 //    	ImageIcon foto = new ImageIcon();
 //    	boton.setIcon();
+    	
+    	
     	
     	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
     	char valor = txt2.getEchoChar();
