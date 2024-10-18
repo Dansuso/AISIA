@@ -1,8 +1,8 @@
-Pelicula;1;Peli1;Accion;90.2;4;Disney;3;Ninguno;1000000;
-Pelicula;2;Peli2;Terror;120.5;6;Warner;8;Glovo de oro;300000000;
-Pelicula;3;Peli3;Romance;117.0;8;Sony;16;Ninguno;150000000;
-Pelicula;4;Peli4;Romance;100.0;5;Paramount;13;Ninguno;150000000;
-Pelicula;5;Peli5;Terror;150.4;9;Universal;3;Glovo de oro;500000000;
+Pelicula;1;Peli1;Accion;90.2;4;Disney;3;Ninguno;1000000
+Pelicula;2;Peli2;Terror;120.5;6;Warner;8;Glovo de oro;300000000
+Pelicula;3;Peli3;Romance;117.0;8;Sony;16;Ninguno;150000000
+Pelicula;4;Peli4;Romance;100.0;5;Paramount;13;Ninguno;150000000
+Pelicula;5;Peli5;Terror;150.4;9;Universal;3;Glovo de oro;500000000
 Serie;6;Serie1;Aventura;80.5;3;Disney;13;Ninguno;6;10
 Serie;7;Serie2;Terror;60.3;6;Paramount;8;Glovo de oro;2;8
 Serie;8;Serie3;Accion;110.0;5;Sony;3;Ninguno;4;6

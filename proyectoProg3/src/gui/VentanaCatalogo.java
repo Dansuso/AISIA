@@ -9,13 +9,20 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -27,11 +34,72 @@ import domain.Serie;
 
 public class VentanaCatalogo extends JFrame {
 	
+	protected static HashMap<String, ArrayList<Contenido>> mapaContenido;
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
+		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
+		File f = new File("contenido.csv");
+		ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
+		
+		try {
+			Scanner sc = new Scanner(f);
+			while(sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				String[] campos = linea.split(";");
+				String tipo = campos[0];
+				int codigo = Integer.parseInt(campos[1]);
+				String nombre = campos[2];
+				String genero = campos[3];
+				double duracion = Double.parseDouble(campos[4]);
+				int calificacion = Integer.parseInt(campos[5]);
+				String distribuidora = campos[6];
+				int edad = Integer.parseInt(campos[7]);
+				String premios = campos[8];
+				
+				Contenido nuevo;
+				
+				if(tipo.equals("Pelicula")) {
+					double facturacion = Double.parseDouble(campos[9]);
+					nuevo = new Pelicula(codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, facturacion);
+				}
+				else {
+					int numTemporadas = Integer.parseInt(campos[9]);
+					int numCapitulos = Integer.parseInt(campos[10]);
+					nuevo = new Serie(codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, numTemporadas, numCapitulos);
+				}
+				
+				contenidos.add(nuevo);
+				
+			}
+			
+			crearMapa(contenidos, mapaPrueba);
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mapaPrueba;
+	}
+	
+	private static HashMap<String, ArrayList<Contenido>> crearMapa(ArrayList<Contenido> contenidos, HashMap<String, ArrayList<Contenido>> mapa) {
+		for (Contenido contenido : contenidos) {
+			String nombre = contenido.getTitulo();
+			if(!mapa.containsKey(nombre)) {
+				mapa.put(nombre, new ArrayList<Contenido>());
+			}
+			mapa.get(nombre).add(contenido);
+		}
+		
+		return mapa;
+		
+	}
+
 	List<Contenido> contenidos = List.of(
 			new Pelicula(1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", 10000.40),
 			new Pelicula(2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", 20000.40),
@@ -40,6 +108,8 @@ public class VentanaCatalogo extends JFrame {
 			);
 
 	public VentanaCatalogo() {
+		
+		
 		//Creacion de las caracteristicas de la ventana
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Catalogo");
@@ -65,10 +135,16 @@ public class VentanaCatalogo extends JFrame {
 		
 		menuCatalogo.addSeparator();
 		
+		JMenuItem volver = new JMenuItem("Volver");
+		menuCatalogo.add(volver);
+		
+		menuCatalogo.addSeparator();
+		
 		JMenuItem salir = new JMenuItem("Salir");
 		menuCatalogo.add(salir);
 		
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
+		
 		
 		
 		//Creacion de la barra de buscar
@@ -92,18 +168,39 @@ public class VentanaCatalogo extends JFrame {
         }
 		
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelCentral);
-		add(panelScrollCatalogo, BorderLayout.CENTER);	
+		add(panelScrollCatalogo, BorderLayout.CENTER);
+		
+		//Escuchador del boton de volver
+		volver.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				VentanaInicio ventana = new VentanaInicio();
+				ventana.setVisible(true);
+				
+			}
+			
+		});
 		
 		//Para que el boton de opcion salir funcione
 		salir.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				System.exit(0);
-
+				JLabel labelSalir = new JLabel("Desea salir de la aplicacion?");
 				
-				dispose();
+				Object[] mensaje = {labelSalir};
+				
+				int resultado = JOptionPane.showConfirmDialog(null, 
+						mensaje, 
+						"Salir", 
+						JOptionPane.YES_NO_OPTION
+					);
+				
+				if(resultado == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
 
 				
 			}
@@ -117,6 +214,8 @@ public class VentanaCatalogo extends JFrame {
 	
 	public static void main(String[] args) {
         new VentanaCatalogo();
+        cargarContenido();
+        System.out.println(cargarContenido());
     }
 
 }
