@@ -3,18 +3,26 @@ package domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Clas que representa un post que un usuario puede escribir. 
+ */
 public class Post {
 	
-	protected int codigoPost;
-	protected String contenido;
-	protected LocalDate fechaPost;
-	protected int numLikes;
-	protected int numRepost;
-	protected int numRespuestas;
-	protected Usuario creadorPost;
+	
+	private int codigoPost;
+	private String contenido;
+	private LocalDate fechaPost;
+	private int numLikes;
+	private int numRepost;
+	private int numRespuestas;
+	// Referencia al CREADOR del POST
+	private Usuario creadorPost;
+	//Referencia al post que responde. Será NULL si es un post nuevo y no una respuesta a uno.
+	private Post postRespuesta;
+	
 	
 	public Post(int codigoPost, String contenido, LocalDate fechaPost, int numLikes, int numRepost, int numRespuestas,
-			Usuario creadorPost) {
+			Usuario creadorPost,Post postRespuesta) {
 		super();
 		this.codigoPost = codigoPost;
 		this.contenido = contenido;
@@ -23,6 +31,7 @@ public class Post {
 		this.numRepost = numRepost;
 		this.numRespuestas = numRespuestas;
 		this.creadorPost = creadorPost;
+		this.postRespuesta = postRespuesta;
 	}
 	
 	public int getCodigoPost() {
@@ -61,13 +70,24 @@ public class Post {
 	public Usuario getCreadorPost() {
 		return creadorPost;
 	}
+	public Post getPostRespuesta() {
+		return postRespuesta;
+	}
+
+	public void setPostRespuesta(Post postRespuesta) {
+		this.postRespuesta = postRespuesta;
+	}
+
 	public void setCreadorPost(Usuario creadorPost) {
 		this.creadorPost = creadorPost;
 	}
 
+	
+	//TODO : Pensar en el HashCode.
+	//Un POST es IGUAL a otro si su identificador es el mismo.
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigoPost, contenido, creadorPost, fechaPost, numLikes, numRepost, numRespuestas);
+		return Objects.hash(codigoPost);
 	}
 
 	@Override
@@ -79,9 +99,7 @@ public class Post {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		return codigoPost == other.codigoPost && Objects.equals(contenido, other.contenido)
-				&& Objects.equals(creadorPost, other.creadorPost) && Objects.equals(fechaPost, other.fechaPost)
-				&& numLikes == other.numLikes && numRepost == other.numRepost && numRespuestas == other.numRespuestas;
+		return codigoPost == other.codigoPost;
 	}
 
 	@Override
