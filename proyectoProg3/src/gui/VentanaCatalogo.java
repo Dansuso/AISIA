@@ -2,6 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +12,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -16,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +46,7 @@ public class VentanaCatalogo extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	
 	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
 		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
@@ -75,6 +82,8 @@ public class VentanaCatalogo extends JFrame {
 				
 				contenidos.add(nuevo);
 				
+				
+				
 			}
 			
 			crearMapa(contenidos, mapaPrueba);
@@ -84,6 +93,9 @@ public class VentanaCatalogo extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(contenidos);
+		mapaContenido = crearMapa(contenidos, mapaPrueba);
+		System.out.println(mapaContenido);
 		return mapaPrueba;
 	}
 	
@@ -111,10 +123,29 @@ public class VentanaCatalogo extends JFrame {
 		
 		
 		//Creacion de las caracteristicas de la ventana
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Catalogo");
 		setSize(640, 480);
 		setLocationRelativeTo(null);
+		
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				JLabel label1 = new JLabel("¿Seguro que desea salir?");
+				
+				Object[] message = { label1 };
+				
+				int resultado = JOptionPane.showConfirmDialog(null, 
+						message, 
+						"Salir", 
+						JOptionPane.YES_NO_OPTION
+					);
+				
+				if (resultado == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+				// se llama cuando el usuario intenta cerrar la ventana
+				}
+		});
 		
 		//Creacion del menu de opciones arriba a la izquierda
 		JPanel panelSuperior = new JPanel();
@@ -135,7 +166,7 @@ public class VentanaCatalogo extends JFrame {
 		
 		menuCatalogo.addSeparator();
 		
-		JMenuItem volver = new JMenuItem("Volver");
+		JMenuItem volver = new JMenuItem("Cerrar sesion");
 		menuCatalogo.add(volver);
 		
 		menuCatalogo.addSeparator();
@@ -159,18 +190,40 @@ public class VentanaCatalogo extends JFrame {
 		panelSuperior.add(buscador, BorderLayout.EAST);
 		
 		
+		JLabel titulo = new JLabel("Catalogo");
+		titulo.setHorizontalAlignment(JTextField.CENTER);
+		Font fuente = new Font("Arial", Font.BOLD, 20);
+		titulo.setFont(fuente);
+		panelSuperior.add(titulo, BorderLayout.NORTH);
 		
-		JPanel panelCentral = new JPanel(new GridLayout(4,5,10,10));
+		
+		
+		JPanel panelCentral = new JPanel();
+		panelCentral.setLayout((new GridLayout(4,5,10,10)));
 		add(panelCentral, BorderLayout.CENTER);
 		
-		for (int i = 1; i <= 50; i++) {
-            panelCentral.add(new JButton("Contenido " + i));
-        }
+		for (int i = 0; i < 50; i++) {
+			JButton botones = new JButton("Contenido " + i);
+			for (String contenido : mapaContenido.keySet()) {
+				botones.setText(contenido);
+			}
+			botones.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new VentanaInfo();
+					
+				}
+				
+			});
+			panelCentral.add(botones);
+		}
+		
 		
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelCentral);
 		add(panelScrollCatalogo, BorderLayout.CENTER);
 		
-		//Escuchador del boton de volver
+		//Escuchador del boton de volver. Para volver a la anterior ventana
 		volver.addActionListener(new ActionListener() {
 
 			@Override
@@ -213,9 +266,10 @@ public class VentanaCatalogo extends JFrame {
 	}
 	
 	public static void main(String[] args) {
+		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
+        mapaConts = cargarContenido();
+        System.out.println(mapaConts);
         new VentanaCatalogo();
-        cargarContenido();
-        System.out.println(cargarContenido());
     }
 
 }
