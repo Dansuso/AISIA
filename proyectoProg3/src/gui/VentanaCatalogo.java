@@ -202,22 +202,21 @@ public class VentanaCatalogo extends JFrame {
 		panelCentral.setLayout((new GridLayout(4,5,10,10)));
 		add(panelCentral, BorderLayout.CENTER);
 		
-		for (int i = 0; i < 50; i++) {
-			JButton botones = new JButton("Contenido " + i);
-			for (String contenido : mapaContenido.keySet()) {
-				botones.setText(contenido);
-			}
-			botones.addActionListener(new ActionListener() {
+		
+        for (String contenido : mapaContenido.keySet()) {
+            JButton botones = new JButton(contenido);  // Asignar el contenido directamente
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					new VentanaInfo();
-					
-				}
-				
-			});
-			panelCentral.add(botones);
-		}
+            // Añadir el ActionListener al botón
+            botones.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new VentanaInfo();  // Llama a la nueva ventana (debería estar definida en otro lugar)
+                }
+            });
+
+            panelCentral.add(botones);
+            
+        }
 		
 		
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelCentral);
