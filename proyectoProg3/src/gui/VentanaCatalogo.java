@@ -41,6 +41,8 @@ import domain.Serie;
 public class VentanaCatalogo extends JFrame {
 	
 	protected static HashMap<String, ArrayList<Contenido>> mapaContenido;
+	private List<JButton> botonesBusc;
+	private JPanel panelGrid;
 	
 	/**
 	 * 
@@ -198,28 +200,41 @@ public class VentanaCatalogo extends JFrame {
 		
 		
 		
-		JPanel panelCentral = new JPanel();
-		panelCentral.setLayout((new GridLayout(4,5,10,10)));
-		add(panelCentral, BorderLayout.CENTER);
+		panelGrid = new JPanel();
+		panelGrid.setLayout((new GridLayout(4,2,10,10)));
+		add(panelGrid, BorderLayout.CENTER);
 		
 		
+		botonesBusc = new ArrayList<>();
         for (String contenido : mapaContenido.keySet()) {
             JButton botones = new JButton(contenido);  // Asignar el contenido directamente
+            botonesBusc.add(botones);
 
             // Añadir el ActionListener al botón
             botones.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new VentanaInfo();  // Llama a la nueva ventana (debería estar definida en otro lugar)
+                    new VentanaInfo();  // Llama a la nueva ventana
                 }
             });
 
-            panelCentral.add(botones);
+            panelGrid.add(botones);
             
         }
+        
+        buscador.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filtrarElementos(buscador.getText());
+				
+			}
+        	
+        });
+        
 		
 		
-		JScrollPane panelScrollCatalogo = new JScrollPane(panelCentral);
+		JScrollPane panelScrollCatalogo = new JScrollPane(panelGrid);
 		add(panelScrollCatalogo, BorderLayout.CENTER);
 		
 		//Escuchador del boton de volver. Para volver a la anterior ventana
@@ -264,6 +279,22 @@ public class VentanaCatalogo extends JFrame {
 		
 	}
 	
+	protected void filtrarElementos(String texto) {
+		panelGrid.removeAll();  // Limpiar el panel
+
+        for (JButton boton : botonesBusc) {
+            if (boton.getText().toLowerCase().contains(texto.toLowerCase())) {
+                panelGrid.add(boton);  // Añadir solo los botones que coincidan con la búsqueda
+            }
+            
+        }
+        
+     // Refrescar el panel después de añadir o quitar elementos
+        panelGrid.revalidate();
+        panelGrid.repaint();
+		
+	}
+
 	public static void main(String[] args) {
 		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
         mapaConts = cargarContenido();
