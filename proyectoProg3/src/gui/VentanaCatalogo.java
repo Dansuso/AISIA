@@ -124,11 +124,16 @@ public class VentanaCatalogo extends JFrame {
 	public VentanaCatalogo() {
 		
 		
+		
+		
 		//Creacion de las caracteristicas de la ventana
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Catalogo");
 		setSize(640, 480);
 		setLocationRelativeTo(null);
+		
+		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
+		mapaConts = cargarContenido();
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -205,7 +210,8 @@ public class VentanaCatalogo extends JFrame {
 		add(panelGrid, BorderLayout.CENTER);
 		
 		
-		botonesBusc = new ArrayList<>();
+		//Añadir los botones al panel con el nombre de cada contenido
+		botonesBusc = new ArrayList<>(); //Uso del array para tener los botones guardados y usarlos en el filtro
         for (String contenido : mapaContenido.keySet()) {
             JButton botones = new JButton(contenido);  // Asignar el contenido directamente
             botonesBusc.add(botones);
@@ -222,6 +228,7 @@ public class VentanaCatalogo extends JFrame {
             
         }
         
+        //Listener del JTextField del buscador que llama a una funcion para filtrar por titulo
         buscador.addActionListener(new ActionListener() {
 
 			@Override
@@ -233,7 +240,7 @@ public class VentanaCatalogo extends JFrame {
         });
         
 		
-		
+		//Creacion del JScrollPane
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelGrid);
 		add(panelScrollCatalogo, BorderLayout.CENTER);
 		
@@ -279,6 +286,7 @@ public class VentanaCatalogo extends JFrame {
 		
 	}
 	
+	//Funcion para filtar los titulos de los contenidos para el listener del buscador
 	protected void filtrarElementos(String texto) {
 		panelGrid.removeAll();  // Limpiar el panel
 
@@ -296,9 +304,6 @@ public class VentanaCatalogo extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
-        mapaConts = cargarContenido();
-        System.out.println(mapaConts);
         new VentanaCatalogo();
     }
 
