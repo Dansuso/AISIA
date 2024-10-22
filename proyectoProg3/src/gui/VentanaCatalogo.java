@@ -125,10 +125,7 @@ public class VentanaCatalogo extends JFrame {
 		
 		
 		//Creacion de las caracteristicas de la ventana
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setTitle("Catalogo");
-		setSize(640, 480);
-		setLocationRelativeTo(null);
+	
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
