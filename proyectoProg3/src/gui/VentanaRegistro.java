@@ -1,7 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,10 +35,21 @@ public class VentanaRegistro extends JFrame{
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Ventana Inicio");
-		setSize(312,300);
+		setSize(340,340);
 		
+		// Panel para la imagen de fondo
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
+                g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        
 		
-		
+        mainPanel.setLayout(null);
+        
 		this.setLocationRelativeTo(null);
         
         //Creamos el menu superior izquierda
@@ -67,39 +80,69 @@ public class VentanaRegistro extends JFrame{
         fileMenu.add(salir);
      
         //Cremos el Jpanel 
-        JPanel jpanelnombre = new JPanel();
-        JPanel jpanelapellido = new JPanel();
-        JPanel jpaneledad = new JPanel();
-        JPanel jpanelcorreo = new JPanel();
-        JPanel jpanelcontra = new JPanel();
+     
+
         JPanel panelBotones = new JPanel();
-        
-        JPanel general = new JPanel();
-        
-        
-        JLabel nombre = new JLabel("Correo:");
-        JTextField txt1 = new JTextField(16);
-        
-        JLabel contraseña = new JLabel("Contraseña:");
-        JPasswordField txt2 = new JPasswordField(16);
+            
+      
         
         JLabel usuario = new JLabel("Nombre:");
+        usuario.setBounds(30, 10 , 80, 20);
+        usuario.setForeground(Color.WHITE);
+        mainPanel.add(usuario);
+        
         JTextField txt3 = new JTextField(16);
+        txt3.setBounds(100, 10, 150, 20);
+     	mainPanel.add(txt3);
         
         JLabel apellidos = new JLabel("Apellidos:");
+        apellidos.setForeground(Color.white);
+        apellidos.setBounds(30, 60, 80, 20);
+    	mainPanel.add(apellidos);
+    	
         JTextField txt4 = new JTextField(16);
+        txt4.setBounds(100, 60, 150, 20);
+    	mainPanel.add(txt4);
         
         JLabel edad = new JLabel("Edad:");
+        edad.setForeground(Color.WHITE);
+        edad.setBounds(30, 110, 80, 20);
+     	mainPanel.add(edad);
+     	
         JTextField txt5 = new JTextField(16);
+        txt5.setBounds(100, 110, 150, 20);
+     	mainPanel.add(txt5);
         
+     	  
+        JLabel nombre = new JLabel("Correo:");
+        nombre.setForeground(Color.WHITE);
+        nombre.setBounds(30, 160, 80, 20);
+        mainPanel.add(nombre);
+        
+        JTextField txt1 = new JTextField(16);
+        txt1.setBounds(100, 160, 150, 20);
+     	mainPanel.add(txt1);
+        
+        JLabel contraseña = new JLabel("Contraseña:");
+        contraseña.setForeground(Color.WHITE);
+        contraseña.setBounds(30, 210, 80, 20);
+        mainPanel.add(contraseña);
+        
+        JPasswordField txt2 = new JPasswordField(16);
+        txt2.setBounds(100,210,150,20);
+        mainPanel.add(txt2);
+
+        ImageIcon foto1 = new ImageIcon("fotover.png");
+        JButton ocultar = new JButton(foto1);
+        ocultar.setBounds(210, 210, 120, 30); 
+    	
         
         
         
      // Crear los botones
     	JButton botonAgregar = new JButton("Registrarme");
     	JButton botonCerrar = new JButton("Cerrar");
-    	ImageIcon foto1 = new ImageIcon("fotover.png");
-    	JButton ocultar = new JButton(foto1);
+    	
     	
 	    	
 	    //Le quita el borde a las imagenes
@@ -111,38 +154,19 @@ public class VentanaRegistro extends JFrame{
 	
 	       // Quitar el efecto de enfoque
 	   	ocultar.setFocusPainted(false);
-	 
+	   	mainPanel.add(ocultar);
     	// Agregar los componentes a la ventana
     	
-    	
-    	jpanelnombre.add(usuario);
-    	jpanelnombre.add(txt3);
-    	
-    	jpanelapellido.add(apellidos);
-    	jpanelapellido.add(txt4);
-    	
-    	jpaneledad.add(edad);
-    	jpaneledad.add(txt5);
-    	
-    	jpanelcorreo.add(nombre);
-    	jpanelcorreo.add(txt1);
-    	
-    	jpanelcontra.add(contraseña);
-    	jpanelcontra.add(txt2);
-    	jpanelcontra.add(ocultar);
+
+    
     	
     	//jpanel.setLayout(new GridLayout(6,6,10,10));
     	
     	//Crea una separacion entre panel dde arriba y el central 
-    	general.setBorder(new EmptyBorder(10, 0, 10, 0));
     	
-    	general.add(jpanelnombre);
-    	general.add(jpanelapellido);
-    	general.add(jpaneledad);
-    	general.add(jpanelcorreo);
-    	general.add(jpanelcontra);
     	
-    	getContentPane().add(general, BorderLayout.CENTER);
+    	
+    	getContentPane().add(mainPanel, BorderLayout.CENTER);
     	
     	
     	panelBotones.add(botonAgregar);
@@ -287,7 +311,8 @@ public class VentanaRegistro extends JFrame{
 	        		
 	        	}
 	        	});
-	    	
+	        
+	    	setVisible(true);
 	        
 		
 	}

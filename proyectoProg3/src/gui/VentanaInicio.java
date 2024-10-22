@@ -16,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -38,6 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import domain.Contenido;
 import gui.VentanaCatalogo;
 
 
@@ -47,6 +49,7 @@ public class VentanaInicio extends JFrame{
 	
 	//Añadimos el coreo y la contreseña a este mapa para luego preguntarle sio eesta 
 	protected static HashMap<String, String> mapa;
+	
 	
 	
 	//Cargamos los datos para ver luego si esta en la base de tados 
@@ -305,6 +308,8 @@ public class VentanaInicio extends JFrame{
 						dispose();
 						
 						//Ventana pruba hasta que creemos la principal
+					
+						
 						VentanaCatalogo catalo = new VentanaCatalogo();
 						catalo.setVisible(true);
 						
