@@ -31,12 +31,12 @@ public class VentanaUsuario extends JFrame{
 		panelFotoNombre.setBackground(colorAisia);
 		panelFotoNombre.setPreferredSize(new Dimension(125, 125));
 		
-		ImageIcon fotoPerfilDefecto = new ImageIcon("defautUsuario.png");
+		ImageIcon fotoPerfilDefecto = new ImageIcon("img/defautUsuario.png");
 		
 		JLabel etiquetaFotoPerfil = new JLabel(fotoPerfilDefecto);
 		panelFotoNombre.add(etiquetaFotoPerfil, BorderLayout.WEST);
 		
-		ImageIcon fotoAisia = new ImageIcon("aisia1.png");
+		ImageIcon fotoAisia = new ImageIcon("img/aisia1.png");
 		
 		JLabel etiquetaFotoAisia = new JLabel(fotoAisia);
 		panelFotoNombre.add(etiquetaFotoAisia, BorderLayout.EAST);
