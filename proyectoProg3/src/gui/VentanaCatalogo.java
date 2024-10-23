@@ -183,6 +183,25 @@ public class VentanaCatalogo extends JFrame {
 		
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
 		
+		pelicula.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelGrid.removeAll();
+				
+				for (String conts : mapaContenido.keySet()) {
+					ArrayList<Contenido> contents = mapaContenido.get(conts);
+					
+					for (Contenido contenido : contents) {
+						String tipo = contenido.getTitulo();
+						System.out.println(tipo);
+					}
+				}
+				
+			}
+			
+		});
+		
 		
 		
 		//Creacion de la barra de buscar
