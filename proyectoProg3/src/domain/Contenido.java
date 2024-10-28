@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public abstract class Contenido {
 	
+	protected String tipo;
 	protected int contadorContenido;
 	protected String titulo;
 	protected String genero;
@@ -13,9 +14,10 @@ public abstract class Contenido {
 	protected int edadRecomendada;
 	protected String premios;
 	
-	public Contenido(int contadorContenido, String titulo, String genero, double duracion, int calificacion,
+	public Contenido(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
 			String distribuidora, int edadRecomendada, String premios) {
 		super();
+		this.tipo = tipo;
 		this.contadorContenido = contadorContenido;
 		this.titulo = titulo;
 		this.genero = genero;
@@ -25,6 +27,18 @@ public abstract class Contenido {
 		this.edadRecomendada = edadRecomendada;
 		this.premios = premios;
 	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+
 
 	public int getContadorContenido() {
 		return contadorContenido;

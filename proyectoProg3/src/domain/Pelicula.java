@@ -6,9 +6,10 @@ public class Pelicula extends Contenido {
 
 	protected double facturacionTaquilla;
 
-	public Pelicula(int contadorContenido, String titulo, String genero, double duracion, int calificacion,
+
+	public Pelicula(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
 			String distribuidora, int edadRecomendada, String premios, double facturacionTaquilla) {
-		super(contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios);
+		super(tipo, contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios);
 		this.facturacionTaquilla = facturacionTaquilla;
 	}
 
