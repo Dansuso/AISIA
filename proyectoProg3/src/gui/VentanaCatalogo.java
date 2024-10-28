@@ -74,12 +74,12 @@ public class VentanaCatalogo extends JFrame {
 				
 				if(tipo.equals("Pelicula")) {
 					double facturacion = Double.parseDouble(campos[9]);
-					nuevo = new Pelicula(codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, facturacion);
+					nuevo = new Pelicula(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, facturacion);
 				}
 				else {
 					int numTemporadas = Integer.parseInt(campos[9]);
 					int numCapitulos = Integer.parseInt(campos[10]);
-					nuevo = new Serie(codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, numTemporadas, numCapitulos);
+					nuevo = new Serie(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, numTemporadas, numCapitulos);
 				}
 				
 				contenidos.add(nuevo);
@@ -115,9 +115,9 @@ public class VentanaCatalogo extends JFrame {
 	}
 
 	List<Contenido> contenidos = List.of(
-			new Pelicula(1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", 10000.40),
-			new Pelicula(2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", 20000.40),
-			new Serie(1, "Serie1", "Accion", 40, 8, "Fox", 16, "Ninguno", 3, 8)
+			new Pelicula("Peli", 1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", 10000.40),
+			new Pelicula("Peli", 2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", 20000.40),
+			new Serie("Serie", 1, "Serie1", "Accion", 40, 8, "Fox", 16, "Ninguno", 3, 8)
 			
 			);
 
@@ -127,6 +127,10 @@ public class VentanaCatalogo extends JFrame {
 		
 		
 		//Creacion de las caracteristicas de la ventana
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setTitle("Catalogo");
+		this.setSize(640, 480);
+		this.setLocationRelativeTo(null);
 	
 		
 		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
@@ -224,6 +228,62 @@ public class VentanaCatalogo extends JFrame {
             panelGrid.add(botones);
             
         }
+        
+        pelicula.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelGrid.removeAll();
+				
+				for (String conts : mapaContenido.keySet()) {
+					ArrayList<Contenido> contents = mapaContenido.get(conts);
+					
+					for (Contenido contenido : contents) {
+						if (contenido.getTipo().equalsIgnoreCase("Pelicula")) {
+		                    // Buscamos el botón asociado a este contenido y lo añadimos al panel
+		                    for (JButton boton : botonesBusc) {
+		                        if (boton.getText().equals(contenido.getTitulo())) {
+		                            panelGrid.add(boton);
+		                        }
+		                    }
+		                }
+					}
+				}
+				panelGrid.revalidate();
+		        panelGrid.repaint();
+				
+			}
+
+			
+			
+		});
+        
+        serie.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				for (String conts : mapaContenido.keySet()) {
+					ArrayList<Contenido> contents = mapaContenido.get(conts);
+					
+					for (Contenido contenido : contents) {
+						if (contenido.getTipo().equalsIgnoreCase("Serie")) {
+		                    // Buscamos el botón asociado a este contenido y lo añadimos al panel
+		                    for (JButton boton : botonesBusc) {
+		                        if (boton.getText().equals(contenido.getTitulo())) {
+		                            panelGrid.add(boton);
+		                        }
+		                    }
+		                }
+					}
+				}
+				panelGrid.revalidate();
+		        panelGrid.repaint();
+				
+			}
+        	
+        });
         
         //Listener del JTextField del buscador que llama a una funcion para filtrar por titulo
         buscador.addActionListener(new ActionListener() {

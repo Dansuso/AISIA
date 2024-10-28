@@ -6,10 +6,10 @@ public class Serie extends Contenido {
 	
 	protected int numTemporadas;
 	protected int numCapitulos;
-	
-	public Serie(int contadorContenido, String titulo, String genero, double duracion, int calificacion,
+
+	public Serie(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
 			String distribuidora, int edadRecomendada, String premios, int numTemporadas, int numCapitulos) {
-		super(contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios);
+		super(tipo, contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios);
 		this.numTemporadas = numTemporadas;
 		this.numCapitulos = numCapitulos;
 	}
