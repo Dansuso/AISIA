@@ -4,9 +4,18 @@ package gui;
  * 
  */
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class VentanaBase extends JFrame{
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 /**
  * Constructor de la ventana base o por defecto. 
  * @param titulo Titulo de la ventana. Es OBLIGATORIO.
@@ -14,7 +23,7 @@ public class VentanaBase extends JFrame{
  */
 	public VentanaBase(String titulo) {
 		
-		if(titulo == null) {
+		if(titulo == "") {
 			throw new IllegalArgumentException("Es obligatorio que la ventana tenga un titulo");
 		}
 		
@@ -24,12 +33,38 @@ public class VentanaBase extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		
-		
-		
-		
-		
+		//Cuando el usuario haga click en el bootn de salir, se ejecutara la funcion cerrarVentanaConfirmacion que sacará una ventana
+		//para confirmar que el usuario relamente quiere salir de la ventana.
+		this.addWindowListener(new WindowAdapter() {
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				cerrarVentanaConfirmacion();		
+		}
+	});
 		
 	}
 	
+/**
+ * Metodo que muestrau una pequeña ventana con dos opciones 'SI' 'NO'. En el caso de que el usuario eliga 'SI' la ventana se cerrara.
+ * IMPORTANTE: Se usa dispose() y no System.exit porque no queremos que la JVM se cierre, solamente la ventana. 
+ * 
+ */
+private void cerrarVentanaConfirmacion() {
+		
+			//Preguntar por confirmacion
+			int quiereCerrarVentana = JOptionPane.showConfirmDialog(null,"Quiere cerrar la ventana?", "Salir", JOptionPane.YES_NO_OPTION);
+			if(quiereCerrarVentana == JOptionPane.YES_OPTION) {
+				dispose();
+			}
+			
+		}
+		
+
+public static void main (String[] args) {
+	VentanaBase v = new VentanaBase("Ventnaa prueba");
+
+	
+}
 	
 }
