@@ -255,6 +255,7 @@ public class VentanaRegistro extends JFrame{
 	                    
 	                    
 					
+	                    
 					
 	                }else {
 	                	System.out.println("No has escrito Correo o COntraseña");

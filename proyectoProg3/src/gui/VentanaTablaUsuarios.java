@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+
 import domain.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
@@ -43,43 +44,18 @@ public class VentanaTablaUsuarios extends JFrame {
     private static  JTable tabla;
     protected JFrame frame;
     protected Usuario perso;
+    protected HashMap<String, String> mapa;
   
     
 	
-    public void cargarDatosCSV(String n, DefaultTableModel datos){
-    	File f = new File(n);
-    	try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-				String linea = sc.nextLine();
-				String[] campos =  linea.split(";");
-				
-				datos.addRow(campos);
-				
-				
-				HashMap<String,String> mapa = new HashMap<String, String>();
-
-					mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]);
-					
-					
-				}
-				 	
-
-					
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-    }
+    
 
 	public VentanaTablaUsuarios(String [] datosUser) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
 		setSize(640,640);
+		
 		
 		
 		
@@ -93,21 +69,25 @@ public class VentanaTablaUsuarios extends JFrame {
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
 	        cargarDatosCSV("personas.csv", model);
 	        
-	        if(datosUser != null) {
+	     
 	        model.addRow(datosUser);
 	        
-	        }
+	      	        
+	        tabla = new JTable(model);
+
+	        
+	        guardarEnArchivo(model);
 	      	
 	      
-	        tabla = new JTable(model);
-	
+	       
+	       
 	        
 	        JScrollPane scroll = new JScrollPane(tabla);
 	        add(scroll, BorderLayout.CENTER);
 	        getContentPane().add(new JScrollPane(tabla), BorderLayout.CENTER);
 	        
 	      
-	        guardarEnArchivo(tabla);
+	        
 		
 		setVisible(true);
 		
@@ -116,52 +96,74 @@ public class VentanaTablaUsuarios extends JFrame {
 	}
 	
 	
-	public void guardarEnArchivo(JTable c) {
-		// TODO Auto-generated method stub
-		try {
-			//El false ese rescrive lo que hay 
-			PrintWriter pw = new PrintWriter(new FileWriter("tabla.csv", false));
+	
+
+	public void cargarDatosCSV(String n, DefaultTableModel datos){
+    	File f = new File(n);
+    	try {
+			Scanner sc = new Scanner(f);
+			while(sc.hasNextLine()) {
 			
-			for (int j = 0; j < c.getColumnCount(); j++) {
-				pw.print(c.getColumnName(j));
+				String linea = sc.nextLine();
 				
-				if(j < c.getColumnCount() - 1) {
-					pw.print(";");
-				}
+					String[] campos =  linea.split(";");
+					
+					datos.addRow(campos);
+					
+					HashMap<String,String> mapa = new HashMap<String, String>();
+	
+						mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]);
 				
-			}
-			pw.println();
-			
-			
-			for (int i = 0; i < c.getRowCount(); i++) {
-				for (int j = 0; j < c.getColumnCount(); j++) {
 					
 					
-					pw.println(c.getValueAt(i, j));
-					if(j < c.getColumnCount()- 1) {
-						pw.print(";");
-					}
-					
-				}
-				pw.println();
-				
-				
-			}
-			
+				}			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	
+    }	
 		
-	}
-	
-	
+
+	 public void guardarEnArchivo(DefaultTableModel model) {
+
+	        try (PrintWriter pw = new PrintWriter(new FileWriter("personas.csv",false))) {
+
+
+	            for (int i = 0; i < model.getRowCount(); i++) {
+
+	                for (int j = 0; j < model.getColumnCount(); j++) {
+
+	                    pw.print(model.getValueAt(i, j));
+
+	                    if (j < model.getColumnCount() - 1) {
+
+	                        pw.print(";");
+
+	                    }
+
+	                }
+
+	                pw.println();
+
+	            }
+
+	        } catch (IOException e) {
+
+	            e.printStackTrace();
+	        }
+
+	           
+
+	    }
 	
 
 
 	public static void main(String[] args) {
-		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(args);
+		String[] vacio = null;
+		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(vacio);
 		 
     }
 
