@@ -314,7 +314,7 @@ public class VentanaInicio extends JFrame{
 						catalo.setVisible(true);
 						
 					}else {
-						System.out.println("El usuario no esta regitrado en esta aplicacion");
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
 					}
 					
 				
