@@ -262,7 +262,7 @@ public class VentanaCatalogo extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				panelGrid.removeAll();
 				
 				for (String conts : mapaContenido.keySet()) {
 					ArrayList<Contenido> contents = mapaContenido.get(conts);

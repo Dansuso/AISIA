@@ -1,11 +1,18 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 public class VentanaInfo extends JFrame {
 	
@@ -33,6 +40,65 @@ public class VentanaInfo extends JFrame {
 			}
 			
 		});
+		
+		JPanel panelPrincipal = new JPanel();
+		
+		Border bordePantalla = BorderFactory.createTitledBorder("Informacion");
+        panelPrincipal.setBorder(bordePantalla);
+        
+        JPanel panelTitulo = new JPanel();
+        JLabel titulo = new JLabel("Titulo:");
+        JLabel infoTitulo = new JLabel("DatosTitulo");
+        Font fuente = new Font("SansSerif", 24, Font.BOLD);
+        panelTitulo.setLayout(new FlowLayout());
+        panelTitulo.add(titulo);
+        panelTitulo.add(infoTitulo);
+        
+        JPanel panelGenero = new JPanel();
+        JLabel genero = new JLabel("Genero: ");
+        JLabel infoGenero = new JLabel("DatosGenero");
+        panelGenero.setLayout(new FlowLayout());
+        panelGenero.add(genero);
+        panelGenero.add(infoGenero);
+        
+        JPanel panelDuracion = new JPanel();
+        JLabel duracion = new JLabel("Duracion: ");
+        JLabel infoDuracion = new JLabel("DatosDuracion");
+        panelDuracion.setLayout(new FlowLayout());
+        panelDuracion.add(duracion);
+        panelDuracion.add(infoDuracion);
+        
+        JPanel panelCalificacion = new JPanel();
+        JLabel calificacion = new JLabel("Calificacion: ");
+        JLabel infocalificacion = new JLabel("DatosCalificacion");
+        panelCalificacion.setLayout(new FlowLayout());
+        panelCalificacion.add(calificacion);
+        panelCalificacion.add(infocalificacion);
+        
+        JPanel panelDistribuidora = new JPanel();
+        JLabel distribuidora = new JLabel("Distribuidora: ");
+        JLabel infoDistribuidora = new JLabel("DatosDistribuidora");
+        panelDistribuidora.setLayout(new FlowLayout());
+        panelDistribuidora.add(distribuidora);
+        panelDistribuidora.add(infoDistribuidora);
+        
+        JPanel panelPremios = new JPanel();
+        JLabel premios = new JLabel("Premios: ");
+        JLabel infoPremios = new JLabel("DatosPremios");
+        panelPremios.setLayout(new FlowLayout());
+        panelPremios.add(premios);
+        panelPremios.add(infoPremios);
+        
+        
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        panelPrincipal.add(panelTitulo);
+        panelPrincipal.add(panelGenero);
+        panelPrincipal.add(panelDuracion);
+        panelPrincipal.add(panelCalificacion);
+        panelPrincipal.add(panelDistribuidora);
+        panelPrincipal.add(panelPremios);
+        
+        this.add(panelPrincipal, BorderLayout.CENTER);
 		
 		setVisible(true);
 		
