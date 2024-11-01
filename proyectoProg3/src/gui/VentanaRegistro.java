@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -35,7 +36,7 @@ public class VentanaRegistro extends JFrame{
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Ventana Inicio");
-		setSize(340,340);
+		setSize(340,450);
 		
 		// Panel para la imagen de fondo
         JPanel mainPanel = new JPanel() {
@@ -83,9 +84,7 @@ public class VentanaRegistro extends JFrame{
      
 
         JPanel panelBotones = new JPanel();
-            
-      
-        
+    
         JLabel usuario = new JLabel("Nombre:");
         usuario.setBounds(30, 10 , 80, 20);
         usuario.setForeground(Color.WHITE);
@@ -162,10 +161,17 @@ public class VentanaRegistro extends JFrame{
     	
     	//jpanel.setLayout(new GridLayout(6,6,10,10));
     	
-    	//Crea una separacion entre panel dde arriba y el central 
     	
+    	// Añado logo de aisia.
+	   	ImageIcon aisiactimg = new ImageIcon("resources/images/aisia/aisiact.png");
+	   	Image imagenEscalada = aisiactimg.getImage().getScaledInstance(200, 110, java.awt.Image.SCALE_SMOOTH);
+	   	ImageIcon aisiactimgEscalado = new ImageIcon(imagenEscalada);
+		JLabel aisiact = new JLabel(aisiactimgEscalado);
+		aisiact.setBounds(-15, 210, aisiactimg.getIconWidth(), aisiactimg.getIconHeight());
+		mainPanel.add(aisiact);
     	
-    	
+		//Crea una separacion entre panel dde arriba y el central 
+		
     	getContentPane().add(mainPanel, BorderLayout.CENTER);
     	
     	
