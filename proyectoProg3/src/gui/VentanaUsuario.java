@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,13 +19,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import domain.Usuario;
+
 public class VentanaUsuario extends JFrame{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "España",
+			143, 100, "resources/images/recursos/defautUsuario.png", "1234");
+	
 	public VentanaUsuario() {
 		setLayout(new GridLayout(3, 1));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +55,7 @@ public class VentanaUsuario extends JFrame{
 		panelFotoNombre.setBackground(colorAisia);
 //		panelFotoNombre.setPreferredSize(new Dimension(125, 125));
 		
-		ImageIcon fotoPerfilDefecto = new ImageIcon("resources/images/recursos/defautUsuario.png");
+		ImageIcon fotoPerfilDefecto = new ImageIcon(usuario.getFoto());
 		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
         ImageIcon fotoPerfil = new ImageIcon(scaledImage);
         
@@ -81,12 +87,12 @@ public class VentanaUsuario extends JFrame{
 		JLabel etiquetaFotoAisia = new JLabel(fotoAisia);
 		panelFotoNombre.add(etiquetaFotoAisia, BorderLayout.EAST);
 	
-		JLabel nombreUsuario = new JLabel("@" + "Nombre Usuario");
+		JLabel nombreUsuario = new JLabel("@" + usuario.getDisplayname());
 		panelFotoNombre.add(nombreUsuario);
 		nombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 
-		JLabel nombreRealUsuario = new JLabel("           " + "Nombre Real");
+		JLabel nombreRealUsuario = new JLabel("           " + usuario.getUsername());
 		panelFotoNombre.add(nombreRealUsuario, BorderLayout.AFTER_LAST_LINE);
 		
 		/* Prohibido
@@ -94,9 +100,66 @@ public class VentanaUsuario extends JFrame{
 		VentanaUsuario.this.add(nombreRealUsuario);
 		*/
 		
+		/*
+		 * Cración del panel con la información básica y la película favorita. A continuacion viene la parte de información.
+		 */
+		JPanel panelPeliculas = new JPanel(new GridLayout(1, 2));
+		JPanel panelInformacion = new JPanel(new GridLayout(1, 3));
 		
-		JPanel panelPeliculas = new JPanel(new BorderLayout());
-		panelPeliculas.setBackground(colorAisia2);
+		JPanel panelSeg = new JPanel(new BorderLayout());
+		panelSeg.setBackground(colorAisia2);
+		
+		JLabel seguidores = new JLabel(String.valueOf(usuario.getNumSeguidores()));
+		seguidores.setFont(new Font("Monospaced", Font.BOLD, 17));
+		panelSeg.add(seguidores);
+		
+		JLabel seguidoresStr = new JLabel("Segidores");
+		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 17));
+		panelSeg.add(seguidoresStr, BorderLayout.NORTH);
+		
+		JPanel panelSegidos = new JPanel(new BorderLayout());
+		panelSegidos.setBackground(colorAisia2);
+		
+		JLabel seguidos = new JLabel(String.valueOf(usuario.getNumSeguidos()));
+		seguidos.setFont(new Font("Monospaced", Font.BOLD, 17));
+		panelSegidos.add(seguidos);
+		
+		JLabel seguidosStr = new JLabel("Segidos");
+		seguidosStr.setFont(new Font("Arial", Font.BOLD, 17));
+		panelSegidos.add(seguidosStr, BorderLayout.NORTH);
+		
+		
+		JPanel panelPais = new JPanel(new BorderLayout());
+		panelPais.setBackground(colorAisia2);
+		
+		JLabel pais = new JLabel(String.valueOf(usuario.getPais()));
+		pais.setFont(new Font("Monospaced", Font.BOLD, 17));
+		panelPais.add(pais);
+		
+		JLabel paisStr = new JLabel("Pais");
+		paisStr.setFont(new Font("Arial", Font.BOLD, 17));
+		panelPais.add(paisStr, BorderLayout.NORTH);
+		
+		
+		panelInformacion.add(panelSeg);
+		panelInformacion.add(panelSegidos);
+		panelInformacion.add(panelPais);
+		
+		
+		
+		/*
+		 * Ahora vienen la parte de la película favorita
+		 * 
+		 */
+		
+		JPanel panelPelis = new JPanel(new BorderLayout());
+
+		
+		
+		// Añadimos ambos paneles
+		panelPeliculas.add(panelPelis);
+		panelPeliculas.add(panelInformacion);
+		
 
 		
 		JPanel panelUltiComentario = new JPanel(new BorderLayout());
@@ -117,7 +180,7 @@ public class VentanaUsuario extends JFrame{
 		JLabel ejemploComentario1 = new JLabel(emogiPeli + " " + nombre1 + ": " + calif1 +  " " + acortarComentario(comentario1));
 		
 		JButton botonAbreComentario1 = new JButton();
-		botonAbreComentario1.addActionListener(ventanaComentario(comentario1, nombre1, calif1, foto1));
+		botonAbreComentario1.addActionListener(ventanaComentario.ventanacomentario(comentario1, nombre1, calif1, foto1));
 		botonAbreComentario1.setBackground(colorAisia3);
 		botonAbreComentario1.add(ejemploComentario1);
 		
@@ -145,10 +208,11 @@ public class VentanaUsuario extends JFrame{
 		add(panelUltiComentario, BorderLayout.CENTER);
 		add(panelPeliculas, BorderLayout.SOUTH);
 		
+		
 		setVisible(true);
 	}
 	
-	
+	/*
 	public static ActionListener ventanaComentario(String comentario, String nombre, String calif, String foto) {
         return new ActionListener() {
             @Override
@@ -214,7 +278,9 @@ public class VentanaUsuario extends JFrame{
             }
         };
     }
-
+	*/
+	
+	
 
 	private String acortarComentario(String comentario) {
 		
