@@ -6,6 +6,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,6 +24,7 @@ public class VentanaBase extends JFrame {
 		 * 
 		 */
 	private static final long serialVersionUID = 1L;
+	protected final static String NOMBRE_FUENTE = "Calibri";
 
 	/**
 	 * Constructor de la ventana base o por defecto.
@@ -38,20 +40,18 @@ public class VentanaBase extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setTitle(titulo);
-		this.setSize(640, 480);
+		this.setSize(1920, 1080);
 		this.setLocationRelativeTo(null);
 		
 		
 		//Header
 		JPanel header = new JPanel(new BorderLayout());
-		header.setBorder(BorderFactory.createLineBorder(Color.gray));
 		JLabel icono = new JLabel(new ImageIcon("resources/images/aisia/aisia1.png"));
 		header.add(icono,BorderLayout.CENTER);
 		this.add(header,BorderLayout.NORTH);
 		icono.setBorder(new EmptyBorder(10,10,10,10));
 
 	
-		this.setVisible(true);
 
 		// Cuando el usuario haga click en el bootn de salir, se ejecutara la funcion
 		// cerrarVentanaConfirmacion que sacará una ventana
