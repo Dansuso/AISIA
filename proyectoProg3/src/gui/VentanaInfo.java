@@ -90,6 +90,7 @@ public class VentanaInfo extends JFrame {
         panelPremios.add(infoPremios);
         
         
+        
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelPrincipal.add(panelTitulo);
         panelPrincipal.add(panelGenero);
