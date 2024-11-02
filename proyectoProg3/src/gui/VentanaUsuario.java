@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import domain.Usuario;
+import domain.Contenido;
+import domain.Pelicula;
 
 public class VentanaUsuario extends JFrame{
 	
@@ -27,9 +29,8 @@ public class VentanaUsuario extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "España",
-			143, 100, "resources/images/recursos/defautUsuario.png", "1234");
+	Contenido contenido = new Pelicula("Pelicula", 1, "Gladiator", "Tradicional", 143.6, 5, "Sony", 12, "Oscar", "resources/images/recursos/contenido/gladiator.jpg", 1230000);
+	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "España",143, 100, "resources/images/recursos/defautUsuario.png", "1234", contenido);
 	
 	public VentanaUsuario() {
 		setLayout(new GridLayout(3, 1));
@@ -110,39 +111,39 @@ public class VentanaUsuario extends JFrame{
 		panelSeg.setBackground(colorAisia2);
 		
 		JLabel seguidores = new JLabel(String.valueOf(usuario.getNumSeguidores()));
-		seguidores.setFont(new Font("Monospaced", Font.BOLD, 17));
+		seguidores.setFont(new Font("Monospaced", Font.BOLD, 20));
 		panelSeg.add(seguidores);
 		
-		JLabel seguidoresStr = new JLabel("Segidores");
-		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 17));
+		JLabel seguidoresStr = new JLabel("Seguidores");
+		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 16));
 		panelSeg.add(seguidoresStr, BorderLayout.NORTH);
 		
-		JPanel panelSegidos = new JPanel(new BorderLayout());
-		panelSegidos.setBackground(colorAisia2);
+		JPanel panelSeguidos = new JPanel(new BorderLayout());
+		panelSeguidos.setBackground(colorAisia2);
 		
 		JLabel seguidos = new JLabel(String.valueOf(usuario.getNumSeguidos()));
-		seguidos.setFont(new Font("Monospaced", Font.BOLD, 17));
-		panelSegidos.add(seguidos);
+		seguidos.setFont(new Font("Monospaced", Font.BOLD, 20));
+		panelSeguidos.add(seguidos);
 		
-		JLabel seguidosStr = new JLabel("Segidos");
-		seguidosStr.setFont(new Font("Arial", Font.BOLD, 17));
-		panelSegidos.add(seguidosStr, BorderLayout.NORTH);
+		JLabel seguidosStr = new JLabel("Seguidos");
+		seguidosStr.setFont(new Font("Arial", Font.BOLD, 16));
+		panelSeguidos.add(seguidosStr, BorderLayout.NORTH);
 		
 		
 		JPanel panelPais = new JPanel(new BorderLayout());
 		panelPais.setBackground(colorAisia2);
 		
 		JLabel pais = new JLabel(String.valueOf(usuario.getPais()));
-		pais.setFont(new Font("Monospaced", Font.BOLD, 17));
+		pais.setFont(new Font("Monospaced", Font.BOLD, 20));
 		panelPais.add(pais);
 		
-		JLabel paisStr = new JLabel("Pais");
-		paisStr.setFont(new Font("Arial", Font.BOLD, 17));
+		JLabel paisStr = new JLabel("País");
+		paisStr.setFont(new Font("Arial", Font.BOLD, 16));
 		panelPais.add(paisStr, BorderLayout.NORTH);
 		
 		
 		panelInformacion.add(panelSeg);
-		panelInformacion.add(panelSegidos);
+		panelInformacion.add(panelSeguidos);
 		panelInformacion.add(panelPais);
 		
 		
@@ -152,9 +153,20 @@ public class VentanaUsuario extends JFrame{
 		 * 
 		 */
 		
+		// Cogemas el contenido favorito del usuario, cogemos la ubicacion de la caratula de ese contenido y
+		// lo añadimos reescalado para que sea del tamaño ideal.
 		JPanel panelPelis = new JPanel(new BorderLayout());
-
+		panelPelis.setBackground(colorAisia2);
+		ImageIcon caratula = new ImageIcon(usuario.getFavorito().getCaratula());
+        Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
+        ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
+        JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
+		panelPelis.add(etiquetaCaratula, BorderLayout.CENTER);
 		
+		// Creamos un JLabel con "Contenido Favorito".
+		JLabel contenidoFavorito = new JLabel("Contenido favorito");
+		contenidoFavorito.setFont(new Font("Arial", Font.BOLD, 15));
+		panelPelis.add(contenidoFavorito, BorderLayout.NORTH);
 		
 		// Añadimos ambos paneles
 		panelPeliculas.add(panelPelis);

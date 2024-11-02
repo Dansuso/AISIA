@@ -69,17 +69,18 @@ public class VentanaCatalogo extends JFrame {
 				String distribuidora = campos[6];
 				int edad = Integer.parseInt(campos[7]);
 				String premios = campos[8];
+			//	Abría que añadir un campos[9] que sea la ubicación de la imagen poster
 				
 				Contenido nuevo;
 				
 				if(tipo.equals("Pelicula")) {
 					double facturacion = Double.parseDouble(campos[9]);
-					nuevo = new Pelicula(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, facturacion);
+					nuevo = new Pelicula(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, facturacion);
 				}
 				else {
 					int numTemporadas = Integer.parseInt(campos[9]);
 					int numCapitulos = Integer.parseInt(campos[10]);
-					nuevo = new Serie(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, numTemporadas, numCapitulos);
+					nuevo = new Serie(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, numTemporadas, numCapitulos);
 				}
 				
 				contenidos.add(nuevo);
@@ -115,9 +116,9 @@ public class VentanaCatalogo extends JFrame {
 	}
 
 	List<Contenido> contenidos = List.of(
-			new Pelicula("Peli", 1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", 10000.40),
-			new Pelicula("Peli", 2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", 20000.40),
-			new Serie("Serie", 1, "Serie1", "Accion", 40, 8, "Fox", 16, "Ninguno", 3, 8)
+			new Pelicula("Peli", 1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
+			new Pelicula("Peli", 2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+			new Serie("Serie", 1, "Serie1", "Accion", 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
 			
 			);
 

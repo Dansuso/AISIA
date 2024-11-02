@@ -15,10 +15,11 @@ public class Usuario {
 	protected int numSeguidos;
 	protected String foto;
 	protected String contrasena;
+	protected Contenido favorito;
 	
 	
 	public Usuario(int codigo, String username, String displayname, LocalDate creacionCuenta, String pais,
-			int numSeguidores, int numSeguidos, String foto, String contrasena) {
+			int numSeguidores, int numSeguidos, String foto, String contrasena, Contenido favorito) {
 		super();
 		this.codigo = codigo;
 		this.username = username;
@@ -29,6 +30,17 @@ public class Usuario {
 		this.numSeguidos = numSeguidos;
 		this.foto = foto;
 		this.contrasena = contrasena;
+		this.favorito = favorito;
+	}
+
+
+	public Contenido getFavorito() {
+		return favorito;
+	}
+
+
+	public void setFavorito(Contenido favorito) {
+		this.favorito = favorito;
 	}
 
 
@@ -116,10 +128,13 @@ public class Usuario {
 	}
 
 
+	
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, contrasena, creacionCuenta, displayname, foto, numSeguidores, numSeguidos, pais,
-				username);
+		return Objects.hash(codigo, contrasena, creacionCuenta, displayname, favorito, foto, numSeguidores, numSeguidos,
+				pais, username);
 	}
 
 
@@ -134,9 +149,10 @@ public class Usuario {
 		Usuario other = (Usuario) obj;
 		return codigo == other.codigo && Objects.equals(contrasena, other.contrasena)
 				&& Objects.equals(creacionCuenta, other.creacionCuenta)
-				&& Objects.equals(displayname, other.displayname) && Objects.equals(foto, other.foto)
-				&& numSeguidores == other.numSeguidores && numSeguidos == other.numSeguidos
-				&& Objects.equals(pais, other.pais) && Objects.equals(username, other.username);
+				&& Objects.equals(displayname, other.displayname) && Objects.equals(favorito, other.favorito)
+				&& Objects.equals(foto, other.foto) && numSeguidores == other.numSeguidores
+				&& numSeguidos == other.numSeguidos && Objects.equals(pais, other.pais)
+				&& Objects.equals(username, other.username);
 	}
 
 
@@ -144,7 +160,7 @@ public class Usuario {
 	public String toString() {
 		return "Usuario [codigo=" + codigo + ", username=" + username + ", displayname=" + displayname
 				+ ", creacionCuenta=" + creacionCuenta + ", pais=" + pais + ", numSeguidores=" + numSeguidores
-				+ ", numSeguidos=" + numSeguidos + ", foto=" + foto + ", contrasena=" + contrasena + "]";
+				+ ", numSeguidos=" + numSeguidos + ", foto=" + foto + ", contrasena=" + contrasena + ", contenido favorito"+ favorito +"]";
 	}
 	
 	

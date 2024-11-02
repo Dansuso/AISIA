@@ -13,9 +13,10 @@ public abstract class Contenido {
 	protected String distribuidora;
 	protected int edadRecomendada;
 	protected String premios;
+	protected String caratula;
 	
 	public Contenido(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
-			String distribuidora, int edadRecomendada, String premios) {
+			String distribuidora, int edadRecomendada, String premios, String caratula) {
 		super();
 		this.tipo = tipo;
 		this.contadorContenido = contadorContenido;
@@ -26,7 +27,19 @@ public abstract class Contenido {
 		this.distribuidora = distribuidora;
 		this.edadRecomendada = edadRecomendada;
 		this.premios = premios;
+		this.caratula = caratula;
 	}
+	
+	
+	public String getCaratula() {
+		return caratula;
+	}
+
+
+	public void setCaratula(String caratula) {
+		this.caratula = caratula;
+	}
+
 
 	public String getTipo() {
 		return tipo;
@@ -104,11 +117,13 @@ public abstract class Contenido {
 		this.premios = premios;
 	}
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(calificacion, contadorContenido, distribuidora, duracion, edadRecomendada, genero, premios,
-				titulo);
+		return Objects.hash(calificacion, caratula, contadorContenido, distribuidora, duracion, edadRecomendada, genero,
+				premios, tipo, titulo);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -119,19 +134,24 @@ public abstract class Contenido {
 		if (getClass() != obj.getClass())
 			return false;
 		Contenido other = (Contenido) obj;
-		return calificacion == other.calificacion && contadorContenido == other.contadorContenido
-				&& Objects.equals(distribuidora, other.distribuidora)
+		return calificacion == other.calificacion && Objects.equals(caratula, other.caratula)
+				&& contadorContenido == other.contadorContenido && Objects.equals(distribuidora, other.distribuidora)
 				&& Double.doubleToLongBits(duracion) == Double.doubleToLongBits(other.duracion)
 				&& edadRecomendada == other.edadRecomendada && Objects.equals(genero, other.genero)
-				&& Objects.equals(premios, other.premios) && Objects.equals(titulo, other.titulo);
+				&& Objects.equals(premios, other.premios) && Objects.equals(tipo, other.tipo)
+				&& Objects.equals(titulo, other.titulo);
 	}
+
 
 	@Override
 	public String toString() {
-		return "Contenido [contadorContenido=" + contadorContenido + ", titulo=" + titulo + ", genero=" + genero
-				+ ", duracion=" + duracion + ", calificacion=" + calificacion + ", distribuidora=" + distribuidora
-				+ ", edadRecomendada=" + edadRecomendada + ", premios=" + premios + "]";
+		return "Contenido [tipo=" + tipo + ", contadorContenido=" + contadorContenido + ", titulo=" + titulo
+				+ ", genero=" + genero + ", duracion=" + duracion + ", calificacion=" + calificacion
+				+ ", distribuidora=" + distribuidora + ", edadRecomendada=" + edadRecomendada + ", premios=" + premios
+				+ ", caratula=" + caratula + "]";
 	}
+
+	
 	
 	
 	
