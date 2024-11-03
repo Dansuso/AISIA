@@ -54,7 +54,7 @@ public class VentanaInicio extends JFrame{
 	
 	//Cargamos los datos para ver luego si esta en la base de tados 
 	public void cargarDatosCSV(){
-    	File f = new File("personas.csv");
+    	File f = new File("resources/data/personas.csv");
     	try {
 			Scanner sc = new Scanner(f);
 			while(sc.hasNextLine()) {

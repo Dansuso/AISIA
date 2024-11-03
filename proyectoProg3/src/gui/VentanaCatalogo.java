@@ -52,7 +52,7 @@ public class VentanaCatalogo extends JFrame {
 	
 	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
 		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
-		File f = new File("contenido.csv");
+		File f = new File("resources/data/contenido.csv");
 		ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
 		
 		try {
