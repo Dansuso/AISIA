@@ -105,7 +105,7 @@ public class VentanaInicio extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
+                ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen
                 g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -172,7 +172,7 @@ public class VentanaInicio extends JFrame{
         txt2.setBounds(100, 100, 150, 25); // Posición y tamaño del componente
         mainPanel.add(txt2);
         
-        ImageIcon foto1 = new ImageIcon("fotover.png");
+        ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotover.png");
         JButton ocultar = new JButton(foto1);
         ocultar.setBounds(210, 100, 120, 30); // Posición y tamaño del componente
         
@@ -282,7 +282,7 @@ public class VentanaInicio extends JFrame{
 				}else {
 					//Y aqui al reves 
 					txt2.setEchoChar(valor);
-					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotnover.png");
+					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotover.png");
 					ocultar.setIcon(foto2);
 				}
 				
