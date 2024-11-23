@@ -2,29 +2,19 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -33,14 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import domain.Contenido;
-import gui.VentanaCatalogo;
 
 
 
@@ -105,7 +88,7 @@ public class VentanaInicio extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
+                ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen
                 g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -172,7 +155,7 @@ public class VentanaInicio extends JFrame{
         txt2.setBounds(100, 100, 150, 25); // Posición y tamaño del componente
         mainPanel.add(txt2);
         
-        ImageIcon foto1 = new ImageIcon("fotover.png");
+        ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotover.png");
         JButton ocultar = new JButton(foto1);
         ocultar.setBounds(210, 100, 120, 30); // Posición y tamaño del componente
         
@@ -276,13 +259,13 @@ public class VentanaInicio extends JFrame{
 				if(txt2.echoCharIsSet()) {
 					//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
 					 txt2.setEchoChar((char) 0);
-					 ImageIcon foto1 = new ImageIcon("fotnover.png");
+					 ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotnover.png");
 					 ocultar.setIcon(foto1);
 					
 				}else {
 					//Y aqui al reves 
 					txt2.setEchoChar(valor);
-					ImageIcon foto2 = new ImageIcon("fotover.png");
+					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotover.png");
 					ocultar.setIcon(foto2);
 				}
 				

@@ -67,7 +67,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	    
 		 
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
-	        cargarDatosCSV("personas.csv", model);
+	        cargarDatosCSV("resources/data/personas.csv", model);
 	        
 	        if (datosUser != null && datosUser.length == colubnas.length) {
 	            model.addRow(datosUser);

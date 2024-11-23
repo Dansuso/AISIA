@@ -2,9 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,9 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
-import gui.VentanaTablaUsuarios;
 
 
 
@@ -43,7 +38,7 @@ public class VentanaRegistro extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
+                ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen
                 g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -283,13 +278,13 @@ public class VentanaRegistro extends JFrame{
 					if(txt2.echoCharIsSet()) {
 						//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
 						 txt2.setEchoChar((char)0);
-						 ImageIcon foto1 = new ImageIcon("fotnover.png");
+						 ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotnover.png");
 						 ocultar.setIcon(foto1);
 						
 					}else {
 						//Y aqui al reves 
 						txt2.setEchoChar(valor);
-						ImageIcon foto2 = new ImageIcon("fotover.png");
+						ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotover.png");
 						ocultar.setIcon(foto2);
 					}
 	                 
