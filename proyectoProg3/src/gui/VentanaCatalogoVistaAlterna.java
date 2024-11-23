@@ -120,6 +120,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		listaContenidos = new JList<Contenido>(modeloLista);
 		listaContenidos.setFixedCellWidth(200);
 		JScrollPane panelScroll = new JScrollPane(listaContenidos);
+		listaContenidos.setCellRenderer(new RendererListaContenidos());
 		
 		
 		JPanel panelIzquierda = new JPanel();
