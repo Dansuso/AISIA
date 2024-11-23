@@ -4,10 +4,14 @@ import java.util.Objects;
 
 public abstract class Contenido {
 	
+	public enum Genero {
+		ACCION, COMEDIA, DRAMA, TERROR, ROMANCE, AVENTURA, FANTASIA
+	}
+	
 	protected String tipo;
 	protected int contadorContenido;
 	protected String titulo;
-	protected String genero;
+	protected Genero genero;
 	protected double duracion;
 	protected int calificacion;
 	protected String distribuidora;
@@ -15,7 +19,7 @@ public abstract class Contenido {
 	protected String premios;
 	protected String caratula;
 	
-	public Contenido(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
+	public Contenido(String tipo, int contadorContenido, String titulo, Genero genero, double duracion, int calificacion,
 			String distribuidora, int edadRecomendada, String premios, String caratula) {
 		super();
 		this.tipo = tipo;
@@ -69,11 +73,11 @@ public abstract class Contenido {
 		this.titulo = titulo;
 	}
 
-	public String getGenero() {
+	public Genero getGenero() {
 		return genero;
 	}
 
-	public void setGenero(String genero) {
+	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
 

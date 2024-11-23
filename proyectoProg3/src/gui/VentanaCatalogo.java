@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import domain.Contenido;
+import domain.Contenido.Genero;
 import domain.Pelicula;
 import domain.Serie;
 
@@ -63,7 +64,7 @@ public class VentanaCatalogo extends JFrame {
 				String tipo = campos[0];
 				int codigo = Integer.parseInt(campos[1]);
 				String nombre = campos[2];
-				String genero = campos[3];
+				Genero genero = Genero.valueOf(campos[3]);
 				double duracion = Double.parseDouble(campos[4]);
 				int calificacion = Integer.parseInt(campos[5]);
 				String distribuidora = campos[6];
@@ -88,6 +89,7 @@ public class VentanaCatalogo extends JFrame {
 				
 				
 			}
+			sc.close();
 			
 			crearMapa(contenidos, mapaPrueba);
 			
@@ -116,9 +118,9 @@ public class VentanaCatalogo extends JFrame {
 	}
 
 	List<Contenido> contenidos = List.of(
-			new Pelicula("Peli", 1, "Pelicula1", "Terror", 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
-			new Pelicula("Peli", 2, "Pelicula2", "Terror", 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-			new Serie("Serie", 1, "Serie1", "Accion", 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
+			new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
+			new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+			new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
 			
 			);
 
@@ -198,10 +200,17 @@ public class VentanaCatalogo extends JFrame {
 		});
 		panelSuperior.add(buscador, BorderLayout.EAST);
 		
+		JLabel labelLogo = new JLabel();
+		labelLogo.setHorizontalAlignment(JLabel.CENTER);
+		String rutaImagen = "resources/images/aisia/aisia1.png";
+		labelLogo.setIcon(new ImageIcon(rutaImagen));
+		panelSuperior.add(labelLogo, BorderLayout.CENTER);
+		
 		
 		JLabel titulo = new JLabel("Catalogo");
 		titulo.setHorizontalAlignment(JTextField.CENTER);
-		Font fuente = new Font("Arial", Font.BOLD, 20);
+		titulo.setBackground(Color.BLUE);
+		Font fuente = new Font("Arial", Font.BOLD, 30);
 		titulo.setFont(fuente);
 		panelSuperior.add(titulo, BorderLayout.NORTH);
 		
@@ -215,13 +224,15 @@ public class VentanaCatalogo extends JFrame {
 		//Añadir los botones al panel con el nombre de cada contenido
 		botonesBusc = new ArrayList<>(); //Uso del array para tener los botones guardados y usarlos en el filtro
         for (String contenido : mapaContenido.keySet()) {
-            JButton botones = new JButton(contenido);  // Asignar el contenido directamente
+            JButton botones = new JButton(contenido + mapaContenido.get(contenido).get(0).getCalificacion());  // Asignar el contenido directamente
+            botones.setBackground(Color.YELLOW);
             botonesBusc.add(botones);
 
             // Añadir el ActionListener al botón
             botones.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                	dispose();
                     new VentanaInfo();  // Llama a la nueva ventana
                 }
             });

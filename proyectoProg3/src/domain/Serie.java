@@ -7,7 +7,7 @@ public class Serie extends Contenido {
 	protected int numTemporadas;
 	protected int numCapitulos;
 	
-	public Serie(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
+	public Serie(String tipo, int contadorContenido, String titulo, Genero genero, double duracion, int calificacion,
 			String distribuidora, int edadRecomendada, String premios, String caratula, int numTemporadas,
 			int numCapitulos) {
 		super(tipo, contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios,
