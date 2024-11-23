@@ -98,7 +98,7 @@ public class VentanaCatalogo extends JFrame {
 		return mapaPrueba;
 	}
 	
-	private static HashMap<String, ArrayList<Contenido>> crearMapa(ArrayList<Contenido> contenidos, HashMap<String, ArrayList<Contenido>> mapa) {
+	public static HashMap<String, ArrayList<Contenido>> crearMapa(ArrayList<Contenido> contenidos, HashMap<String, ArrayList<Contenido>> mapa) {
 		for (Contenido contenido : contenidos) {
 			String nombre = contenido.getTitulo();
 			if(!mapa.containsKey(nombre)) {
