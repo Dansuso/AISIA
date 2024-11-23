@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -192,11 +194,6 @@ public class VentanaCatalogo extends JFrame {
 		});
 		panelSuperior.add(buscador, BorderLayout.EAST);
 		
-		JLabel labelLogo = new JLabel();
-		labelLogo.setHorizontalAlignment(JLabel.CENTER);
-		String rutaImagen = "resources/images/aisia/aisia1.png";
-		labelLogo.setIcon(new ImageIcon(rutaImagen));
-		panelSuperior.add(labelLogo, BorderLayout.CENTER);
 		
 		
 		JLabel titulo = new JLabel("Catalogo");
