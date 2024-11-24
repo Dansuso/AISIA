@@ -163,6 +163,11 @@ public class VentanaCatalogo extends JFrame {
 		JMenu menuCatalogo = new JMenu("Opciones");
 		barraCatalogo.add(menuCatalogo);
 		
+		JMenuItem vista = new JMenuItem("Cambiar de vista");
+		menuCatalogo.add(vista);
+		
+		menuCatalogo.addSeparator();
+		
 		JMenuItem pelicula = new JMenuItem("Pelicula");
 		menuCatalogo.add(pelicula);
 		
@@ -229,6 +234,17 @@ public class VentanaCatalogo extends JFrame {
             panelGrid.add(botones);
             
         }
+        
+        vista.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new VentanaCatalogoVistaAlterna();
+				
+			}
+        	
+        });
         
         pelicula.addActionListener(new ActionListener() {
 

@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -131,6 +133,18 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		panelTab.add("Datos", new JPanel());
 		panelTab.add("Favoritos", new JPanel());
 		this.add(panelTab, BorderLayout.CENTER);
+		
+		
+		vista.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new VentanaCatalogo();
+				
+			}
+			
+		});
 		
 		
 		this.add(panelSuperior, BorderLayout.NORTH);
