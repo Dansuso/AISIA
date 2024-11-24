@@ -131,7 +131,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 		JTabbedPane panelTab = new JTabbedPane();
 		
-		panelTab.add("Datos", new JPanel());
+		panelTab.add("Datos", new PanelContenidos());
 		panelTab.add("Favoritos", new JPanel());
 		this.add(panelTab, BorderLayout.CENTER);
 		
