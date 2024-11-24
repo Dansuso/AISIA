@@ -110,8 +110,9 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
+				new Serie("Serie", 1, "Serie2", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
 				
 				);
 		

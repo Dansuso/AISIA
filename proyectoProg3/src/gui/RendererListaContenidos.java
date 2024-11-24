@@ -3,6 +3,7 @@ package gui;
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
@@ -21,6 +22,17 @@ public class RendererListaContenidos extends DefaultListCellRenderer {
 		// TODO Auto-generated method stub
 		JLabel label =  (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		Contenido c = (Contenido) value;
+		
+		
+		
+		if(c.getTipo().trim().equalsIgnoreCase("Pelicula")) {
+			String rutaPeli = "resources/images/recursos/contenido/serie.png";
+			label.setIcon(new ImageIcon(rutaPeli));
+		}
+		else if(c.getTipo().equals("Serie")) {
+			String rutaSerie = "resources/images/recursos/contenido/serie.png";
+			label.setIcon(new ImageIcon(rutaSerie));
+		}
 		
 		label.setText(c.getTitulo());
 		
