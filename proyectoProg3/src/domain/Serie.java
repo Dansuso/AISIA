@@ -46,11 +46,15 @@ public class Serie extends Contenido {
 		Serie other = (Serie) obj;
 		return numCapitulos == other.numCapitulos && numTemporadas == other.numTemporadas;
 	}
-	
 	@Override
 	public String toString() {
-		return "Serie [numTemporadas=" + numTemporadas + ", numCapitulos=" + numCapitulos + "]";
+		return "Serie [numTemporadas=" + numTemporadas + ", numCapitulos=" + numCapitulos + ", tipo=" + tipo
+				+ ", contadorContenido=" + contadorContenido + ", titulo=" + titulo + ", genero=" + genero
+				+ ", duracion=" + duracion + ", calificacion=" + calificacion + ", distribuidora=" + distribuidora
+				+ ", edadRecomendada=" + edadRecomendada + ", premios=" + premios + ", caratula=" + caratula + "]";
 	}
+	
+	
 
 	
 	

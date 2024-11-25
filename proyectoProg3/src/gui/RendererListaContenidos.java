@@ -25,8 +25,8 @@ public class RendererListaContenidos extends DefaultListCellRenderer {
 		
 		
 		
-		if(c.getTipo().trim().equalsIgnoreCase("Pelicula")) {
-			String rutaPeli = "resources/images/recursos/contenido/serie.png";
+		if(c.getTipo().trim().equalsIgnoreCase("Peli")) {
+			String rutaPeli = "resources/images/recursos/contenido/pelicula.png";
 			label.setIcon(new ImageIcon(rutaPeli));
 		}
 		else if(c.getTipo().equals("Serie")) {

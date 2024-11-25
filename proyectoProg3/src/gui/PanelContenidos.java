@@ -15,6 +15,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import domain.Contenido;
+
 
 public class PanelContenidos extends JPanel {
 
@@ -31,6 +33,20 @@ public class PanelContenidos extends JPanel {
     private JRadioButton radioButtonSerie;
     
     private boolean editable = true;
+    
+    public void setContenido(Contenido c) {
+    	textoTitulo.setText(c.getTitulo());
+    	textoGenero.setText(c.getGenero().toString());
+    	textoNota.setText(String.valueOf(c.getCalificacion()));
+    	textoDistribuidora.setText(c.getDistribuidora());
+    	
+    	if ("Peli".equals(c.getTipo())) {
+            radioButtonPeli.setSelected(true);
+        } else if ("Serie".equals(c.getTipo())) {
+            radioButtonSerie.setSelected(true);
+        }
+    }
+    
     
     public void setEditable(boolean editable) {
         this.editable = editable;

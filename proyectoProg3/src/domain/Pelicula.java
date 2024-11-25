@@ -23,11 +23,13 @@ public class Pelicula extends Contenido {
 
 	@Override
 	public String toString() {
-		return "Pelicula [facturacionTaquilla=" + facturacionTaquilla + ", contadorContenido=" + contadorContenido
-				+ ", titulo=" + titulo + ", genero=" + genero + ", duracion=" + duracion + ", calificacion="
-				+ calificacion + ", distribuidora=" + distribuidora + ", edadRecomendada=" + edadRecomendada
-				+ ", premios=" + premios + "]";
+		return "Pelicula [facturacionTaquilla=" + facturacionTaquilla + ", tipo=" + tipo + ", contadorContenido="
+				+ contadorContenido + ", titulo=" + titulo + ", genero=" + genero + ", duracion=" + duracion
+				+ ", calificacion=" + calificacion + ", distribuidora=" + distribuidora + ", edadRecomendada="
+				+ edadRecomendada + ", premios=" + premios + ", caratula=" + caratula + "]";
 	}
+
+	
 	
 	
 
