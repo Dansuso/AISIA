@@ -115,10 +115,10 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
 		
 		contenidos = List.of(
-				new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
+				new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 4, "Marvel", 13, "Ninguno", null, 10000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.DRAMA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 3, "Pelicula3", Genero.DRAMA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 2, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 3, "Pelicula3", Genero.DRAMA, 80, 3, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 4, "Pelicula4", Genero.FANTASIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.COMEDIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ROMANCE, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
@@ -245,34 +245,51 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				if(value.equals(Genero.TERROR)) {
 					String rutaTerror = "resources/images/recursos/contenido/terror.png";
 					resultado.setIcon(new ImageIcon(rutaTerror));
+					resultado.setBackground(Color.RED);
 				}
 				else if(value.equals(Genero.ACCION)) {
 					String rutaAccion = "resources/images/recursos/contenido/accion.png";
 					resultado.setIcon(new ImageIcon(rutaAccion));
+					resultado.setBackground(Color.YELLOW);
 				}
 				else if(value.equals(Genero.COMEDIA)) {
 					String rutaComedia = "resources/images/recursos/contenido/comedia.png";
 					resultado.setIcon(new ImageIcon(rutaComedia));
+					resultado.setBackground(Color.GREEN);
 				}
 				else if(value.equals(Genero.DRAMA)) {
 					String rutaDrama = "resources/images/recursos/contenido/drama.png";
 					resultado.setIcon(new ImageIcon(rutaDrama));
+					resultado.setBackground(Color.CYAN);
 				}
 				else if(value.equals(Genero.AVENTURA)) {
 					String rutaAventura = "resources/images/recursos/contenido/aventura.png";
 					resultado.setIcon(new ImageIcon(rutaAventura));
+					resultado.setBackground(Color.ORANGE);
 				}
 				else if(value.equals(Genero.FANTASIA)) {
 					String rutaFantasia = "resources/images/recursos/contenido/fantasia.png";
 					resultado.setIcon(new ImageIcon(rutaFantasia));
+					resultado.setBackground(Color.BLUE);
 				}
 				else if(value.equals(Genero.ROMANCE)) {
 					String rutaRomance = "resources/images/recursos/contenido/romance.png";
 					resultado.setIcon(new ImageIcon(rutaRomance));
+					resultado.setBackground(Color.PINK);
 				}
 			}
 			else if(value instanceof Number) {
 				resultado.setHorizontalAlignment(SwingConstants.CENTER);
+				double numericValue = ((Number) value).doubleValue(); // Convertir a double para comparación
+		        if (numericValue < 5) {
+		            resultado.setBackground(Color.RED);
+		        }
+		        else if(numericValue <= 7) {
+		        	resultado.setBackground(Color.YELLOW);
+		        }
+		        else {
+		            resultado.setBackground(Color.GREEN);
+		        }
 			}
 			
 			resultado.setOpaque(true);
@@ -283,7 +300,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		tablaFavoritos.setDefaultRenderer(Object.class, cellRenderer);
 		tablaFavoritos.setRowHeight(30);
 		tablaFavoritos.getColumnModel().getColumn(2).setPreferredWidth(30);
-		tablaFavoritos.getColumnModel().getColumn(3).setPreferredWidth(25);
+		tablaFavoritos.getColumnModel().getColumn(3).setPreferredWidth(26);
 		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
