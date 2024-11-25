@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -115,12 +116,12 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 		contenidos = List.of(
 				new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
+				new Pelicula("Peli", 2, "Pelicula2", Genero.DRAMA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 3, "Pelicula3", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 4, "Pelicula4", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 3, "Pelicula3", Genero.DRAMA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 4, "Pelicula4", Genero.FANTASIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 2, "Pelicula2", Genero.COMEDIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 2, "Pelicula2", Genero.ROMANCE, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Serie("Serie", 1, "Serie2", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
@@ -237,7 +238,52 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 		headerTablaFavoritos.setDefaultRenderer(headerRenderer);
 		
+		TableCellRenderer cellRenderer = (table, value, isSelected, hasFocus, row, column) -> {
+			JLabel resultado = new JLabel (value.toString());
+			
+			if(value instanceof Genero) {
+				if(value.equals(Genero.TERROR)) {
+					String rutaTerror = "resources/images/recursos/contenido/terror.png";
+					resultado.setIcon(new ImageIcon(rutaTerror));
+				}
+				else if(value.equals(Genero.ACCION)) {
+					String rutaAccion = "resources/images/recursos/contenido/accion.png";
+					resultado.setIcon(new ImageIcon(rutaAccion));
+				}
+				else if(value.equals(Genero.COMEDIA)) {
+					String rutaComedia = "resources/images/recursos/contenido/comedia.png";
+					resultado.setIcon(new ImageIcon(rutaComedia));
+				}
+				else if(value.equals(Genero.DRAMA)) {
+					String rutaDrama = "resources/images/recursos/contenido/drama.png";
+					resultado.setIcon(new ImageIcon(rutaDrama));
+				}
+				else if(value.equals(Genero.AVENTURA)) {
+					String rutaAventura = "resources/images/recursos/contenido/aventura.png";
+					resultado.setIcon(new ImageIcon(rutaAventura));
+				}
+				else if(value.equals(Genero.FANTASIA)) {
+					String rutaFantasia = "resources/images/recursos/contenido/fantasia.png";
+					resultado.setIcon(new ImageIcon(rutaFantasia));
+				}
+				else if(value.equals(Genero.ROMANCE)) {
+					String rutaRomance = "resources/images/recursos/contenido/romance.png";
+					resultado.setIcon(new ImageIcon(rutaRomance));
+				}
+			}
+			else if(value instanceof Number) {
+				resultado.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			
+			resultado.setOpaque(true);
+			
+			return resultado;
+		};
 		
+		tablaFavoritos.setDefaultRenderer(Object.class, cellRenderer);
+		tablaFavoritos.setRowHeight(30);
+		tablaFavoritos.getColumnModel().getColumn(2).setPreferredWidth(30);
+		tablaFavoritos.getColumnModel().getColumn(3).setPreferredWidth(25);
 		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
