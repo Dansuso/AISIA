@@ -25,9 +25,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import domain.Contenido;
 import domain.Pelicula;
@@ -220,6 +223,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			}
 			
 		});
+		
+		
+		JTableHeader headerTablaFavoritos = tablaFavoritos.getTableHeader();
+		TableCellRenderer headerRenderer = (table, value, isSelected, hasFocus, row, column) -> {
+			JLabel resultado = new JLabel(value.toString());
+			resultado.setFont(new Font("Arial", Font.BOLD, 12));
+			resultado.setHorizontalAlignment(SwingConstants.CENTER);
+			resultado.setOpaque(true);
+			return resultado;
+			
+		};
+		
+		headerTablaFavoritos.setDefaultRenderer(headerRenderer);
 		
 		
 		
