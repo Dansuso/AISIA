@@ -219,7 +219,7 @@ public class VentanaCatalogo extends JFrame {
 		botonesBusc = new ArrayList<>(); //Uso del array para tener los botones guardados y usarlos en el filtro
         for (String contenido : mapaContenido.keySet()) {
             JButton botones = new JButton(contenido + mapaContenido.get(contenido).get(0).getCalificacion());  // Asignar el contenido directamente
-            botones.setBackground(Color.YELLOW);
+            botones.setBackground(Color.LIGHT_GRAY);
             botonesBusc.add(botones);
 
             // Añadir el ActionListener al botón

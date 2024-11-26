@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -120,7 +121,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 2, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 3, "Pelicula3", Genero.DRAMA, 80, 3, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 4, "Pelicula4", Genero.FANTASIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.COMEDIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+				new Pelicula("Peli", 2, "Pelicula2", Genero.COMEDIA, 80, 9, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ROMANCE, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
 				new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8),
 				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
@@ -139,13 +140,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 		JTextField buscador = new JTextField();
 		
-		JButton favoritos = new JButton("Anadir favoritos");
+		JButton favoritos = new JButton("Anadir favs");
+		JButton eliminarFavs = new JButton("Eliminar favs");
+		
+		JPanel panelIzqBotones = new JPanel();
+		panelIzqBotones.setLayout(new FlowLayout());
+		panelIzqBotones.add(favoritos);
+		panelIzqBotones.add(eliminarFavs);
 		
 		JPanel panelIzquierda = new JPanel();
 		panelIzquierda.setLayout(new BorderLayout());
 		panelIzquierda.add(buscador, BorderLayout.NORTH);
 		panelIzquierda.add(panelScroll, BorderLayout.CENTER);
-		panelIzquierda.add(favoritos, BorderLayout.SOUTH);
+		panelIzquierda.add(panelIzqBotones, BorderLayout.SOUTH);
 		
 		JPanel panelFavoritos = new JPanel();
         panelFavoritos.setLayout(new BorderLayout());
@@ -213,6 +220,34 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			
 		});
 		
+		eliminarFavs.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = tablaFavoritos.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    // Eliminar la fila seleccionada del modelo
+                    modeloTabla.removeRow(filaSeleccionada);
+                    JOptionPane.showMessageDialog(
+                            VentanaCatalogoVistaAlterna.this,
+                            "Eliminacion",
+                            "Fila eliminada",
+                            JOptionPane.PLAIN_MESSAGE
+                        );
+                    
+                } else {
+                    JOptionPane.showMessageDialog(
+                        VentanaCatalogoVistaAlterna.this,
+                        "Por favor, seleccione una fila para eliminar.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+				
+			}
+			
+		});
+		
 		
 		vista.addActionListener(new ActionListener() {
 
@@ -220,6 +255,27 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new VentanaCatalogo();
+				
+			}
+			
+		});
+		
+		volver.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new VentanaInicio();
+				
+			}
+			
+		});
+		
+		salir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 				
 			}
 			
@@ -292,6 +348,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		        }
 			}
 			
+			
 			resultado.setOpaque(true);
 			
 			return resultado;
@@ -315,7 +372,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
     	modelo = new DefaultListModel<>();
     	
 		for (Contenido contenido : contenidos) {
-			if(contenido.getTitulo().contains(text)) {
+			if(contenido.getTitulo().toLowerCase().contains(text.toLowerCase())) {
 				modelo.addElement(contenido);
 			}
 		}
