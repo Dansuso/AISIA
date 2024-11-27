@@ -4,37 +4,44 @@ import java.util.Objects;
 
 public abstract class Contenido {
 	
+	public enum TIPO{
+		PELICULA,SERIE;
+	}
+	
 	public enum Genero {
 		ACCION, COMEDIA, DRAMA, TERROR, ROMANCE, AVENTURA, FANTASIA
 	}
-	
-	protected String tipo;
-	protected int contadorContenido;
+	protected int id;
+	protected TIPO tipo;
 	protected String titulo;
 	protected Genero genero;
-	protected double duracion;
 	protected int calificacion;
 	protected String distribuidora;
 	protected int edadRecomendada;
-	protected String premios;
 	protected String caratula;
 	
-	public Contenido(String tipo, int contadorContenido, String titulo, Genero genero, double duracion, int calificacion,
-			String distribuidora, int edadRecomendada, String premios, String caratula) {
+	public Contenido(int id,TIPO tipo, String titulo, Genero genero, int calificacion,
+			String distribuidora, int edadRecomendada, String caratula) {
 		super();
+		this.id = id;
 		this.tipo = tipo;
-		this.contadorContenido = contadorContenido;
 		this.titulo = titulo;
 		this.genero = genero;
-		this.duracion = duracion;
 		this.calificacion = calificacion;
 		this.distribuidora = distribuidora;
 		this.edadRecomendada = edadRecomendada;
-		this.premios = premios;
 		this.caratula = caratula;
 	}
 	
 	
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
 	public String getCaratula() {
 		return caratula;
 	}
@@ -45,25 +52,17 @@ public abstract class Contenido {
 	}
 
 
-	public String getTipo() {
+	public TIPO getTipo() {
 		return tipo;
 	}
 
 
 
-	public void setTipo(String tipo) {
+	public void setTipo(TIPO tipo) {
 		this.tipo = tipo;
 	}
 
 
-
-	public int getContadorContenido() {
-		return contadorContenido;
-	}
-
-	public void setContadorContenido(int contadorContenido) {
-		this.contadorContenido = contadorContenido;
-	}
 
 	public String getTitulo() {
 		return titulo;
@@ -81,13 +80,7 @@ public abstract class Contenido {
 		this.genero = genero;
 	}
 
-	public double getDuracion() {
-		return duracion;
-	}
 
-	public void setDuracion(double duracion) {
-		this.duracion = duracion;
-	}
 
 	public int getCalificacion() {
 		return calificacion;
@@ -113,20 +106,15 @@ public abstract class Contenido {
 		this.edadRecomendada = edadRecomendada;
 	}
 
-	public String getPremios() {
-		return premios;
-	}
 
-	public void setPremios(String premios) {
-		this.premios = premios;
-	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(calificacion, caratula, contadorContenido, distribuidora, duracion, edadRecomendada, genero,
-				premios, tipo, titulo);
+		return Objects.hash(calificacion, caratula, distribuidora, edadRecomendada, genero, id, tipo, titulo);
 	}
+
+
 
 
 	@Override
@@ -139,21 +127,23 @@ public abstract class Contenido {
 			return false;
 		Contenido other = (Contenido) obj;
 		return calificacion == other.calificacion && Objects.equals(caratula, other.caratula)
-				&& contadorContenido == other.contadorContenido && Objects.equals(distribuidora, other.distribuidora)
-				&& Double.doubleToLongBits(duracion) == Double.doubleToLongBits(other.duracion)
-				&& edadRecomendada == other.edadRecomendada && Objects.equals(genero, other.genero)
-				&& Objects.equals(premios, other.premios) && Objects.equals(tipo, other.tipo)
+				&& Objects.equals(distribuidora, other.distribuidora) && edadRecomendada == other.edadRecomendada
+				&& genero == other.genero && id == other.id && tipo == other.tipo
 				&& Objects.equals(titulo, other.titulo);
 	}
 
 
+
+
 	@Override
 	public String toString() {
-		return "Contenido [tipo=" + tipo + ", contadorContenido=" + contadorContenido + ", titulo=" + titulo
-				+ ", genero=" + genero + ", duracion=" + duracion + ", calificacion=" + calificacion
-				+ ", distribuidora=" + distribuidora + ", edadRecomendada=" + edadRecomendada + ", premios=" + premios
-				+ ", caratula=" + caratula + "]";
+		return "Contenido [id=" + id + ", tipo=" + tipo + ", titulo=" + titulo + ", genero=" + genero
+				+ ", calificacion=" + calificacion + ", distribuidora=" + distribuidora + ", edadRecomendada="
+				+ edadRecomendada + ", caratula=" + caratula + "]";
 	}
+
+
+
 
 	
 	
