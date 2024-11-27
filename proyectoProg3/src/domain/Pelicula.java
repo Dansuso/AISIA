@@ -2,32 +2,46 @@ package domain;
 
 import java.util.Objects;
 
+import domain.Contenido.Genero;
+import domain.Contenido.TIPO;
+
 public class Pelicula extends Contenido {
 
-	protected double facturacionTaquilla;
+	protected boolean oscar;
+	protected int duracion;
 
-	public Pelicula(String tipo, int contadorContenido, String titulo, Genero genero, double duracion, int calificacion,
-			String distribuidora, int edadRecomendada, String premios, String caratula, double facturacionTaquilla) {
-		super(tipo, contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios,
-				caratula);
-		this.facturacionTaquilla = facturacionTaquilla;
+	public Pelicula(int id,TIPO tipo, String titulo, Genero genero, int duracion, int calificacion,
+			String distribuidora, int edadRecomendada, boolean oscar, String caratula) {
+		super(id,tipo, titulo, genero, calificacion, distribuidora, edadRecomendada,
+		caratula);
+		this.oscar = oscar;
+		this.duracion = duracion;
 	}
 
-	public double getFacturacionTaquilla() {
-		return facturacionTaquilla;
+	public boolean tieneOscar() {
+		return oscar;
 	}
 
-	public void setFacturacionTaquilla(double facturacionTaquilla) {
-		this.facturacionTaquilla = facturacionTaquilla;
+	public void setOscar(boolean oscar) {
+		this.oscar = oscar;
 	}
 
-	@Override
-	public String toString() {
-		return "Pelicula [facturacionTaquilla=" + facturacionTaquilla + ", tipo=" + tipo + ", contadorContenido="
-				+ contadorContenido + ", titulo=" + titulo + ", genero=" + genero + ", duracion=" + duracion
-				+ ", calificacion=" + calificacion + ", distribuidora=" + distribuidora + ", edadRecomendada="
-				+ edadRecomendada + ", premios=" + premios + ", caratula=" + caratula + "]";
+	public int getDuracion() {
+		return duracion;
 	}
+
+	public void setDuracion(int duracion) {
+		this.duracion = duracion;
+	}
+	
+	
+
+
+
+
+
+
+
 
 	
 	

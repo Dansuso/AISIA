@@ -6,14 +6,21 @@ public class Serie extends Contenido {
 	
 	protected int numTemporadas;
 	protected int numCapitulos;
+	protected boolean emmy;
 	
-	public Serie(String tipo, int contadorContenido, String titulo, Genero genero, double duracion, int calificacion,
-			String distribuidora, int edadRecomendada, String premios, String caratula, int numTemporadas,
-			int numCapitulos) {
-		super(tipo, contadorContenido, titulo, genero, duracion, calificacion, distribuidora, edadRecomendada, premios,
-				caratula);
+
+	public boolean isEmmy() {
+		return emmy;
+	}
+	public void setEmmy(boolean emmy) {
+		this.emmy = emmy;
+	}
+	public Serie(int id, TIPO tipo, String titulo, Genero genero, int calificacion, String distribuidora,
+			int edadRecomendada, String caratula, int numTemporadas, int numCapitulos, boolean emmy) {
+		super(id, tipo, titulo, genero, calificacion, distribuidora, edadRecomendada, caratula);
 		this.numTemporadas = numTemporadas;
 		this.numCapitulos = numCapitulos;
+		this.emmy = emmy;
 	}
 	public int getNumTemporadas() {
 		return numTemporadas;
@@ -27,12 +34,11 @@ public class Serie extends Contenido {
 	public void setNumCapitulos(int numCapitulos) {
 		this.numCapitulos = numCapitulos;
 	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(numCapitulos, numTemporadas);
+		result = prime * result + Objects.hash(emmy, numCapitulos, numTemporadas);
 		return result;
 	}
 	@Override
@@ -44,15 +50,14 @@ public class Serie extends Contenido {
 		if (getClass() != obj.getClass())
 			return false;
 		Serie other = (Serie) obj;
-		return numCapitulos == other.numCapitulos && numTemporadas == other.numTemporadas;
+		return emmy == other.emmy && numCapitulos == other.numCapitulos && numTemporadas == other.numTemporadas;
 	}
 	@Override
 	public String toString() {
-		return "Serie [numTemporadas=" + numTemporadas + ", numCapitulos=" + numCapitulos + ", tipo=" + tipo
-				+ ", contadorContenido=" + contadorContenido + ", titulo=" + titulo + ", genero=" + genero
-				+ ", duracion=" + duracion + ", calificacion=" + calificacion + ", distribuidora=" + distribuidora
-				+ ", edadRecomendada=" + edadRecomendada + ", premios=" + premios + ", caratula=" + caratula + "]";
+		return "Serie [numTemporadas=" + numTemporadas + ", numCapitulos=" + numCapitulos + ", emmy=" + emmy + "]";
 	}
+	
+
 	
 	
 
