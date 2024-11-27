@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -28,6 +31,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -157,11 +161,18 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		JPanel panelFavoritos = new JPanel();
         panelFavoritos.setLayout(new BorderLayout());
         
+        JEditorPane panelDescripcion = new JEditorPane();
+        panelDescripcion.setContentType("text/html");
+        panelDescripcion.setEditable(false);
+        panelDescripcion.setText("<html><i>Selecciona un genero para ver su descripción aquí.</i></html>");
+        JScrollPane scrollDescripcion = new JScrollPane(panelDescripcion);
+        
         String[] columnas = { "Título", "Género", "Calificacion", "Distribuidora" }; // Columnas de la tabla
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaFavoritos = new JTable(modeloTabla);
         JScrollPane scrollTablaFavoritos = new JScrollPane(tablaFavoritos);
         panelFavoritos.add(scrollTablaFavoritos, BorderLayout.CENTER);
+        panelFavoritos.add(scrollDescripcion, BorderLayout.SOUTH);
 		
 		JTabbedPane panelTab = new JTabbedPane();
 		PanelContenidos panelContenido = new PanelContenidos();
@@ -230,7 +241,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                     modeloTabla.removeRow(filaSeleccionada);
                     JOptionPane.showMessageDialog(
                             VentanaCatalogoVistaAlterna.this,
-                            "Eliminacion",
+                            "Fila eliminada correctamente",
                             "Fila eliminada",
                             JOptionPane.PLAIN_MESSAGE
                         );
@@ -359,6 +370,27 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		tablaFavoritos.getColumnModel().getColumn(2).setPreferredWidth(30);
 		tablaFavoritos.getColumnModel().getColumn(3).setPreferredWidth(26);
 		
+		tablaFavoritos.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int filaSeleccionada = tablaFavoritos.getSelectedRow();
+                int columnaSeleccionada = tablaFavoritos.getSelectedColumn();
+                
+                if (filaSeleccionada != -1 && columnaSeleccionada == 1) { // Verificar que la columna es la de "Género"
+                    Genero genero = (Genero) modeloTabla.getValueAt(filaSeleccionada, columnaSeleccionada);
+
+                    // Lanzar un hilo para obtener la descripción del género
+                    new Thread(() -> {
+                        String descripcion = obtenerDescripcionGenero(genero);
+                        SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion));
+                    }).start();
+                }
+            }
+			
+			
+		});
+		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
 		
@@ -380,6 +412,34 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		listaContenidos.setModel(modelo);
 		
 	}
+	
+	private String obtenerDescripcionGenero(Genero genero) {
+        try {
+            // Simular un retardo de red
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        switch (genero) {
+            case TERROR:
+                return "El género de terror se centra en provocar miedo e inquietud en el espectador.";
+            case ACCION:
+                return "El género de acción se caracteriza por escenas intensas y emocionantes con héroes y villanos.";
+            case COMEDIA:
+                return "El género de comedia busca entretener al público a través del humor.";
+            case DRAMA:
+                return "El drama aborda historias profundas y emocionales que exploran conflictos humanos.";
+            case AVENTURA:
+                return "El género de aventura se centra en viajes épicos y desafíos heroicos.";
+            case FANTASIA:
+                return "La fantasía transporta a los espectadores a mundos imaginarios llenos de magia.";
+            case ROMANCE:
+                return "El romance explora historias de amor y relaciones sentimentales.";
+            default:
+                return "Descripción no disponible para este género.";
+        }
+        }
 
 	public static void main(String[] args) {
 		new VentanaCatalogoVistaAlterna();

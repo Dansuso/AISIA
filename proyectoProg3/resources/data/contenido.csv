@@ -8,3 +8,203 @@ Serie;7;Serie2;TERROR;60.3;6;Paramount;8;Glovo de oro;2;8
 Serie;8;Serie3;ACCION;110.0;5;Sony;3;Ninguno;4;6
 Serie;9;Serie4;AVENTURA;130.6;10;Warner;18;Oscar;5;10
 Serie;10;Serie5;ROMANCE;95.5;2;Universal;18;Ninguno;1;5
+Pelicula;11;Peli11;ROMANCE;146.5;6;Paramount;17;Oscar;368302318
+Pelicula;12;Peli12;COMEDIA;104.0;9;Sony;7;Glovo de oro;30490121
+Pelicula;13;Peli13;TERROR;107.4;7;Warner;8;Glovo de oro;225797504
+Pelicula;14;Peli14;ROMANCE;101.5;6;Universal;18;Glovo de oro;131215845
+Pelicula;15;Peli15;TERROR;144.7;10;Disney;3;Glovo de oro;86590817
+Pelicula;16;Peli16;TERROR;134.2;5;Paramount;6;Ninguno;434302351
+Pelicula;17;Peli17;ROMANCE;123.6;9;Universal;5;Oscar;417886729
+Pelicula;18;Peli18;COMEDIA;125.1;6;Warner;8;Glovo de oro;426277085
+Pelicula;19;Peli19;AVENTURA;109.1;8;Universal;17;Glovo de oro;69037941
+Pelicula;20;Peli20;COMEDIA;101.8;9;Sony;9;Glovo de oro;425859340
+Pelicula;21;Peli21;COMEDIA;102.1;4;Universal;4;Oscar;29876202
+Pelicula;22;Peli22;COMEDIA;118.6;8;Universal;11;Ninguno;482743573
+Pelicula;23;Peli23;ROMANCE;141.0;3;Universal;3;Oscar;204827996
+Pelicula;24;Peli24;AVENTURA;105.5;2;Paramount;19;Glovo de oro;220089277
+Pelicula;25;Peli25;TERROR;111.5;4;Warner;11;Glovo de oro;100993750
+Pelicula;26;Peli26;ACCION;129.4;5;Universal;14;Oscar;203814689
+Pelicula;27;Peli27;TERROR;140.6;8;Disney;14;Glovo de oro;253808767
+Pelicula;28;Peli28;ACCION;133.8;6;Warner;17;Oscar;238384011
+Pelicula;29;Peli29;TERROR;108.5;9;Paramount;18;Oscar;287524098
+Pelicula;30;Peli30;COMEDIA;82.4;9;Universal;17;Ninguno;92016662
+Pelicula;31;Peli31;TERROR;123.7;8;Universal;3;Glovo de oro;358491777
+Pelicula;32;Peli32;AVENTURA;99.2;8;Paramount;20;Ninguno;21051524
+Pelicula;33;Peli33;ACCION;82.7;4;Disney;15;Ninguno;82052155
+Pelicula;34;Peli34;ACCION;83.4;8;Warner;18;Ninguno;165086010
+Pelicula;35;Peli35;ROMANCE;146.5;6;Sony;13;Glovo de oro;249662745
+Pelicula;36;Peli36;COMEDIA;90.2;6;Disney;16;Ninguno;195068511
+Pelicula;37;Peli37;ACCION;142.0;9;Sony;7;Glovo de oro;213479772
+Pelicula;38;Peli38;ACCION;106.4;4;Paramount;3;Oscar;440942721
+Pelicula;39;Peli39;COMEDIA;132.4;9;Warner;5;Oscar;161836665
+Pelicula;40;Peli40;AVENTURA;84.2;8;Disney;7;Ninguno;261248509
+Pelicula;41;Peli41;COMEDIA;142.0;4;Warner;3;Glovo de oro;188248536
+Pelicula;42;Peli42;TERROR;99.6;7;Warner;5;Ninguno;312912759
+Pelicula;43;Peli43;ACCION;97.2;2;Paramount;4;Glovo de oro;487897669
+Pelicula;44;Peli44;COMEDIA;81.2;5;Sony;8;Glovo de oro;132750472
+Pelicula;45;Peli45;ROMANCE;128.5;2;Universal;4;Oscar;194995565
+Pelicula;46;Peli46;ROMANCE;114.2;9;Disney;15;Glovo de oro;300681588
+Pelicula;47;Peli47;ROMANCE;133.7;8;Universal;16;Oscar;282812103
+Pelicula;48;Peli48;COMEDIA;109.6;5;Universal;9;Ninguno;379859381
+Pelicula;49;Peli49;COMEDIA;136.8;9;Universal;7;Oscar;211353486
+Pelicula;50;Peli50;TERROR;144.1;2;Paramount;16;Glovo de oro;247915068
+Pelicula;51;Peli51;COMEDIA;111.1;8;Sony;11;Oscar;206614895
+Pelicula;52;Peli52;TERROR;100.8;5;Sony;11;Ninguno;490784741
+Pelicula;53;Peli53;TERROR;97.2;7;Disney;14;Ninguno;337167838
+Pelicula;54;Peli54;AVENTURA;136.3;6;Disney;17;Glovo de oro;491220672
+Pelicula;55;Peli55;ACCION;92.1;10;Warner;5;Glovo de oro;267499496
+Pelicula;56;Peli56;TERROR;89.2;7;Sony;16;Glovo de oro;194622280
+Pelicula;57;Peli57;ACCION;107.3;9;Universal;20;Ninguno;273569528
+Pelicula;58;Peli58;AVENTURA;99.5;5;Sony;6;Oscar;334913008
+Pelicula;59;Peli59;ROMANCE;133.4;6;Paramount;15;Oscar;486190704
+Pelicula;60;Peli60;ROMANCE;117.6;9;Disney;17;Ninguno;269313268
+Pelicula;61;Peli61;TERROR;110.0;3;Disney;4;Ninguno;379722166
+Pelicula;62;Peli62;ACCION;95.0;7;Universal;20;Glovo de oro;320574165
+Pelicula;63;Peli63;COMEDIA;108.7;5;Sony;9;Ninguno;68546179
+Pelicula;64;Peli64;AVENTURA;103.3;4;Paramount;5;Oscar;217941636
+Pelicula;65;Peli65;TERROR;129.1;2;Disney;3;Glovo de oro;330818212
+Pelicula;66;Peli66;COMEDIA;95.8;2;Paramount;19;Oscar;183116880
+Pelicula;67;Peli67;AVENTURA;97.5;8;Warner;18;Oscar;468841947
+Pelicula;68;Peli68;COMEDIA;139.0;3;Universal;8;Ninguno;422032720
+Pelicula;69;Peli69;AVENTURA;95.8;4;Universal;6;Glovo de oro;462785023
+Pelicula;70;Peli70;ACCION;85.9;8;Warner;16;Glovo de oro;449179540
+Pelicula;71;Peli71;ACCION;105.5;6;Sony;3;Oscar;316622826
+Pelicula;72;Peli72;COMEDIA;129.2;6;Paramount;11;Glovo de oro;424388424
+Pelicula;73;Peli73;ROMANCE;93.0;6;Universal;13;Oscar;330602699
+Pelicula;74;Peli74;AVENTURA;110.4;6;Warner;19;Glovo de oro;427347209
+Pelicula;75;Peli75;TERROR;126.0;6;Sony;8;Glovo de oro;74181533
+Pelicula;76;Peli76;TERROR;114.0;10;Warner;19;Glovo de oro;14316193
+Pelicula;77;Peli77;AVENTURA;127.1;8;Universal;16;Ninguno;297216212
+Pelicula;78;Peli78;COMEDIA;107.3;7;Disney;5;Glovo de oro;74620281
+Pelicula;79;Peli79;ACCION;109.3;6;Universal;15;Ninguno;433542363
+Pelicula;80;Peli80;ROMANCE;118.9;2;Warner;20;Glovo de oro;350725942
+Pelicula;81;Peli81;ACCION;91.8;7;Warner;10;Ninguno;180089399
+Pelicula;82;Peli82;AVENTURA;130.7;2;Sony;18;Glovo de oro;275179935
+Pelicula;83;Peli83;AVENTURA;80.9;6;Disney;6;Oscar;299097223
+Pelicula;84;Peli84;COMEDIA;82.8;8;Universal;9;Glovo de oro;215200064
+Pelicula;85;Peli85;TERROR;134.2;2;Warner;13;Oscar;441795251
+Pelicula;86;Peli86;TERROR;88.2;6;Paramount;20;Oscar;20218652
+Pelicula;87;Peli87;COMEDIA;145.9;8;Warner;18;Ninguno;114984340
+Pelicula;88;Peli88;TERROR;97.1;9;Warner;16;Oscar;440380954
+Pelicula;89;Peli89;ACCION;90.2;3;Warner;11;Oscar;79911454
+Pelicula;90;Peli90;AVENTURA;96.5;10;Universal;14;Ninguno;218118230
+Pelicula;91;Peli91;COMEDIA;146.8;3;Universal;19;Glovo de oro;56458138
+Pelicula;92;Peli92;ACCION;124.5;3;Sony;19;Oscar;344416579
+Pelicula;93;Peli93;COMEDIA;120.3;6;Paramount;4;Ninguno;262219592
+Pelicula;94;Peli94;ROMANCE;122.7;7;Disney;4;Glovo de oro;414866130
+Pelicula;95;Peli95;COMEDIA;132.6;9;Sony;20;Oscar;373190631
+Pelicula;96;Peli96;ROMANCE;99.8;2;Sony;14;Oscar;284622208
+Pelicula;97;Peli97;AVENTURA;127.3;2;Sony;8;Ninguno;110610211
+Pelicula;98;Peli98;AVENTURA;112.1;7;Sony;5;Glovo de oro;3016574
+Pelicula;99;Peli99;ACCION;108.6;7;Warner;16;Oscar;60290616
+Pelicula;100;Peli100;COMEDIA;136.1;2;Paramount;11;Ninguno;335123052
+Pelicula;101;Peli101;COMEDIA;137.3;10;Universal;14;Ninguno;360223484
+Pelicula;102;Peli102;AVENTURA;121.9;2;Sony;9;Oscar;329940529
+Pelicula;103;Peli103;TERROR;115.4;9;Disney;10;Glovo de oro;413322352
+Pelicula;104;Peli104;ACCION;145.5;5;Warner;11;Ninguno;294238748
+Pelicula;105;Peli105;ROMANCE;105.0;7;Universal;11;Ninguno;375621992
+Pelicula;106;Peli106;ACCION;135.6;5;Universal;10;Oscar;257087961
+Pelicula;107;Peli107;TERROR;99.9;10;Warner;6;Ninguno;306035449
+Pelicula;108;Peli108;AVENTURA;100.1;7;Universal;18;Oscar;465018132
+Pelicula;109;Peli109;COMEDIA;129.1;9;Universal;15;Oscar;326383739
+Pelicula;110;Peli110;AVENTURA;147.4;7;Disney;15;Oscar;171877160
+Serie;111;Serie1;AVENTURA;76.6;7;Disney;15;Ninguno;6;3
+Serie;112;Serie2;TERROR;62.4;7;Warner;19;Ninguno;4;19
+Serie;113;Serie3;ACCION;87.7;7;Paramount;10;Oscar;1;10
+Serie;114;Serie4;TERROR;120.2;9;Disney;3;Glovo de oro;8;10
+Serie;115;Serie5;ROMANCE;74.7;8;Universal;11;Glovo de oro;8;20
+Serie;116;Serie6;AVENTURA;95.7;5;Paramount;11;Oscar;3;16
+Serie;117;Serie7;ROMANCE;75.5;7;Universal;19;Oscar;2;8
+Serie;118;Serie8;TERROR;61.7;5;Universal;11;Oscar;4;8
+Serie;119;Serie9;ACCION;111.2;9;Disney;12;Oscar;3;19
+Serie;120;Serie10;ACCION;71.3;2;Universal;9;Ninguno;8;4
+Serie;121;Serie11;COMEDIA;92.1;10;Warner;16;Ninguno;4;17
+Serie;122;Serie12;AVENTURA;121.8;9;Paramount;19;Glovo de oro;7;10
+Serie;123;Serie13;ROMANCE;74.3;4;Paramount;3;Oscar;9;17
+Serie;124;Serie14;ROMANCE;121.7;10;Paramount;18;Ninguno;7;3
+Serie;125;Serie15;TERROR;118.2;2;Sony;10;Ninguno;8;20
+Serie;126;Serie16;TERROR;96.7;7;Paramount;20;Oscar;10;11
+Serie;127;Serie17;TERROR;61.5;9;Universal;5;Glovo de oro;10;11
+Serie;128;Serie18;TERROR;61.1;3;Universal;6;Ninguno;6;20
+Serie;129;Serie19;TERROR;71.2;5;Paramount;14;Oscar;10;6
+Serie;130;Serie20;ROMANCE;118.2;2;Sony;5;Glovo de oro;9;17
+Serie;131;Serie21;ACCION;73.8;8;Warner;15;Glovo de oro;5;10
+Serie;132;Serie22;ACCION;84.5;10;Disney;19;Glovo de oro;7;13
+Serie;133;Serie23;COMEDIA;101.5;7;Disney;11;Glovo de oro;9;13
+Serie;134;Serie24;ROMANCE;63.9;7;Sony;19;Ninguno;8;14
+Serie;135;Serie25;ROMANCE;127.0;4;Paramount;13;Oscar;6;17
+Serie;136;Serie26;AVENTURA;113.7;10;Paramount;19;Oscar;8;17
+Serie;137;Serie27;ACCION;86.3;7;Universal;12;Ninguno;3;6
+Serie;138;Serie28;ROMANCE;118.2;8;Warner;10;Ninguno;6;20
+Serie;139;Serie29;ACCION;70.2;10;Warner;11;Glovo de oro;5;19
+Serie;140;Serie30;ACCION;100.0;10;Warner;10;Ninguno;1;3
+Serie;141;Serie31;ROMANCE;90.9;9;Universal;20;Glovo de oro;10;5
+Serie;142;Serie32;ACCION;115.1;10;Warner;17;Ninguno;10;16
+Serie;143;Serie33;COMEDIA;112.9;4;Disney;5;Ninguno;1;18
+Serie;144;Serie34;TERROR;114.6;3;Sony;4;Oscar;6;12
+Serie;145;Serie35;ROMANCE;128.7;5;Universal;20;Glovo de oro;4;10
+Serie;146;Serie36;AVENTURA;90.7;6;Sony;11;Glovo de oro;6;4
+Serie;147;Serie37;COMEDIA;100.4;5;Universal;18;Oscar;3;13
+Serie;148;Serie38;TERROR;71.6;10;Warner;10;Oscar;10;13
+Serie;149;Serie39;AVENTURA;112.9;6;Disney;12;Oscar;5;6
+Serie;150;Serie40;ROMANCE;77.3;5;Disney;5;Oscar;6;3
+Serie;151;Serie41;AVENTURA;63.7;5;Universal;15;Oscar;5;14
+Serie;152;Serie42;COMEDIA;75.8;6;Warner;9;Glovo de oro;2;9
+Serie;153;Serie43;ACCION;109.2;5;Universal;19;Glovo de oro;7;3
+Serie;154;Serie44;ACCION;123.8;7;Warner;10;Glovo de oro;6;5
+Serie;155;Serie45;ACCION;78.8;9;Disney;8;Glovo de oro;9;18
+Serie;156;Serie46;TERROR;105.6;9;Disney;12;Ninguno;9;5
+Serie;157;Serie47;TERROR;116.2;2;Universal;4;Oscar;2;4
+Serie;158;Serie48;ACCION;97.6;9;Paramount;6;Ninguno;6;8
+Serie;159;Serie49;COMEDIA;76.5;7;Paramount;20;Ninguno;9;14
+Serie;160;Serie50;AVENTURA;104.0;9;Warner;7;Ninguno;2;8
+Serie;161;Serie51;ROMANCE;61.3;9;Sony;8;Oscar;3;18
+Serie;162;Serie52;TERROR;104.5;5;Disney;17;Oscar;7;19
+Serie;163;Serie53;AVENTURA;123.4;6;Disney;14;Ninguno;3;11
+Serie;164;Serie54;ACCION;66.4;7;Sony;12;Ninguno;6;6
+Serie;165;Serie55;COMEDIA;115.4;10;Sony;10;Oscar;8;15
+Serie;166;Serie56;AVENTURA;89.6;5;Universal;18;Oscar;6;5
+Serie;167;Serie57;COMEDIA;100.1;6;Universal;17;Ninguno;4;5
+Serie;168;Serie58;TERROR;102.6;10;Universal;20;Ninguno;10;13
+Serie;169;Serie59;ROMANCE;86.9;9;Sony;17;Oscar;2;12
+Serie;170;Serie60;ROMANCE;75.0;2;Universal;5;Ninguno;7;16
+Serie;171;Serie61;AVENTURA;104.2;3;Universal;18;Glovo de oro;3;15
+Serie;172;Serie62;COMEDIA;106.6;2;Disney;6;Glovo de oro;4;9
+Serie;173;Serie63;TERROR;126.6;3;Paramount;10;Ninguno;9;14
+Serie;174;Serie64;ACCION;76.1;5;Universal;19;Glovo de oro;9;5
+Serie;175;Serie65;ROMANCE;94.0;7;Sony;13;Glovo de oro;4;14
+Serie;176;Serie66;ROMANCE;69.4;2;Warner;19;Ninguno;3;17
+Serie;177;Serie67;TERROR;102.2;8;Warner;18;Oscar;4;20
+Serie;178;Serie68;TERROR;75.8;9;Universal;12;Oscar;5;9
+Serie;179;Serie69;ROMANCE;97.3;3;Paramount;8;Ninguno;4;16
+Serie;180;Serie70;ACCION;104.3;3;Paramount;9;Glovo de oro;3;8
+Serie;181;Serie71;COMEDIA;120.1;9;Paramount;17;Glovo de oro;5;18
+Serie;182;Serie72;ROMANCE;79.8;8;Disney;14;Glovo de oro;4;4
+Serie;183;Serie73;AVENTURA;100.0;3;Paramount;17;Ninguno;2;3
+Serie;184;Serie74;COMEDIA;83.5;8;Paramount;17;Glovo de oro;8;9
+Serie;185;Serie75;COMEDIA;96.5;7;Sony;16;Ninguno;1;16
+Serie;186;Serie76;COMEDIA;62.6;8;Disney;13;Ninguno;2;5
+Serie;187;Serie77;ROMANCE;75.4;10;Universal;4;Glovo de oro;6;14
+Serie;188;Serie78;ACCION;88.8;6;Warner;18;Ninguno;4;5
+Serie;189;Serie79;COMEDIA;69.7;7;Universal;6;Ninguno;6;5
+Serie;190;Serie80;ROMANCE;77.4;2;Disney;14;Ninguno;9;3
+Serie;191;Serie81;ROMANCE;99.0;4;Paramount;19;Glovo de oro;3;17
+Serie;192;Serie82;ROMANCE;111.9;2;Sony;11;Ninguno;2;19
+Serie;193;Serie83;ACCION;102.1;6;Disney;16;Glovo de oro;2;18
+Serie;194;Serie84;COMEDIA;110.5;9;Warner;5;Glovo de oro;2;10
+Serie;195;Serie85;AVENTURA;106.0;6;Paramount;14;Ninguno;8;10
+Serie;196;Serie86;TERROR;106.3;10;Paramount;16;Oscar;6;5
+Serie;197;Serie87;COMEDIA;75.5;5;Sony;11;Ninguno;1;20
+Serie;198;Serie88;COMEDIA;97.7;4;Universal;3;Oscar;8;19
+Serie;199;Serie89;TERROR;106.7;7;Sony;4;Glovo de oro;4;17
+Serie;200;Serie90;AVENTURA;118.8;8;Paramount;19;Oscar;2;8
+Serie;201;Serie91;AVENTURA;123.0;9;Paramount;7;Glovo de oro;4;4
+Serie;202;Serie92;ACCION;106.4;6;Warner;15;Oscar;9;12
+Serie;203;Serie93;ROMANCE;95.3;3;Paramount;14;Oscar;9;10
+Serie;204;Serie94;COMEDIA;103.7;10;Disney;7;Glovo de oro;10;7
+Serie;205;Serie95;COMEDIA;125.7;8;Sony;17;Glovo de oro;9;11
+Serie;206;Serie96;ROMANCE;129.3;4;Paramount;15;Oscar;5;12
+Serie;207;Serie97;TERROR;128.8;3;Disney;6;Oscar;8;3
+Serie;208;Serie98;AVENTURA;126.1;7;Universal;4;Ninguno;2;6
+Serie;209;Serie99;COMEDIA;79.3;5;Sony;19;Ninguno;7;17
+Serie;210;Serie100;ACCION;85.8;8;Disney;3;Ninguno;2;17

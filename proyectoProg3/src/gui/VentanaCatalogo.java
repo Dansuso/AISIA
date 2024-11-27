@@ -218,7 +218,7 @@ public class VentanaCatalogo extends JFrame {
 		//Añadir los botones al panel con el nombre de cada contenido
 		botonesBusc = new ArrayList<>(); //Uso del array para tener los botones guardados y usarlos en el filtro
         for (String contenido : mapaContenido.keySet()) {
-            JButton botones = new JButton(contenido + mapaContenido.get(contenido).get(0).getCalificacion());  // Asignar el contenido directamente
+            JButton botones = new JButton(contenido);  // Asignar el contenido directamente
             botones.setBackground(Color.LIGHT_GRAY);
             botonesBusc.add(botones);
 
@@ -316,6 +316,8 @@ public class VentanaCatalogo extends JFrame {
 		
 		//Creacion del JScrollPane
 		JScrollPane panelScrollCatalogo = new JScrollPane(panelGrid);
+		panelScrollCatalogo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		panelScrollCatalogo.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		add(panelScrollCatalogo, BorderLayout.CENTER);
 		
 		//Escuchador del boton de volver. Para volver a la anterior ventana
