@@ -42,6 +42,7 @@ import domain.Contenido;
 import domain.Pelicula;
 import domain.Serie;
 import domain.Contenido.Genero;
+import domain.Contenido.TIPO;
 
 public class VentanaCatalogoVistaAlterna extends JFrame {
 	
@@ -65,8 +66,8 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		setLocationRelativeTo(null);
 		
 		
-		mapaContenido = VentanaCatalogo.cargarContenido();
-		System.out.println(mapaContenido);
+//		mapaContenido = VentanaCatalogo.cargarContenido();
+//		System.out.println(mapaContenido);
 		
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -120,16 +121,17 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
 		
 		contenidos = List.of(
-				new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 4, "Marvel", 13, "Ninguno", null, 10000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.DRAMA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 2, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 3, "Pelicula3", Genero.DRAMA, 80, 3, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 4, "Pelicula4", Genero.FANTASIA, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.COMEDIA, 80, 9, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ROMANCE, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8),
-				new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-				new Serie("Serie", 1, "Serie2", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
+				
+				new Pelicula(1, TIPO.PELICULA, "Pelicula1", Genero.ACCION, 90, 8, "Marvel", 13, true, ""),
+				new Pelicula(2, TIPO.PELICULA, "Pelicula2", Genero.TERROR, 90, 8, "Marvel", 13, true, ""),
+				new Pelicula(3, TIPO.PELICULA, "Pelicula3", Genero.AVENTURA, 90, 8, "Marvel", 13, false, ""),
+				new Pelicula(4, TIPO.PELICULA, "Pelicula4", Genero.COMEDIA, 90, 8, "Marvel", 13, true, ""),
+				new Serie(1, TIPO.SERIE, "Serie1", Genero.ACCION, 30, "Fox", 13, "", 2, 2, true),
+				new Pelicula(5, TIPO.PELICULA, "Pelicula5", Genero.DRAMA, 90, 8, "Marvel", 13, true, ""),
+				new Pelicula(6, TIPO.PELICULA, "Pelicula6", Genero.FANTASIA, 90, 8, "Marvel", 13, false, ""),
+				new Serie(2, TIPO.SERIE, "Serie2", Genero.DRAMA, 20, "Fox", 13, "", 2, 2, false),
+				new Pelicula(7, TIPO.PELICULA, "Pelicula7", Genero.ROMANCE, 90, 8, "Marvel", 13, true, ""),
+				new Serie(3, TIPO.SERIE, "Serie3", Genero.FANTASIA, 40, "DC", 13, "", 2, 2, true)
 				
 				);
 		
@@ -168,7 +170,14 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
         JScrollPane scrollDescripcion = new JScrollPane(panelDescripcion);
         
         String[] columnas = { "Título", "Género", "Calificacion", "Distribuidora" }; // Columnas de la tabla
-        modeloTabla = new DefaultTableModel(columnas, 0);
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+        	
+        };
         tablaFavoritos = new JTable(modeloTabla);
         JScrollPane scrollTablaFavoritos = new JScrollPane(tablaFavoritos);
         panelFavoritos.add(scrollTablaFavoritos, BorderLayout.CENTER);

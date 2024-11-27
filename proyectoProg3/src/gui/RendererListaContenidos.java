@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import domain.Contenido;
+import domain.Contenido.TIPO;
 
 public class RendererListaContenidos extends DefaultListCellRenderer {
 
@@ -25,11 +26,11 @@ public class RendererListaContenidos extends DefaultListCellRenderer {
 		
 		
 		
-		if(c.getTipo().trim().equalsIgnoreCase("Peli")) {
+		if(c.getTipo().equals(TIPO.PELICULA)) {
 			String rutaPeli = "resources/images/recursos/contenido/pelicula.png";
 			label.setIcon(new ImageIcon(rutaPeli));
 		}
-		else if(c.getTipo().equals("Serie")) {
+		else if(c.getTipo().equals(TIPO.SERIE)) {
 			String rutaSerie = "resources/images/recursos/contenido/serie.png";
 			label.setIcon(new ImageIcon(rutaSerie));
 		}

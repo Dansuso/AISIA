@@ -22,6 +22,7 @@ public class Serie extends Contenido {
 		this.numCapitulos = numCapitulos;
 		this.emmy = emmy;
 	}
+	
 	public int getNumTemporadas() {
 		return numTemporadas;
 	}
