@@ -1,128 +1,101 @@
-1,Pelicula,Inception,AVENTURA,9.2,Warner Bros,16,true,148,,,
-2,Pelicula,Titanic,ROMANCE,8.8,Paramount,13,true,194,,,
-3,Pelicula,The Avengers,ACCION,8.5,Disney,13,false,143,,,
-4,Serie,Stranger Things,AVENTURA,8.7,Netflix,16,,,,4,34,true
-5,Serie,Game of Thrones,AVENTURA,9.3,HBO,18,,,,8,73,true
-6,Pelicula,Parasite,DRAMA,8.6,Neon,16,true,132,,,
-7,Pelicula,Mad Max: Fury Road,ACCION,8.1,Warner Bros,16,true,120,,,
-8,Serie,The Crown,DRAMA,8.7,Netflix,16,,,,6,60,true
-9,Pelicula,El Irlandés,DRAMA,8.2,Netflix,18,false,209,,,
-10,Serie,Breaking Bad,DRAMA,9.5,AMC,18,,,,5,62,true
-11,Pelicula,Knives Out,COMEDIA,7.9,Lionsgate,13,false,130,,,
-12,Serie,Chernobyl,DRAMA,9.4,HBO,18,,,,1,5,true
-13,Pelicula,Thor: Ragnarok,ACCION,7.9,Marvel,13,false,130,,,
-14,Serie,The Witcher,FANTASIA,8.2,Netflix,18,,,,3,24,false
-15,Pelicula,Coco,AVENTURA,8.4,Pixar,7,true,105,,,
-16,Serie,The Boys,ACCION,8.7,Amazon Prime,18,,,,3,24,false
-17,Pelicula,Deadpool,COMEDIA,8.0,Fox,16,false,108,,,
-18,Serie,The Umbrella Academy,AVENTURA,8.0,Netflix,16,,,,3,30,false
-19,Pelicula,El Laberinto del Fauno,FANTASIA,8.2,Warner Bros,16,true,118,,,
-20,Serie,Mr. Robot,DRAMA,8.5,USA Network,18,,,,4,45,true
-21,Pelicula,Arrival,AVENTURA,7.9,Paramount,13,false,116,,,
-22,Serie,The Expanse,AVENTURA,8.5,Amazon Prime,16,,,,6,61,true
-23,Pelicula,Roma,DRAMA,8.1,Netflix,16,true,135,,,
-24,Serie,Russian Doll,COMEDIA,7.8,Netflix,16,,,,2,15,true
-25,Pelicula,No Country for Old Men,DRAMA,8.2,Miramax,18,true,122,,,
-26,Serie,Fargo,DRAMA,8.9,FX,18,,,,4,40,true
-27,Pelicula,La La Land,ROMANCE,8.0,Lionsgate,13,true,128,,,
-28,Serie,Good Omens,COMEDIA,8.1,Amazon Prime,16,,,,2,6,false
-29,Pelicula,Moonlight,DRAMA,7.4,A24,16,true,111,,,
-30,Serie,The Good Place,COMEDIA,8.2,NBC,13,,,,4,53,true
-31,Pelicula,John Wick,ACCION,7.4,Lionsgate,16,false,101,,,
-32,Serie,Ozark,DRAMA,8.5,Netflix,18,,,,4,44,true
-33,Pelicula,Hereditary,TERROR,7.3,A24,18,false,127,,,
-34,Serie,Black Mirror,TERROR,8.8,Netflix,18,,,,5,22,true
-35,Pelicula,Bohemian Rhapsody,DRAMA,8.0,Fox,13,true,134,,,
-36,Serie,The Haunting of Hill House,TERROR,8.6,Netflix,16,,,,1,10,false
-37,Pelicula,El Gran Hotel Budapest,COMEDIA,7.8,Fox Searchlight,13,false,100,,,
-38,Serie,True Detective,DRAMA,8.9,HBO,18,,,,3,24,true
-39,Pelicula,Un Lugar Tranquilo,TERROR,7.5,Paramount,16,false,90,,,
-40,Serie,The Mandalorian,AVENTURA,8.8,Disney+,13,,,,2,16,true
-41,Pelicula,Spider-Man: Into the Spider-Verse,AVENTURA,8.4,Sony,10,true,117,,,
-42,Serie,Mindhunter,DRAMA,8.6,Netflix,18,,,,2,19,false
-43,Pelicula,Soul,AVENTURA,8.1,Pixar,7,true,100,,,
-44,Serie,What We Do in the Shadows,COMEDIA,8.6,FX,16,,,,4,36,true
-45,Pelicula,Green Book,DRAMA,8.2,Universal,13,true,130,,,
-46,Serie,The Marvelous Mrs. Maisel,COMEDIA,8.7,Amazon Prime,16,,,,4,48,true
-47,Pelicula,Jojo Rabbit,COMEDIA,7.9,Fox Searchlight,14,true,108,,,
-48,Serie,Succession,DRAMA,9.0,HBO,18,,,,4,45,true
-49,Pelicula,Joker,DRAMA,8.4,Warner Bros,18,true,122,,,
-50,Serie,Modern Love,ROMANCE,8.0,Amazon Prime,16,,,,2,8,true
-51,Pelicula,El Faro,DRAMA,7.5,A24,18,false,109,,,
-52,Serie,Big Little Lies,DRAMA,8.5,HBO,18,,,,2,14,true
-53,Pelicula,Puñales por la Espalda,COMEDIA,7.9,Lionsgate,13,false,130,,,
-54,Serie,Peaky Blinders,DRAMA,8.8,BBC,18,,,,6,36,true
-55,Pelicula,Toy Story 4,AVENTURA,8.3,Pixar,7,true,100,,,
-56,Serie,The Morning Show,DRAMA,8.3,Apple TV+,16,,,,2,20,true
-57,Pelicula,Get Out,TERROR,7.7,Universal,16,true,104,,,
-58,Serie,The Witcher,FANTASIA,8.2,Netflix,18,,,,3,24,false
-59,Pelicula,1917,ACCION,8.2,Universal,16,true,119,,,
-60,Serie,Peaky Blinders,DRAMA,8.8,BBC,18,,,,6,36,true
-61,Pelicula,Interstellar,AVENTURA,8.6,Paramount,12,false,169,,,
-62,Serie,The Crown,DRAMA,8.7,Netflix,16,,,,6,60,true
-63,Pelicula,Bohemian Rhapsody,DRAMA,8.0,Fox,13,true,134,,,
-64,Serie,Better Call Saul,DRAMA,9.1,AMC,18,,,,6,63,true
-65,Pelicula,El Laberinto del Fauno,FANTASIA,8.2,Warner Bros,16,true,118,,,
-66,Serie,Dark,TERROR,8.8,Netflix,16,,,,3,26,false
-67,Pelicula,Moonlight,DRAMA,7.4,A24,16,true,111,,,
-68,Serie,The Boys,ACCION,8.7,Amazon Prime,18,,,,3,24,false
-69,Pelicula,Coco,AVENTURA,8.4,Pixar,7,true,105,,,
-70,Serie,Ozark,DRAMA,8.5,Netflix,18,,,,4,44,true
-71,Pelicula,Deadpool,COMEDIA,8.0,Fox,16,false,108,,,
-72,Serie,Black Mirror,TERROR,8.8,Netflix,18,,,,5,22,true
-73,Pelicula,La La Land,ROMANCE,8.0,Lionsgate,13,true,128,,,
-74,Serie,The Umbrella Academy,AVENTURA,8.0,Netflix,16,,,,3,30,false
-75,Pelicula,Hereditary,TERROR,7.3,A24,18,false,127,,,
-76,Serie,Chernobyl,DRAMA,9.4,HBO,18,,,,1,5,true
-77,Pelicula,John Wick,ACCION,7.4,Lionsgate,16,false,101,,,
-78,Serie,Mr. Robot,DRAMA,8.5,USA Network,18,,,,4,45,true
-79,Pelicula,Soul,AVENTURA,8.1,Pixar,7,true,100,,,
-80,Serie,Good Omens,COMEDIA,8.1,Amazon Prime,16,,,,2,6,false
-81,Pelicula,1917,ACCION,8.2,Universal,16,true,119,,,
-82,Serie,Fargo,DRAMA,8.9,FX,18,,,,4,40,true
-83,Pelicula,El Gran Hotel Budapest,COMEDIA,7.8,Fox Searchlight,13,false,100,,,
-84,Serie,The Mandalorian,AVENTURA,8.8,Disney+,13,,,,2,16,true
-85,Pelicula,No Country for Old Men,DRAMA,8.2,Miramax,18,true,122,,,
-86,Serie,True Detective,DRAMA,8.9,HBO,18,,,,3,24,true
-87,Pelicula,Arrival,AVENTURA,7.9,Paramount,13,false,116,,,
-88,Serie,The Good Place,COMEDIA,8.2,NBC,13,,,,4,53,true
-89,Pelicula,Roma,DRAMA,8.1,Netflix,16,true,135,,,
-90,Serie,Russian Doll,COMEDIA,7.8,Netflix,16,,,,2,15,true
-91,Pelicula,Toy Story 4,AVENTURA,8.3,Pixar,7,true,100,,,
-92,Serie,The Expanse,AVENTURA,8.5,Amazon Prime,16,,,,6,61,true
-93,Pelicula,Jojo Rabbit,COMEDIA,7.9,Fox Searchlight,14,true,108,,,
-94,Serie,Succession,DRAMA,9.0,HBO,18,,,,4,45,true
-95,Pelicula,Green Book,DRAMA,8.2,Universal,13,true,130,,,
-96,Serie,The Marvelous Mrs. Maisel,COMEDIA,8.7,Amazon Prime,16,,,,4,48,true
-97,Pelicula,Un Lugar Tranquilo,TERROR,7.5,Paramount,16,false,90,,,
-98,Serie,Modern Love,ROMANCE,8.0,Amazon Prime,16,,,,2,8,true
-99,Pelicula,Spider-Man: Into the Spider-Verse,AVENTURA,8.4,Sony,10,true,117,,,
-100,Serie,Big Little Lies,DRAMA,8.5,HBO,18,,,,2,14,true
-101,Serie,Stranger Things,AVENTURA,8.7,Netflix,16,,,,4,34,true
-102,Serie,Game of Thrones,AVENTURA,9.3,HBO,18,,,,8,73,true
-103,Serie,Breaking Bad,DRAMA,9.5,AMC,18,,,,5,62,true
-104,Serie,The Crown,DRAMA,8.7,Netflix,16,,,,6,60,true
-105,Serie,Chernobyl,DRAMA,9.4,HBO,18,,,,1,5,true
-106,Serie,Better Call Saul,DRAMA,9.1,AMC,18,,,,6,63,true
-107,Serie,The Mandalorian,AVENTURA,8.8,Disney+,13,,,,2,16,true
-108,Serie,Mr. Robot,DRAMA,8.5,USA Network,18,,,,4,45,true
-109,Serie,The Boys,ACCION,8.7,Amazon Prime,18,,,,3,24,false
-110,Serie,The Umbrella Academy,AVENTURA,8.0,Netflix,16,,,,3,30,false
-111,Serie,Dark,TERROR,8.8,Netflix,16,,,,3,26,false
-112,Serie,Black Mirror,TERROR,8.8,Netflix,18,,,,5,22,true
-113,Serie,The Haunting of Hill House,TERROR,8.6,Netflix,16,,,,1,10,false
-114,Serie,Russian Doll,COMEDIA,7.8,Netflix,16,,,,2,15,true
-115,Serie,The Good Place,COMEDIA,8.2,NBC,13,,,,4,53,true
-116,Serie,Good Omens,COMEDIA,8.1,Amazon Prime,16,,,,2,6,false
-117,Serie,The Marvelous Mrs. Maisel,COMEDIA,8.7,Amazon Prime,16,,,,4,48,true
-118,Serie,Ozark,DRAMA,8.5,Netflix,18,,,,4,44,true
-119,Serie,The Expanse,AVENTURA,8.5,Amazon Prime,16,,,,6,61,true
-120,Serie,Succession,DRAMA,9.0,HBO,18,,,,4,45,true
-121,Serie,The Morning Show,DRAMA,8.3,Apple TV+,16,,,,2,20,true
-122,Serie,Peaky Blinders,DRAMA,8.8,BBC,18,,,,6,36,true
-123,Serie,Modern Love,ROMANCE,8.0,Amazon Prime,16,,,,2,8,true
-124,Serie,Big Little Lies,DRAMA,8.5,HBO,18,,,,2,14,true
-125,Serie,True Detective,DRAMA,8.9,HBO,18,,,,3,24,true
-126,Serie,What We Do in the Shadows,COMEDIA,8.6,FX,16,,,,4,36,true
-127,Serie,Fargo,DRAMA,8.9,FX,18,,,,4,40,true
-128,Serie,The Witcher,FANTASIA,8.2,Netflix,18,,,,3,24,false
+id,tipo,titulo,genero,calificacion,distribuidora,edad_recomendada,fecha_lanzamiento,oscar,duracion,temporadas,capitulos,emmy
+1,Pelicula,Avengers: Endgame,ACCION,8.4,Disney,12,2019-04-26,false,181,,,,
+2,Pelicula,Titanic,ROMANCE,7.8,Fox,12,1997-12-19,true,195,,,,
+3,Pelicula,El Padrino,DRAMA,9.2,Universal,18,1972-03-24,true,175,,,,
+4,Pelicula,Jurassic Park,AVENTURA,8.1,Universal,12,1993-06-11,false,127,,,,
+5,Pelicula,El Señor de los Anillos: La Comunidad del Anillo,FANTASIA,8.8,Warner,12,2001-12-19,true,178,,,,
+6,Pelicula,Inception,ACCION,8.8,Warner,12,2010-07-16,false,148,,,,
+7,Pelicula,El Rey León,AVENTURA,8.5,Disney,7,1994-06-15,true,89,,,,
+8,Pelicula,Forrest Gump,DRAMA,8.8,Universal,12,1994-07-06,true,142,,,,
+9,Pelicula,Matrix,ACCION,8.7,Warner,16,1999-03-31,false,136,,,,
+10,Pelicula,Parasitos,DRAMA,8.5,Sony,16,2019-05-30,true,132,,,,
+11,Pelicula,El Resplandor,TERROR,8.4,Warner,18,1980-05-23,false,146,,,,
+12,Pelicula,Gladiator,ACCION,8.5,Universal,16,2000-05-05,true,155,,,,
+13,Pelicula,Pulp Fiction,DRAMA,8.9,Universal,18,1994-10-14,false,154,,,,
+14,Pelicula,Star Wars: Una Nueva Esperanza,AVENTURA,8.6,Fox,7,1977-05-25,true,121,,,,
+15,Pelicula,El Club de la Pelea,DRAMA,8.8,Fox,18,1999-10-15,false,139,,,,
+16,Pelicula,La La Land,ROMANCE,8.0,Liongate,12,2016-12-09,true,128,,,,
+17,Pelicula,Toy Story,AVENTURA,8.3,Disney,3,1995-11-22,true,81,,,,
+18,Pelicula,Joker,DRAMA,8.4,Warner,18,2019-10-04,true,122,,,,
+19,Pelicula,El Origen,ACCION,8.8,Warner,12,2010-07-16,false,148,,,,
+20,Pelicula,Interstellar,AVENTURA,8.6,Paramount,12,2014-11-07,false,169,,,,
+21,Pelicula,Coco,AVENTURA,8.4,Disney,7,2017-10-20,true,105,,,,
+22,Pelicula,El Lobo de Wall Street,COMEDIA,8.2,Universal,18,2013-12-25,false,180,,,,
+23,Pelicula,El Silencio de los Corderos,TERROR,8.6,Liongate,18,1991-02-14,true,118,,,,
+24,Pelicula,Mad Max: Fury Road,ACCION,8.1,Warner,16,2015-05-15,true,120,,,,
+25,Pelicula,Shrek,COMEDIA,7.9,Fox,7,2001-05-18,true,90,,,,
+26,Pelicula,Apocalypse Now,DRAMA,8.4,Universal,18,1979-08-15,true,147,,,,
+27,Pelicula,Star Trek,AVENTURA,8.0,Sony,12,2009-05-08,false,127,,,,
+28,Pelicula,El Pianista,DRAMA,8.5,Fox,16,2002-09-24,true,150,,,,
+29,Pelicula,Spider-Man: Un Nuevo Universo,AVENTURA,8.4,Sony,7,2018-12-14,true,117,,,,
+30,Pelicula,Get Out,TERROR,7.7,Universal,16,2017-02-24,false,104,,,,
+31,Pelicula,Los Increíbles,AVENTURA,8.0,Disney,7,2004-10-27,true,115,,,,
+32,Pelicula,La Forma del Agua,ROMANCE,7.3,Fox,16,2017-12-01,true,123,,,,
+33,Pelicula,Dunkerque,ACCION,7.8,Warner,12,2017-07-21,false,106,,,,
+34,Pelicula,Her,ROMANCE,8.0,Warner,16,2013-12-18,true,126,,,,
+35,Pelicula,La Red Social,DRAMA,7.7,Sony,12,2010-10-01,false,120,,,,
+36,Pelicula,Alien,TERROR,8.5,Fox,18,1979-05-25,false,117,,,,
+37,Pelicula,El Gran Hotel Budapest,COMEDIA,7.8,Fox,12,2014-02-26,false,99,,,,
+38,Pelicula,Chinatown,DRAMA,8.2,Universal,16,1974-06-20,true,131,,,,
+39,Pelicula,Wall-E,AVENTURA,8.4,Disney,7,2008-06-27,true,98,,,,
+40,Pelicula,El Sexto Sentido,TERROR,8.1,Fox,12,1999-08-06,false,107,,,,
+41,Pelicula,Memento,DRAMA,8.4,Sony,16,2000-09-05,false,113,,,,
+42,Pelicula,Up,AVENTURA,8.3,Disney,7,2009-05-29,true,96,,,,
+43,Pelicula,El Primer Hombre en la Luna,DRAMA,7.3,Universal,12,2018-10-12,false,141,,,,
+44,Pelicula,La Guerra de los Mundos,ACCION,6.5,Fox,12,2005-06-29,false,116,,,,
+45,Pelicula,Crimen Perfecto,DRAMA,8.0,Universal,16,1954-05-29,true,105,,,,
+46,Pelicula,300,ACCION,7.7,Warner,16,2006-03-09,false,117,,,,
+47,Pelicula,Moonlight,DRAMA,7.4,Liongate,16,2016-10-21,true,111,,,,
+48,Pelicula,El Gran Dictador,COMEDIA,8.4,Universal,12,1940-10-15,false,125,,,,
+49,Pelicula,Un Lugar Tranquilo,TERROR,7.5,Paramount,16,2018-04-06,false,90,,,,
+50,Pelicula,Marriage Story,DRAMA,7.8,Netflix,16,2019-11-06,false,137,,,,
+1,Serie,Game of Thrones,AVENTURA,9.3,HBO,18,2011-04-17,,,,8,73,true
+2,Serie,Breaking Bad,DRAMA,9.5,Netflix,18,2008-01-20,,,,5,62,true
+3,Serie,The Crown,DRAMA,8.7,Netflix,16,2016-11-04,,,,6,62,true
+4,Serie,The Mandalorian,AVENTURA,8.7,Disney,12,2019-11-12,,,,3,24,true
+5,Serie,Black Mirror,TERROR,8.8,Netflix,16,2011-12-04,,,,5,22,true
+6,Serie,The Office (US),COMEDIA,8.9,Universal,12,2005-03-24,,,,9,201,true
+7,Serie,Chernobyl,DRAMA,9.4,HBO,16,2019-05-06,,,,1,5,true
+8,Serie,The West Wing,DRAMA,8.9,Universal,12,1999-09-22,,,,7,156,true
+9,Serie,Atlanta,COMEDIA,8.7,Fox,16,2016-09-06,,,,4,41,true
+10,Serie,The Wire,DRAMA,9.3,HBO,18,2002-06-02,,,,5,60,true
+11,Serie,Fargo,DRAMA,8.9,Fox,18,2014-04-15,,,,4,40,true
+12,Serie,Better Call Saul,DRAMA,9.1,Netflix,16,2015-02-08,,,,6,63,true
+13,Serie,True Detective,DRAMA,8.9,HBO,18,2014-01-12,,,,3,24,true
+14,Serie,Sherlock,DRAMA,9.1,Amazon,16,2010-07-25,,,,4,15,true
+15,Serie,The Americans,DRAMA,8.4,Fox,16,2013-01-30,,,,6,75,true
+16,Serie,Mr. Robot,DRAMA,8.5,Universal,16,2015-06-24,,,,4,45,true
+17,Serie,Dark,FANTASIA,8.8,Netflix,16,2017-12-01,,,,3,26,false
+18,Serie,Rick y Morty,COMEDIA,9.1,Amazon,16,2013-12-02,,,,6,61,true
+19,Serie,Ozark,DRAMA,8.7,Netflix,18,2017-07-21,,,,4,44,true
+20,Serie,The Boys,ACCION,8.7,Amazon,18,2019-07-26,,,,3,24,false
+21,Serie,Narcos,DRAMA,8.8,Netflix,18,2015-08-28,,,,3,30,true
+22,Serie,Silicon Valley,COMEDIA,8.5,HBO,16,2014-04-06,,,,6,53,true
+23,Serie,El Juego del Calamar,DRAMA,8.0,Netflix,18,2021-09-17,,,,1,9,true
+24,Serie,Peaky Blinders,DRAMA,8.8,Amazon,18,2013-09-12,,,,6,36,false
+25,Serie,Westworld,AVENTURA,8.6,HBO,18,2016-10-02,,,,4,36,true
+26,Serie,This Is Us,DRAMA,8.7,Universal,12,2016-09-20,,,,6,106,true
+27,Serie,Modern Family,COMEDIA,8.4,Fox,12,2009-09-23,,,,11,250,true
+28,Serie,Stranger Things,FANTASIA,8.7,Netflix,12,2016-07-15,,,,4,34,false
+29,Serie,The Witcher,AVENTURA,8.1,Netflix,18,2019-12-20,,,,3,24,false
+30,Serie,Mindhunter,DRAMA,8.6,Netflix,18,2017-10-13,,,,2,19,false
+31,Serie,Legion,FANTASIA,8.3,Fox,16,2017-02-08,,,,3,27,true
+32,Serie,Twin Peaks,TERROR,8.8,Universal,18,1990-04-08,,,,3,48,true
+33,Serie,The Good Place,COMEDIA,8.2,Universal,12,2016-09-19,,,,4,53,true
+34,Serie,The Umbrella Academy,AVENTURA,8.0,Netflix,16,2019-02-15,,,,3,30,false
+35,Serie,Élite,DRAMA,8.3,Netflix,16,2018-10-05,,,,6,48,false
+36,Serie,Barry,COMEDIA,8.8,HBO,16,2018-03-25,,,,4,32,true
+37,Serie,Killing Eve,DRAMA,8.4,Amazon,18,2018-04-08,,,,4,32,true
+38,Serie,Electric Dreams,FANTASIA,8.0,Amazon,16,2017-12-11,,,,1,10,false
+39,Serie,Bojack Horseman,COMEDIA,8.8,Netflix,16,2014-08-22,,,,6,77,false
+40,Serie,Vikings,AVENTURA,8.5,Amazon,18,2013-03-03,,,,6,89,false
+41,Serie,Altered Carbon,AVENTURA,8.0,Netflix,18,2018-02-02,,,,2,18,false
+42,Serie,Atlanta,COMEDIA,8.7,Fox,16,2016-09-06,,,,4,41,true
+43,Serie,Fargo,DRAMA,8.9,Fox,18,2014-04-15,,,,4,40,true
+44,Serie,Halt and Catch Fire,DRAMA,8.7,Universal,16,2014-06-01,,,,4,40,false
+45,Serie,Sharp Objects,DRAMA,8.1,HBO,18,2018-07-08,,,,1,8,false
+46,Serie,Russian Doll,COMEDIA,7.9,Netflix,16,2019-02-01,,,,2,15,false
+47,Serie,The Leftovers,DRAMA,8.3,HBO,16,2014-06-29,,,,3,28,true
+48,Serie,Master of None,COMEDIA,8.3,Netflix,16,2015-11-06,,,,3,30,true
+49,Serie,Los 100,AVENTURA,7.6,Amazon,16,2014-03-19,,,,7,100,false
+50,Serie,StartUp,DRAMA,8.0,Amazon,16,2016-11-06,,,,3,30,false
