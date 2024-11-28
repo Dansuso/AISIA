@@ -91,6 +91,17 @@ public class InitDatabase {
 				    fecha TEXT
 				);
 				""";
+		
+		String sqlTablaNoticia = """
+				CREATE TABLE IF NOT EXISTS NOTICIA (
+				    id INTEGER PRIMARY KEY AUTOINCREMENT,
+				    titulo TEXT NOT NULL,
+				    resumen TEXT,
+				    url TEXT NOT NULL,
+				    fuente TEXT NOT NULL	 
+				);
+				""";
+	
 		// Nos conectamos a la base de datos
 
 		try {
@@ -100,6 +111,7 @@ public class InitDatabase {
 			stmt.execute("DROP TABLE IF EXISTS SERIE");
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);
+			stmt.execute(sqlTablaNoticia);
 			stmt.close();
 			con.close();
 			System.out.println("TABLAS CREADAS");
