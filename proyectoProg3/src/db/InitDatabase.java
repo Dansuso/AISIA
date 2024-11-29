@@ -198,7 +198,7 @@ public class InitDatabase {
 					prepStmt.setBoolean(9, emmy);
 					prepStmt.setString(10, fechaLanzamiento);
 					prepStmt.executeUpdate();
-					System.out.println(String.format("Seriev %s INSERTADA", titulo));
+					System.out.println(String.format("Serie %s INSERTADA", titulo));
 					prepStmt.close();
 
 					// Ya tenemos todos los datos, creamos la serie .
