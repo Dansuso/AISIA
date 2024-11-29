@@ -21,6 +21,7 @@ import domain.Pelicula;
 import domain.Serie;
 
 import java.sql.Statement;
+import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS
@@ -174,7 +175,6 @@ public class InitDatabase {
 					prepStmt.setString(9, fechaLanzamiento);
 					prepStmt.executeUpdate();
 					prepStmt.close();
-					System.out.println(String.format("Pelicula  %s INSERTADA", titulo));
 
 					// Ya tenemos todos los datos, creamos la pelicula.
 
@@ -203,7 +203,6 @@ public class InitDatabase {
 					prepStmt.setBoolean(9, emmy);
 					prepStmt.setString(10, fechaLanzamiento);
 					prepStmt.executeUpdate();
-					System.out.println(String.format("Serie %s INSERTADA", titulo));
 					prepStmt.close();
 
 					// Ya tenemos todos los datos, creamos la serie .
@@ -220,86 +219,11 @@ public class InitDatabase {
 		}
 	}
 	
-	public List<Contenido> obtenerContenidos() {
-		List<Contenido> contenidos = new ArrayList<>();
-		
-		try {
-			Connection con = DriverManager.getConnection(CONNECTION_STRING);
-			// Consultar películas
-	        String sqlPelicula = "SELECT * FROM PELICULA";
-	        PreparedStatement stmtPelicula = con.prepareStatement(sqlPelicula);
-	        ResultSet rsPelicula = stmtPelicula.executeQuery();
-	        
-	        
-	        
-	        while (rsPelicula.next()) {
-	        	Genero generoPeli = Genero.valueOf(rsPelicula.getString("GENERO").toUpperCase());
-	        	
-	        	Pelicula pelicula = new Pelicula(rsPelicula.getInt("ID"), 
-	        										Contenido.TIPO.PELICULA, 
-	        										rsPelicula.getString("TITULO"), 
-	        										generoPeli, 
-	        										rsPelicula.getInt("DURACION"), 
-	        										rsPelicula.getInt("CALIFICACION"), 
-	        										rsPelicula.getString("DISTRIBUIDORA"), 
-	        										rsPelicula.getInt("EDADRECOMENDADA"), 
-	        										rsPelicula.getBoolean("OSCAR"), 
-	        										rsPelicula.getString("CARATULA"));
-	        	
-	        	
-	        	System.out.println(pelicula);
-	        	contenidos.add(pelicula);
-	        }
-	        
-	        rsPelicula.close();
-	        stmtPelicula.close();
-	        
-	     // Consultar series
-	        String sqlSerie = "SELECT * FROM SERIE";
-	        PreparedStatement stmtSerie = con.prepareStatement(sqlSerie);
-	        ResultSet rsSerie = stmtSerie.executeQuery();
-	        
-	        
-	        
-	        while(rsSerie.next()) {
-	        	Genero generoSerie = Genero.valueOf(rsSerie.getString("GENERO").toUpperCase());
-	        	
-	        	Serie serie = new Serie(rsSerie.getInt("ID"),
-	                    				Contenido.TIPO.SERIE, 
-	        							rsSerie.getString("TITULO"), 
-	        							generoSerie, 
-	        							rsSerie.getInt("DURACION"), 
-	        							rsSerie.getString("DISTRIBUIDORA"), 
-	        							rsSerie.getInt("EDADRECOMENDADA"), 
-	        							rsSerie.getString("CARATULA"), 
-	        							rsSerie.getInt("NUMEROEPISODIOS"), 
-	        							rsSerie.getInt("NUMEROTEMPORADAS"), 
-	        							rsSerie.getBoolean("EMMY"));
-	        	
-	        	System.out.println(serie);
-	        	contenidos.add(serie);
-	        }
-			
-	        rsSerie.close();
-	        stmtSerie.close();
-
-	        con.close();
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return contenidos;
-		
-	}
 
 	public static void main(String[] args) {
-		InitDatabase db = new InitDatabase();
+		InitDatabase db = new InitDatabase();	
 		db.crearTablas();
 		db.insertarSeriesYPeliculasDefault();
-		List<Contenido> contenidos = db.obtenerContenidos();
-		System.out.println(contenidos);
 	    
 
 	}
