@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import domain.Contenido;
 import domain.Contenido.Genero;
+import domain.Contenido.TIPO;
 import domain.Pelicula;
 import domain.Serie;
 
@@ -45,58 +46,58 @@ public class VentanaCatalogo extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	
-	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
-		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
-		File f = new File("resources/data/contenido.csv");
-		ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
-		
-		try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-				String linea = sc.nextLine();
-				String[] campos = linea.split(";");
-				String tipo = campos[0];
-				int codigo = Integer.parseInt(campos[1]);
-				String nombre = campos[2];
-				Genero genero = Genero.valueOf(campos[3]);
-				double duracion = Double.parseDouble(campos[4]);
-				int calificacion = Integer.parseInt(campos[5]);
-				String distribuidora = campos[6];
-				int edad = Integer.parseInt(campos[7]);
-				String premios = campos[8];
-			//	Abría que añadir un campos[9] que sea la ubicación de la imagen poster
-				
-				Contenido nuevo;
-				
-				if(tipo.equals("Pelicula")) {
-					double facturacion = Double.parseDouble(campos[9]);
-					nuevo = new Pelicula(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, facturacion);
-				}
-				else {
-					int numTemporadas = Integer.parseInt(campos[9]);
-					int numCapitulos = Integer.parseInt(campos[10]);
-					nuevo = new Serie(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, numTemporadas, numCapitulos);
-				}
-				
-				contenidos.add(nuevo);
-				
-				
-				
-			}
-			sc.close();
+//	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
+//		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
+//		File f = new File("resources/data/contenido.csv");
+//		ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
+//		
+//		try {
+//			Scanner sc = new Scanner(f);
+//			while(sc.hasNextLine()) {
+//				String linea = sc.nextLine();
+//				String[] campos = linea.split(";");
+//				String tipo = campos[0];
+//				int codigo = Integer.parseInt(campos[1]);
+//				String nombre = campos[2];
+//				Genero genero = Genero.valueOf(campos[3]);
+//				double duracion = Double.parseDouble(campos[4]);
+//				int calificacion = Integer.parseInt(campos[5]);
+//				String distribuidora = campos[6];
+//				int edad = Integer.parseInt(campos[7]);
+//				String premios = campos[8];
+//			//	Abría que añadir un campos[9] que sea la ubicación de la imagen poster
+//				
+//				Contenido nuevo;
+//				
+//				if(tipo.equals("Pelicula")) {
+//					double facturacion = Double.parseDouble(campos[9]);
+//					nuevo = new Pelicula(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, facturacion);
+//				}
+//				else {
+//					int numTemporadas = Integer.parseInt(campos[9]);
+//					int numCapitulos = Integer.parseInt(campos[10]);
+//					nuevo = new Serie(tipo, codigo, nombre, genero, duracion, calificacion, distribuidora, edad, premios, null, numTemporadas, numCapitulos);
+//				}
+//				
+//				contenidos.add(nuevo);
+//				
+//				
+//				
+//			}
+//			sc.close();
+//			
+//			crearMapa(contenidos, mapaPrueba);
 			
-			crearMapa(contenidos, mapaPrueba);
 			
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(contenidos);
-		mapaContenido = crearMapa(contenidos, mapaPrueba);
-		System.out.println(mapaContenido);
-		return mapaPrueba;
-	}
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(contenidos);
+//		mapaContenido = crearMapa(contenidos, mapaPrueba);
+//		System.out.println(mapaContenido);
+//		return mapaPrueba;
+//	}
 	
 	public static HashMap<String, ArrayList<Contenido>> crearMapa(ArrayList<Contenido> contenidos, HashMap<String, ArrayList<Contenido>> mapa) {
 		for (Contenido contenido : contenidos) {
@@ -111,12 +112,12 @@ public class VentanaCatalogo extends JFrame {
 		
 	}
 
-	List<Contenido> contenidos = List.of(
-			new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
-			new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
-			new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
-			
-			);
+//	List<Contenido> contenidos = List.of(
+//			new Pelicula("Peli", 1, "Pelicula1", Genero.TERROR, 90.5, 6, "Marvel", 13, "Ninguno", null, 10000.40),
+//			new Pelicula("Peli", 2, "Pelicula2", Genero.ACCION, 80, 7, "Marvel", 18, "Ninguno", null, 20000.40),
+//			new Serie("Serie", 1, "Serie1", Genero.AVENTURA, 40, 8, "Fox", 16, "Ninguno", null, 3, 8)
+//			
+//			);
 
 	public VentanaCatalogo() {
 		
@@ -131,7 +132,8 @@ public class VentanaCatalogo extends JFrame {
 	
 		
 		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
-		mapaConts = cargarContenido();
+		//mapaConts = cargarContenido();
+		mapaContenido = new HashMap<>();
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -256,7 +258,7 @@ public class VentanaCatalogo extends JFrame {
 					ArrayList<Contenido> contents = mapaContenido.get(conts);
 					
 					for (Contenido contenido : contents) {
-						if (contenido.getTipo().equalsIgnoreCase("Pelicula")) {
+						if (contenido.getTipo().equals(TIPO.PELICULA)) {
 		                    // Buscamos el botón asociado a este contenido y lo añadimos al panel
 		                    for (JButton boton : botonesBusc) {
 		                        if (boton.getText().equals(contenido.getTitulo())) {
@@ -285,7 +287,7 @@ public class VentanaCatalogo extends JFrame {
 					ArrayList<Contenido> contents = mapaContenido.get(conts);
 					
 					for (Contenido contenido : contents) {
-						if (contenido.getTipo().equalsIgnoreCase("Serie")) {
+						if (contenido.getTipo().equals(TIPO.SERIE)) {
 		                    // Buscamos el botón asociado a este contenido y lo añadimos al panel
 		                    for (JButton boton : botonesBusc) {
 		                        if (boton.getText().equals(contenido.getTitulo())) {

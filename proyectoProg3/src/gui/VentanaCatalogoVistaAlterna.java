@@ -38,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import db.InitDatabase;
 import domain.Contenido;
 import domain.Pelicula;
 import domain.Serie;
@@ -53,6 +54,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	
 	protected static HashMap<String, ArrayList<Contenido>> mapaContenido;
 	protected List<Contenido> contenidos;
+	protected List<Contenido> contenidosBD;
 	protected DefaultListModel<Contenido> modeloLista;
 	protected JList<Contenido> listaContenidos;
 	protected DefaultListModel<Contenido> modelo;
@@ -68,6 +70,9 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 //		mapaContenido = VentanaCatalogo.cargarContenido();
 //		System.out.println(mapaContenido);
+		
+		InitDatabase db = new InitDatabase();
+        contenidosBD = db.obtenerContenidos();
 		
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -135,8 +140,10 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				
 				);
 		
+		
+		
 		modeloLista = new DefaultListModel<Contenido>();
-		modeloLista.addAll(contenidos);
+		modeloLista.addAll(contenidosBD);
 		
 		//Ej 2.1
 		listaContenidos = new JList<Contenido>(modeloLista);
@@ -447,11 +454,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                 return "El romance explora historias de amor y relaciones sentimentales.";
             default:
                 return "Descripción no disponible para este género.";
+        	}
         }
+	
+	public void mostrarContenidos() {
+        // Recorremos y mostramos los contenidos en la consola, o los cargamos en la interfaz
+        for (Contenido contenido : contenidos) {
+            System.out.println(contenido);
         }
+    }
 
 	public static void main(String[] args) {
-		new VentanaCatalogoVistaAlterna();
+		VentanaCatalogoVistaAlterna ventana = new VentanaCatalogoVistaAlterna();
+        ventana.mostrarContenidos();
 
 	}
 
