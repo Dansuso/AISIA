@@ -11,11 +11,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
 
-import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
 
 import java.sql.Statement;
-import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS

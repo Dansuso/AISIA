@@ -9,9 +9,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -20,6 +24,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -34,9 +39,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import domain.Noticia;
-import domain.Pelicula;
 import domain.Post;
 
 /**
@@ -88,24 +97,28 @@ public class VentanaFeed extends VentanaBase {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private String[] nombreColumnas = { "Posicion", "Nombre", "Recaudacion", "Distribuidora", "Fecha", "Genero" };
-		private List<Pelicula> peliculas;
+		private String[] nombreColumnas = { "Posicion", "Nombre", "Recaudacion"};
+		private LinkedHashMap<String,String> recaudacionPorPelicula;
+		private List<String> peliculas = new ArrayList<String>();
 
 		/**
 		 * Constructor del TableModel
+		 * @param <T>
 		 * 
 		 * @param peliculas Una lista de Peliculas para que se muestren en la tabla
 		 */
-		public PeliculaTableModel(List<Pelicula> peliculas) {
-			this.peliculas = peliculas;
+		public  PeliculaTableModel(LinkedHashMap<String, String> recaudacionPorPelicula) {
+			this.recaudacionPorPelicula = recaudacionPorPelicula;
+			peliculas.addAll(recaudacionPorPelicula.keySet());
 		}
-
+			
 		@Override
 		public int getRowCount() {
 			// TODO Auto-generated method stub
-			return peliculas.size();
+			return recaudacionPorPelicula.size();
 		}
-
+		
+	
 		@Override
 		public int getColumnCount() {
 			// TODO Auto-generated method stub
@@ -120,22 +133,17 @@ public class VentanaFeed extends VentanaBase {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			// Elegimos la pelicula
-			Pelicula pelicula = peliculas.get(rowIndex);
+			
+
 
 			switch (columnIndex) {
 			case 0:
-				return rowIndex;
+				return rowIndex +1;
 			case 1:
-				return pelicula.getTitulo();
+				return  peliculas.get(rowIndex);
 			case 2:
-				return pelicula.getFacturacionTaquilla();
-			case 3:
-				return pelicula.getDistribuidora();
-			case 4:
-				return "2023"; // TODO: Añadir campo de Fecha
-			case 5:
-				return pelicula.getGenero(); // TODO GENERO DEBERIA SER UN ENUM.
+				return recaudacionPorPelicula.get(peliculas.get(rowIndex));
+		
 
 			}
 			return null;
@@ -149,6 +157,11 @@ public class VentanaFeed extends VentanaBase {
 	 */
 
 	private static final long serialVersionUID = 1L;
+	private JTable tablaTaquilla;
+	private LinkedHashMap<String,String> recaudacionPorPelicula = new LinkedHashMap<String, String>();
+	private JComboBox<String> comboBoxAnos;
+	private JLabel labelTaquilla; 
+ 
 
 	/**
 	 * Constructor de la ventana de la Feed
@@ -351,11 +364,49 @@ public class VentanaFeed extends VentanaBase {
 			}
 
 		});
+		
+		
+		
 
 		paneNoticias.add("Noticias", listaNoticias);
 
 		// PANEL DE TAQUILLA
 		JPanel panelTaquilla = new JPanel(new BorderLayout());
+		labelTaquilla = new JLabel("s");
+		labelTaquilla.setFont(new Font("Arial", Font.BOLD, 40));
+		panelTaquilla.add(labelTaquilla,BorderLayout.SOUTH);
+		String[] anos = {"2019","2020","2021","2022","2023","2024"};
+		comboBoxAnos = new JComboBox<String>(anos);
+	
+		panelTaquilla.add(comboBoxAnos,BorderLayout.NORTH);
+		
+	Thread t1 = new Thread(new Runnable() {	
+			@Override
+			public void run() {
+			peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());
+			}
+		}); 
+		t1.start();
+		
+		
+	comboBoxAnos.addItemListener((e) -> {
+		comboBoxAnos.setEnabled(false);
+		Thread t2 = new Thread(() -> {
+			try {
+				t1.join();
+				peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());
+
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		});
+		
+		t2.start();
+
+		});
+		
 
 		// HEADER DEL PANEL
 		JLabel labelTituloTaquilla = new JLabel("Taquilla", SwingConstants.CENTER);
@@ -364,32 +415,22 @@ public class VentanaFeed extends VentanaBase {
 		// panelTaquilla.add(labelTituloTaquilla,BorderLayout.NORTH);
 
 		// TABLA
+		
 
-		List<Pelicula> peliculas = List.of(
-				new Pelicula("Cine", 1, "El Señor de los Anillos: La Comunidad del Anillo", "Fantasía", 178.0, 91,
-						"New Line Cinema", 13, "Oscar", null, 871.5),
-				new Pelicula("Cine", 2, "Titanic", "Romance", 195.0, 89, "20th Century Fox", 13, "Oscar", null, 2200.0),
-				new Pelicula("Cine", 3, "Inception", "Ciencia Ficción", 148.0, 87, "Warner Bros.", 13, "Oscar", null,
-						829.9),
-				new Pelicula("Cine", 4, "The Dark Knight", "Acción", 152.0, 94, "Warner Bros.", 13, "Oscar", null,
-						1004.9),
-				new Pelicula("Cine", 5, "Toy Story", "Animación", 81.0, 100, "Pixar", 6, "Oscar", null, 373.6),
-				new Pelicula("Cine", 6, "Forrest Gump", "Drama", 142.0, 88, "Paramount Pictures", 13, "Oscar", null,
-						678.2),
-				new Pelicula("Cine", 7, "Avatar", "Ciencia Ficción", 162.0, 82, "20th Century Fox", 13, "Oscar", null,
-						2847.2),
-				new Pelicula("Cine", 8, "Gladiator", "Histórica", 155.0, 77, "Universal Pictures", 16, "Oscar", null,
-						460.5),
-				new Pelicula("Cine", 9, "Jurassic Park", "Aventura", 127.0, 91, "Universal Pictures", 13, "Oscar", null,
-						1029.2),
-				new Pelicula("Cine", 10, "The Matrix", "Ciencia Ficción", 136.0, 87, "Warner Bros.", 16, "Oscar", null,
-						466.3));
+		
+		
 
-		JTable tablaTaquilla = new JTable(new PeliculaTableModel(peliculas));
+		
+
+		tablaTaquilla = new JTable(new PeliculaTableModel(recaudacionPorPelicula));
+		tablaTaquilla.setRowHeight(20);
+		
 
 		// Renderer para las Columnas
 
 		JTableHeader headerTabla = tablaTaquilla.getTableHeader();
+		//NO permitir que se puedan reordenar las columnas.
+		headerTabla.setReorderingAllowed(false);
 		/**
 		 * Renderer para los Headers
 		 */
@@ -412,85 +453,48 @@ public class VentanaFeed extends VentanaBase {
 
 		});
 
-		/**
-		 * Renderer para la columna "Recaudacion. Mostrara en color dorado las peliculas
-		 * que superan 1000 millones en recaudacion
-		 */
-
-		tablaTaquilla.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
-
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				JLabel recaudacionLabel = (JLabel) c;
-
-				// Sabemos que el value es un numero
-
-				if (((Double) value) > 1000.0) {
-					recaudacionLabel.setForeground(new Color(218, 165, 32)); //COLOR DORADO
-				}
-				// IMPORTANTE! Hay que tener una clausula ELSE, si no todos los colores seran
-				// Dorados
-				// Al parecer, TableCellRender REUSA El LABEL, no es un LABEL distinto.
-				//Asi que hay que RESETEAR el valor
-
-				else {
-					recaudacionLabel.setForeground(Color.BLACK); // Reset to black for lower values
-				}
-				
-				
-				//Por defecto nuestros renderer van  a alternar el color cada fila.
-				//Pero como la columna 2 tiene su propio renderer, no le afecta.
-				//Por eso añadimos explicitamente
-				
-				if (row % 2 == 0) {
-		            recaudacionLabel.setBackground(Color.WHITE);
-		        } else {
-		            recaudacionLabel.setBackground(new Color(240, 240, 240)); //Gris CLARO
-		        }
-				
-
-				return recaudacionLabel;
-			}
-
-		});
+	
 		
 		/**
 		 * Renderer para cada fila vaya alternando de color
 		 */
-		
-		tablaTaquilla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-
+	
+		tablaTaquilla.setDefaultRenderer(Object.class, new TableCellRenderer() {
+			
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				// TODO Auto-generated method stub
-				Component c =	super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
 				
-				//Casteamos el componente a un JLabel
+				JLabel label = new JLabel(value.toString());
+				label.setOpaque(true);
+				//Fuente por defecto
+				label.setFont(table.getFont());
 				
-				JLabel label = (JLabel) c;
-				//Si es par...
-				if(row % 2 == 0) {
-					label.setBackground(Color.white);
+			
+				
+				
+				if(column == 2) {
+					//Convertimos el value en un Double
+					//Sabemos que es un STRING, pero primero le quitamos 
+					String valueCadena = (String) value;
+					String valueSinDolar = valueCadena.replace("$","").replace(",","");
+				
+					Double recuadacionValor = Double.parseDouble(valueSinDolar);
+					//Si la recaudacion es mayor a  $1.000.0000.000 (Mil millones)
+					if(recuadacionValor > 1000000000) {
+						label.setBackground(Color.yellow);
+						
+					}
+					
 					
 				}
-				//Sino
-				
-				else {
-					label.setBackground(new Color(240,240,240));
-				}
-				
 				
 				
 				return label;
 			}
-		
-			
-			
 		});
+			
+		
 		
 		
 
@@ -505,6 +509,59 @@ public class VentanaFeed extends VentanaBase {
 
 		return panelNoticias;
 
+	}
+	/**
+	 * Metodo que 
+	 * @return Lista de las 10 peliculas mas taquilleras del Mundo este año.
+	 */
+
+	private void peliculasTaquillaScrapping(String ano) {
+	
+		SwingUtilities.invokeLater(() -> labelTaquilla.setText("CARGANDO TAQUILLA"));
+		//BORRAMOS EL MAPA POR DEFECTO
+		recaudacionPorPelicula.clear();
+	
+	
+		try {
+			 File logFile = new File("scrape_output.txt");
+	            PrintStream ps = new PrintStream(logFile);
+	           // System.setOut(ps);  //DEBUGGING
+			//Devuelve el HTML de la lista de peliculas más taquilleras.
+			//Despues de scrappearlo, hay que parsearlo para obtener los datos que nos interesan.
+			Document doc = Jsoup.connect("https://www.boxofficemojo.com/year/world/" + ano).get();
+			//Vamos a obtener SOLO LOS NOMBRES
+			Elements filas = doc.select("#table tbody tr"); 
+			//"#table tbody tr td.a-text-left.mojo-field-type-release_group a"
+			//Vamos a sacar los trs del 1-10 que son el TOP 10
+			//TODO : Sacar los <a> igual puede ser una buena opcion para sacar el nombre de la pelicula
+			//TODO: Hay que sacar tambien el DISTRIBUIDOR. Para ello haremos una llamada de API a ombdapi
+			for(int i = 1; i <= 10;i++) {
+				//Por cada fila obtener el NOMBRE de la pelicula, y el dinero recaudado (En todo el mundo
+				String nombrePelicula = filas.get(i).select("td.a-text-left.mojo-field-type-release_group a").text();
+				String recaudacion = filas.get(i).selectFirst("td.a-text-right.mojo-field-type-money").text();
+				
+				
+				
+				recaudacionPorPelicula.put(nombrePelicula, recaudacion);
+			
+			}
+			System.out.println(recaudacionPorPelicula);
+		    tablaTaquilla.setModel(new PeliculaTableModel(recaudacionPorPelicula));
+			SwingUtilities.invokeLater(() -> labelTaquilla.setText(""));
+			SwingUtilities.invokeLater(()-> comboBoxAnos.setEnabled(true));
+
+			//PARSEAR
+			
+			
+			
+			
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// TODO Auto-generated method stub
 	}
 
 	public static void main(String[] args) {
