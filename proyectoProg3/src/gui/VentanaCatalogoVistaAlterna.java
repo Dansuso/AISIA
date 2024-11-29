@@ -1,4 +1,4 @@
-package gui;
+	package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import db.GestorDB;
 import db.InitDatabase;
 import domain.Contenido;
 import domain.Pelicula;
@@ -53,7 +54,6 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	protected static HashMap<String, ArrayList<Contenido>> mapaContenido;
-	protected List<Contenido> contenidos;
 	protected List<Contenido> contenidosBD;
 	protected DefaultListModel<Contenido> modeloLista;
 	protected JList<Contenido> listaContenidos;
@@ -71,7 +71,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 //		mapaContenido = VentanaCatalogo.cargarContenido();
 //		System.out.println(mapaContenido);
 		
-		InitDatabase db = new InitDatabase();
+		GestorDB db = new GestorDB();
         contenidosBD = db.obtenerContenidos();
 		
 		
@@ -125,20 +125,6 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		panelSuperior.add(titulo, BorderLayout.NORTH);
 		panelSuperior.add(barraCatalogo, BorderLayout.WEST);
 		
-		contenidos = List.of(
-				
-				new Pelicula(1, TIPO.PELICULA, "Pelicula1", Genero.ACCION, 90, 8, "Marvel", 13, true, ""),
-				new Pelicula(2, TIPO.PELICULA, "Pelicula2", Genero.TERROR, 90, 8, "Marvel", 13, true, ""),
-				new Pelicula(3, TIPO.PELICULA, "Pelicula3", Genero.AVENTURA, 90, 8, "Marvel", 13, false, ""),
-				new Pelicula(4, TIPO.PELICULA, "Pelicula4", Genero.COMEDIA, 90, 8, "Marvel", 13, true, ""),
-				new Serie(1, TIPO.SERIE, "Serie1", Genero.ACCION, 30, "Fox", 13, "", 2, 2, true),
-				new Pelicula(5, TIPO.PELICULA, "Pelicula5", Genero.DRAMA, 90, 8, "Marvel", 13, true, ""),
-				new Pelicula(6, TIPO.PELICULA, "Pelicula6", Genero.FANTASIA, 90, 8, "Marvel", 13, false, ""),
-				new Serie(2, TIPO.SERIE, "Serie2", Genero.DRAMA, 20, "Fox", 13, "", 2, 2, false),
-				new Pelicula(7, TIPO.PELICULA, "Pelicula7", Genero.ROMANCE, 90, 8, "Marvel", 13, true, ""),
-				new Serie(3, TIPO.SERIE, "Serie3", Genero.FANTASIA, 40, "DC", 13, "", 2, 2, true)
-				
-				);
 		
 		
 		
@@ -459,7 +445,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	
 	public void mostrarContenidos() {
         // Recorremos y mostramos los contenidos en la consola, o los cargamos en la interfaz
-        for (Contenido contenido : contenidos) {
+        for (Contenido contenido : contenidosBD) {
             System.out.println(contenido);
         }
     }

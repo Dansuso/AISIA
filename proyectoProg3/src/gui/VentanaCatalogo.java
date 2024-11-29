@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import db.GestorDB;
+import db.InitDatabase;
 import domain.Contenido;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
@@ -45,6 +49,7 @@ public class VentanaCatalogo extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	//TODO 
 	
 //	public static HashMap<String, ArrayList<Contenido>> cargarContenido() {
 //		HashMap<String, ArrayList<Contenido>> mapaPrueba = new HashMap<>();
@@ -212,16 +217,24 @@ public class VentanaCatalogo extends JFrame {
 		
 		
 		
+		//Sacamos el contenido
+		GestorDB db = new GestorDB();
+		List<Contenido> contenidos = db.obtenerContenidos();
+		
+
 		panelGrid = new JPanel();
-		panelGrid.setLayout((new GridLayout(4,2,10,10)));
+		panelGrid.setLayout((new GridLayout(contenidos.size() / 2,2,10,10)));
 		add(panelGrid, BorderLayout.CENTER);
+		
 		
 		
 		//Añadir los botones al panel con el nombre de cada contenido
 		botonesBusc = new ArrayList<>(); //Uso del array para tener los botones guardados y usarlos en el filtro
-        for (String contenido : mapaContenido.keySet()) {
-            JButton botones = new JButton(contenido);  // Asignar el contenido directamente
+        for (Contenido c : contenidos) {
+        	
+            JButton botones = new JButton(c.getTitulo());  // Asignar el contenido directamente
             botones.setBackground(Color.LIGHT_GRAY);
+            botones.setPreferredSize(new Dimension(100,100));
             botonesBusc.add(botones);
 
             // Añadir el ActionListener al botón
