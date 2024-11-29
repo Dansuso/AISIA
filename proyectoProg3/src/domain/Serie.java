@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Serie extends Contenido {
@@ -16,8 +17,8 @@ public class Serie extends Contenido {
 		this.emmy = emmy;
 	}
 	public Serie(int id, TIPO tipo, String titulo, Genero genero, int calificacion, String distribuidora,
-			int edadRecomendada, String caratula, int numTemporadas, int numCapitulos, boolean emmy) {
-		super(id, tipo, titulo, genero, calificacion, distribuidora, edadRecomendada, caratula);
+			int edadRecomendada, String caratula, int numTemporadas, int numCapitulos, boolean emmy,LocalDate fecha) {
+		super(id, tipo, titulo, genero, calificacion, distribuidora, edadRecomendada, caratula,fecha);
 		this.numTemporadas = numTemporadas;
 		this.numCapitulos = numCapitulos;
 		this.emmy = emmy;

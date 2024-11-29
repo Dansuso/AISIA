@@ -1,9 +1,6 @@
 package domain;
 
-import java.util.Objects;
-
-import domain.Contenido.Genero;
-import domain.Contenido.TIPO;
+import java.time.LocalDate;
 
 public class Pelicula extends Contenido {
 
@@ -11,9 +8,9 @@ public class Pelicula extends Contenido {
 	protected int duracion;
 
 	public Pelicula(int id,TIPO tipo, String titulo, Genero genero, int duracion, int calificacion,
-			String distribuidora, int edadRecomendada, boolean oscar, String caratula) {
+			String distribuidora, int edadRecomendada, boolean oscar, String caratula,LocalDate fecha) {
 		super(id,tipo, titulo, genero, calificacion, distribuidora, edadRecomendada,
-		caratula);
+		caratula,fecha);
 		this.oscar = oscar;
 		this.duracion = duracion;
 	}

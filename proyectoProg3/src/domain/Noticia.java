@@ -6,7 +6,6 @@ public class Noticia {
 	
 	private String url;
 	private String fuente;
-	private String tipo;
 	
 	
 	public Noticia(String titulo, String resumen, String url, String fuente) {
@@ -43,8 +42,7 @@ public class Noticia {
 	}
 	@Override
 	public String toString() {
-		return "Noticia [titulo=" + titulo + ", resumen=" + resumen + ", url=" + url + ", fuente=" + fuente + ", tipo="
-				+ tipo + "]";
+		return "Noticia [titulo=" + titulo + ", resumen=" + resumen + ", url=" + url + ", fuente=" + fuente + "]";
 	}
 	
 	

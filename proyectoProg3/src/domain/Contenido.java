@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Contenido {
@@ -19,9 +20,10 @@ public abstract class Contenido {
 	protected String distribuidora;
 	protected int edadRecomendada;
 	protected String caratula;
+	protected LocalDate fecha;
 	
 	public Contenido(int id,TIPO tipo, String titulo, Genero genero, int calificacion,
-			String distribuidora, int edadRecomendada, String caratula) {
+			String distribuidora, int edadRecomendada, String caratula,LocalDate fecha) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -31,6 +33,7 @@ public abstract class Contenido {
 		this.distribuidora = distribuidora;
 		this.edadRecomendada = edadRecomendada;
 		this.caratula = caratula;
+		this.fecha = fecha;
 	}
 	
 	
