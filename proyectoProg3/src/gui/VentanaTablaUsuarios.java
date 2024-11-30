@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -33,8 +35,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
@@ -49,6 +53,8 @@ public class VentanaTablaUsuarios extends JFrame {
     protected HashMap<String, String> mapa;
     private int filaMouseOver = -1;
 	private int callMouseOver = -1;
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField searchField;
   
     
 	
@@ -81,18 +87,41 @@ public class VentanaTablaUsuarios extends JFrame {
 	        // Inicializar la tabla
 	        tabla = new JTable(model);
 	        
-	     // Activar ordenamiento al hacer clic en los encabezados
-	        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+	        sorter = new TableRowSorter<>(model);
 	        tabla.setRowSorter(sorter);
 
-	        // Listener para detección del mouse
-	        tabla.addMouseListener(new MouseAdapter() {
+	        // Crear un campo de texto para la búsqueda
+	        searchField = new JTextField(20);
+	        searchField.setToolTipText("Buscar por nombre...");
+	        searchField.addKeyListener(new KeyAdapter() {
 	            @Override
-	            public void mouseExited(MouseEvent e) {
-	                filaMouseOver = -1;
-	                tabla.repaint();
+	            public void keyReleased(KeyEvent e) {
+	                String query = searchField.getText().toLowerCase();
+	                
+	                // Si la consulta está vacía, no aplicamos el filtro
+	                if (query.trim().isEmpty()) {
+	                    sorter.setRowFilter(null);  // Mostrar todo si no hay filtro
+	                } else {
+	                    // Filtro usando la expresión regular
+	                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 0)); // "(?i)" hace que la búsqueda no distinga entre mayúsculas/minúsculas
+	                }
 	            }
 	        });
+
+	        // Agregar el campo de texto para búsqueda al panel superior
+	        JPanel searchPanel = new JPanel();
+	        searchPanel.setLayout(new FlowLayout());
+	        searchPanel.add(new JLabel("Buscar por Nombre:"));
+	        searchPanel.add(searchField);
+
+	        // Panel para mostrar la tabla
+	        JScrollPane scroll = new JScrollPane(tabla);  // Esto solo debe aparecer una vez
+	        add(searchPanel, BorderLayout.NORTH);
+	        add(scroll, BorderLayout.CENTER);  // Aquí se agrega el JScrollPane a la ventana
+
+
+	  
+	        
 
 	        tabla.addMouseMotionListener(new MouseMotionAdapter() {
 	            @Override
@@ -128,15 +157,51 @@ public class VentanaTablaUsuarios extends JFrame {
 	            }
 	        });
 
-	        // Renderizador de celdas personalizado
-	        tabla.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
-	            JLabel label = new JLabel(value == null ? "" : value.toString());
-	            label.setFont(new Font("Arial", Font.PLAIN, 14));
-	            label.setOpaque(true);
-	            label.setBackground(row == filaMouseOver ? Color.CYAN : Color.WHITE);
-	            return label;
-	        });
+	        tabla.setDefaultRenderer(Object.class, new TableCellRenderer() {
+	            @Override
+	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	                JLabel label = new JLabel(value + "");
+	                label.setFont(new Font("Arial", Font.PLAIN, 14));
+	                label.setOpaque(true);
 
+	                // Cambiar el color de fondo cuando el ratón pasa por encima
+	                if (filaMouseOver == row) {
+	                    label.setBackground(Color.CYAN);
+	                } else {
+	                    label.setBackground(Color.WHITE); // Fondo por defecto
+	                }
+
+	                // Personalizar columna de contraseña
+	                if (column == 4) { // Contraseña
+	                    label.setForeground(Color.RED);
+	                    label.setText("******");
+	                }
+
+	                // Personalizar según la edad (columna 2)
+	                if (column == 2) {
+	                    try {
+	                        int edad = Integer.parseInt(value.toString());
+	                        if (edad > 65) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.YELLOW); // Amarillo para mayores de 65
+	                        } else if (edad < 25) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.GREEN); // Verde para menores de 25
+	                        } else {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.LIGHT_GRAY); // Gris para edades intermedias
+	                        }
+	                    } catch (NumberFormatException e) {
+	                        // Si no se puede convertir a número, no aplicar colores
+	                    }
+	                }
+
+	                // Si la celda es seleccionada, sobrescribe el color
+	                if (isSelected) {
+	                    label.setBackground(Color.LIGHT_GRAY);
+	                }
+
+	                return label;
+	            }
+	        });
+	        
 	        // Listeners para resaltar filas y columnas con el mouse
 	        tabla.addMouseListener(new MouseAdapter() {
 	            @Override
@@ -164,10 +229,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	       
 	       
 	        
-	        JScrollPane scroll = new JScrollPane(tabla);
-	        add(scroll, BorderLayout.CENTER);
-	        getContentPane().add(new JScrollPane(tabla), BorderLayout.CENTER);
-	        
+
 	      
 	        
 		
