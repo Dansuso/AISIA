@@ -162,6 +162,66 @@ public class GestorDB {
 		
 	}
 	
+	public List<String> obtenerPersonas() {
+	    List<String> personas = new ArrayList<>();
+	    String sql = "SELECT * FROM PERSONAS";
+
+	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	         PreparedStatement stmt = con.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            String persona = String.format(
+	                "ID: %d, Nombre: %s, Apellido: %s, Edad: %d, Email: %s",
+	                rs.getInt("ID"),
+	                rs.getString("NOMBRE"),
+	                rs.getString("APELLIDO"),
+	                rs.getInt("EDAD"),
+	                rs.getString("EMAIL")
+	            );
+	            personas.add(persona);
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener datos de la tabla PERSONAS: " + e.getMessage());
+	    }
+	    return personas;
+	}
+	
+	public void insertarPersona(int id, String nombre, String apellido, int edad, String email) {
+	    String sqlInsertPersona = """
+	        INSERT INTO PERSONAS (ID, NOMBRE, APELLIDO, EDAD, EMAIL)
+	        VALUES (?, ?, ?, ?, ?);
+	    """;
+
+	    try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
+	        prepStmt.setInt(1, id);
+	        prepStmt.setString(2, nombre);
+	        prepStmt.setString(3, apellido);
+	        prepStmt.setInt(4, edad);
+	        prepStmt.setString(5, email);
+	        prepStmt.executeUpdate();
+	        System.out.println("Persona insertada correctamente: " + nombre + " " + apellido);
+	    } catch (SQLException e) {
+	        System.err.println("Error al insertar persona: " + e.getMessage());
+	    }
+	}
+	
+	public void borrarPersona(int id) {
+	    String sqlDeletePersona = "DELETE FROM PERSONAS WHERE ID = ?";
+
+	    try (PreparedStatement prepStmt = con.prepareStatement(sqlDeletePersona)) {
+	        prepStmt.setInt(1, id);
+	        int rowsAffected = prepStmt.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("Persona con ID " + id + " eliminada correctamente.");
+	        } else {
+	            System.out.println("No se encontró una persona con ID " + id + ".");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al borrar persona: " + e.getMessage());
+	    }
+	}
+	
 	
 	
 

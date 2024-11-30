@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -42,6 +43,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import VentanaTabla.VentanaModificar;
 import domain.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
@@ -55,12 +57,12 @@ public class VentanaTablaUsuarios extends JFrame {
 	private int callMouseOver = -1;
 	private TableRowSorter<DefaultTableModel> sorter;
 	private JTextField searchField;
-  
+
     
 	
     
 
-	public VentanaTablaUsuarios(String [] datosUser) {
+	public VentanaTablaUsuarios(String[] vacio) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
@@ -69,18 +71,25 @@ public class VentanaTablaUsuarios extends JFrame {
 		
 		
 		
+		
 
-		        
+        // Crear un panel para la tabla
+      
+		
+		
 		  String[] colubnas = {"Nombre", "Apellido", "Edad","Correo", "Contraseña"};
 		  // Agregar algunas columnas a las tablas
 		// Crear modelos de tabla
-	    
-		 
+	
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
 	        cargarDatosCSV("resources/data/personas.csv", model);
 	        
-	        if (datosUser != null && datosUser.length == colubnas.length) {
-	            model.addRow(datosUser);
+	        
+	        
+	        
+	      
+			if (vacio != null && vacio.length == colubnas.length) {
+	            model.addRow(vacio);
 	        }
 	        
 	        
@@ -118,10 +127,17 @@ public class VentanaTablaUsuarios extends JFrame {
 	        JScrollPane scroll = new JScrollPane(tabla);  // Esto solo debe aparecer una vez
 	        add(searchPanel, BorderLayout.NORTH);
 	        add(scroll, BorderLayout.CENTER);  // Aquí se agrega el JScrollPane a la ventana
-
-
-	  
 	        
+	        JPanel panelTabla = new JPanel(new BorderLayout());
+	        panelTabla.add(searchPanel, BorderLayout.NORTH);
+	        panelTabla.add(new JScrollPane(tabla), BorderLayout.CENTER);
+	     // Añadir el panel de la tabla al JTabbedPane
+	        
+	    	setVisible(true);
+	     
+	        
+	       
+	       
 
 	        tabla.addMouseMotionListener(new MouseMotionAdapter() {
 	            @Override
@@ -220,20 +236,37 @@ public class VentanaTablaUsuarios extends JFrame {
 	                tabla.repaint();
 	            }
 	        });  
+	        
+
+	    	tabla.addMouseListener(new MouseAdapter() {
+	    		@Override
+	            public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+	    			
+	    		
+					
+					
+					int indice = tabla.getSelectedRow();
+	    			
+	    			String nombre = model.getValueAt(indice, 0).toString();
+	    			String apellidos = model.getValueAt(indice, 1).toString();
+	    			String edad = model.getValueAt(indice, 2).toString();
+	    			String Correo = model.getValueAt(indice, 3).toString();
+	    			String contraseña = model.getValueAt(indice, 2).toString();
+	    			
+	    			VentanaDatos modificar = new VentanaDatos(nombre,apellidos,edad,Correo,contraseña);
+					modificar.setVisible(true);
+					
+					
+	    		}
+	    	});
 
 	       
 	        
 	        guardarEnArchivo(model);
 	      	
-	      
-	       
-	       
-	        
-
-	      
-	        
-		
-		setVisible(true);
+	
+	
 		
 	    		
 		
@@ -304,11 +337,10 @@ public class VentanaTablaUsuarios extends JFrame {
 	    }
 
 	
-	public static void main(String[] args) {
-		String[] vacio = null;
-		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(vacio);
-		 
-    }
+	 public static void main(String[] args) {
+			String[] vacio = null;
+			 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(vacio);
+	 }
 
 	   
 }

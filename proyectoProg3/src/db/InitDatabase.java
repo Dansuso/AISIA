@@ -57,8 +57,9 @@ public class InitDatabase {
 			System.err.println("Error al cargar la libreria de JDBC");
 			e.printStackTrace();
 		}
-
 	}
+		
+
 
 	/**
 	 * Metodo que crea las tablas necesarias para el proyecto. Antes de nada, borra
@@ -107,6 +108,17 @@ public class InitDatabase {
 				    fuente TEXT NOT NULL	 
 				);
 				""";
+		
+		
+		 String sqlTablaPersonas = """
+			        CREATE TABLE IF NOT EXISTS PERSONAS (
+			            ID INTEGER PRIMARY KEY,
+			            NOMBRE TEXT NOT NULL,
+			            APELLIDO TEXT NOT NULL,
+			            EDAD INTEGER,
+			            EMAIL TEXT
+			        );
+			    """;
 	
 		// Nos conectamos a la base de datos
 
@@ -115,9 +127,11 @@ public class InitDatabase {
 			Statement stmt = con.createStatement();
 			stmt.execute("DROP TABLE IF EXISTS PELICULA");
 			stmt.execute("DROP TABLE IF EXISTS SERIE");
+			stmt.execute("DROP TABLE IF EXISTS PERSONAS");
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);
 			stmt.execute(sqlTablaNoticia);
+			stmt.execute(sqlTablaPersonas);
 			stmt.close();
 			con.close();
 			System.out.println("TABLAS CREADAS");
@@ -125,6 +139,9 @@ public class InitDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
 
 	}
 
@@ -217,6 +234,45 @@ public class InitDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void insertarPersonasDesdeCSV() {
+	    try (Scanner sc = new Scanner(new File("resources/data/personas.csv"))) {
+	        // Abro conexión con la base de datos
+	        con = DriverManager.getConnection(CONNECTION_STRING);
+
+	        // Nos saltamos la primera línea (cabecera)
+	        sc.nextLine();
+	        while (sc.hasNext()) {
+	            String linea = sc.nextLine();
+	            String[] campos = linea.split(";");
+	            String nombre = campos[0];
+	            String apellido = campos[1];
+	            int edad = Integer.parseInt(campos[2]);
+	            String email = campos[3];
+	            int id = Integer.parseInt(campos[4]);
+
+	            String sqlInsertPersona = """
+	                INSERT INTO PERSONAS (ID, NOMBRE, APELLIDO, EDAD, EMAIL)
+	                VALUES (?, ?, ?, ?, ?);
+	            """;
+
+	            try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
+	                prepStmt.setInt(1, id);
+	                prepStmt.setString(2, nombre);
+	                prepStmt.setString(3, apellido);
+	                prepStmt.setInt(4, edad);
+	                prepStmt.setString(5, email);
+	                prepStmt.executeUpdate();
+	            }
+	        }
+	        con.close();
+	        System.out.println("Datos del CSV insertados correctamente en la tabla PERSONAS.");
+	    } catch (FileNotFoundException e) {
+	        System.err.println("Archivo CSV no encontrado: " + e.getMessage());
+	    } catch (SQLException e) {
+	        System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
+	    }
 	}
 	
 
