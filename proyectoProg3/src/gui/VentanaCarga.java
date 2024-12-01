@@ -1,76 +1,73 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+public class VentanaCarga extends JFrame {
+    protected int cont = 0; // Contador del progreso
+    protected JProgressBar jProgressBar; // Barra de progreso
 
+    public VentanaCarga() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Cargar Pantalla");
+        setSize(240, 55);
 
-public class VentanaCarga extends JFrame{
-	protected javax.swing.Timer t;
-	protected ActionListener al;
-	protected int cont =0;
-	protected JProgressBar jProgressBar ;
-	protected JLabel jlabel;
-	public VentanaCarga() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Cargar Pantalla");
-		setSize(240,55);
-		
-		//Proyecto en el centro de la pantalla
-		this.setLocationRelativeTo(null);
-		
-		// Inicializamos el JProgressBar y lo agregamos a la ventana
-        jProgressBar = new JProgressBar(0, 100);  // Barra de progreso de 0 a 100
-        jProgressBar.setValue(cont);  // Valor inicial
-        jProgressBar.setStringPainted(true);  // Mostrar el valor en forma de texto
-        //jProgressBar.setBackground(Color.GREEN);
+        // Centrar la ventana
+        this.setLocationRelativeTo(null);
+
+        // Inicializamos el JProgressBar y lo agregamos a la ventana
+        jProgressBar = new JProgressBar(0, 100); // Barra de progreso de 0 a 100
+        jProgressBar.setValue(cont); // Valor inicial
+        jProgressBar.setStringPainted(true); // Mostrar el valor como texto
+
         // Añadir la barra de progreso al JFrame
         add(jProgressBar, BorderLayout.NORTH);
-        
-        
-		//Llamamos a la instancia de actrion Lisener
-		al = new ActionListener() {
-			
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				cont = cont +1;
-				
-				jProgressBar.setValue(cont);
-				 // Detener el temporizador cuando llega a 100
-               
-				 
-                if (cont >= 100) {
-                	//Se cierra el programa 
-                	
-                	VentanaInicio inicio = new VentanaInicio();
-                	setVisible(true);
-                	dispose();
-                    t.stop();
-                }
-			}
-		};
-		
-		t = new javax.swing.Timer(25, al);
-		t.start();
-		//pack();
-		setVisible(true);
-		
-		
-		
-		
-		
-		
-	}
 
-	public static void main(String[] args) {
-        new VentanaCarga();
-        
+        // Crear y lanzar el hilo
+        Thread hiloCarga = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (cont <= 100) {
+                    try {
+                        Thread.sleep(50); // Espera 50 ms entre incrementos
+                        cont++;
+                        jProgressBar.setValue(cont); // Actualizar barra
+
+                        // Mensajes en consola según el progreso
+                        if (cont == 0) {
+                            System.out.println("Programa iniciado...");
+                        } else if (cont == 50) {
+                            System.out.println("En proceso...");
+                        } else if (cont == 100) {
+                            System.out.println("Carga completa. Programa iniciado.");
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Una vez completado, mostrar una nueva ventana
+                abrirVentanaInicio();
+            }
+        });
+
+        hiloCarga.start(); // Iniciar el hilo
+        setVisible(true); // Mostrar la ventana
     }
 
+    /**
+     * Método para abrir la ventana inicial una vez completada la carga.
+     */
+    private void abrirVentanaInicio() {
+        // Simular la transición a una nueva ventana
+        System.out.println("Transición a la ventana de inicio...");
+        dispose(); // Cerrar la ventana actual
+        new VentanaInicio(); // Crear la nueva ventana (suponiendo que existe)
+    }
+
+    public static void main(String[] args) {
+        new VentanaCarga(); // Crear y mostrar la ventana de carga
+    }
 }
