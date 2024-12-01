@@ -1,4 +1,4 @@
-	package gui;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -405,7 +405,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	private void filtroContenidos(String text) {
     	modelo = new DefaultListModel<>();
     	
-		for (Contenido contenido : contenidos) {
+		for (Contenido contenido : contenidosBD) {
 			if(contenido.getTitulo().toLowerCase().contains(text.toLowerCase())) {
 				modelo.addElement(contenido);
 			}
