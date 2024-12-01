@@ -152,7 +152,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	    	JButton botonInsertar = new JButton("Insertar");
 	    	JButton botonEliminar = new JButton("Eliminar");
 	    	JButton botonGuardar = new JButton("Guardar");
-	    	JButton botonazar = new JButton("A lazar");
+	    	JButton botonazar = new JButton("Revisar");
 
 	    	JPanel panelBotones = new JPanel();
 	    	panelBotones.add(botonInsertar);
