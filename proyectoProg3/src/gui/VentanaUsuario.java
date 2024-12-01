@@ -168,7 +168,7 @@ public class VentanaUsuario extends JFrame{
 		panelPelis.add(etiquetaCaratula2, BorderLayout.EAST);
 		
 		// Creamos un JLabel con "Contenido Favorito".  
-		JLabel contenidoFavorito = new JLabel("Contenido favorito");
+		JLabel contenidoFavorito = new JLabel("Contenidos favoritos");
 		contenidoFavorito.setFont(new Font("Arial", Font.BOLD, 15));
 		panelPelis.add(contenidoFavorito, BorderLayout.NORTH);
 		
@@ -250,7 +250,7 @@ public class VentanaUsuario extends JFrame{
         
 	}
 	public static void main(String[] args) {
-		VentanaUsuario vu = new VentanaUsuario();
+		new VentanaUsuario();
 	}
 	
 }
