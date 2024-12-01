@@ -5,7 +5,11 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 public class VentanaCarga extends JFrame {
-    protected int cont = 0; // Contador del progreso
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected int cont = 0; // Contador del progreso
     protected JProgressBar jProgressBar; // Barra de progreso
 
     public VentanaCarga() {

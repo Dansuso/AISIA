@@ -28,6 +28,11 @@ import javax.swing.JTextField;
 
 
 public class VentanaInicio extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	protected 	Image fondo;
 	
 	//Añadimos el coreo y la contreseña a este mapa para luego preguntarle sio eesta 
@@ -85,7 +90,12 @@ public class VentanaInicio extends JFrame{
 		
 		 // Panel para la imagen de fondo
         JPanel mainPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen

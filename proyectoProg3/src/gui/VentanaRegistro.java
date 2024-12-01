@@ -25,6 +25,10 @@ import javax.swing.JTextField;
 
 public class VentanaRegistro extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private VentanaTablaUsuarios ventanaTabla;
 	
 	public VentanaRegistro() {
@@ -35,7 +39,12 @@ public class VentanaRegistro extends JFrame{
 		
 		// Panel para la imagen de fondo
         JPanel mainPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen

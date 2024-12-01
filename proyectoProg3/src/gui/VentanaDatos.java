@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaDatos extends JFrame {
-    private JTextField campoNombre;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField campoNombre;
     private JTextField campoApellidos;
     private JTextField campoEdad;
     private JTextField campoCorreo;

@@ -3,10 +3,10 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,46 +15,51 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Vector;
 
-import javax.swing.DefaultListModel;
+import java.util.HashMap;
+
+import java.util.Scanner;
+
+
+
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+
 import javax.swing.table.TableRowSorter;
 
 
 import domain.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
-	 private  DefaultTableModel model;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private  DefaultTableModel model;
 	
     private static  JTable tabla;
     protected JFrame frame;
     protected Usuario perso;
     protected HashMap<String, String> mapa;
     private int filaMouseOver = -1;
-	private int callMouseOver = -1;
+	//private int callMouseOver = -1;
 	private TableRowSorter<DefaultTableModel> sorter;
 	private JTextField searchField;
 
@@ -89,6 +94,11 @@ public class VentanaTablaUsuarios extends JFrame {
 	        // Crear modelo de tabla no editable
 	        DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
 	        
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 	            public boolean isCellEditable(int row, int column) {
@@ -256,7 +266,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	            @Override
 	            public void mouseExited(MouseEvent e) {
 	                filaMouseOver = -1;
-	                callMouseOver = -1;
+	                //callMouseOver = -1;
 	                tabla.repaint();
 	            }
 	        });
@@ -265,7 +275,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	            @Override
 	            public void mouseMoved(MouseEvent e) {
 	                filaMouseOver = tabla.rowAtPoint(e.getPoint());
-	                callMouseOver = tabla.columnAtPoint(e.getPoint());
+	               // callMouseOver = tabla.columnAtPoint(e.getPoint());
 	                tabla.repaint();
 	            }
 	        });  

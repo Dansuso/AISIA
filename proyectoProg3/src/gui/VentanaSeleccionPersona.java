@@ -7,7 +7,12 @@ import java.awt.event.ActionListener;
 
 public class VentanaSeleccionPersona extends JFrame {
     
-    // Lista de personas
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	// Lista de personas
     private String[] personas = {"Ana", "Carlos", "Juan", "Laura", "Miguel"};
     
     // Componentes de la ventana
