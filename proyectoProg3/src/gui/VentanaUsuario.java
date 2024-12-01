@@ -3,25 +3,18 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import domain.Usuario;
 import domain.Contenido;
@@ -43,7 +36,7 @@ public class VentanaUsuario extends JFrame{
 		setLayout(new GridLayout(3, 1));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Usuario");
-		setSize(640,640);
+		setSize(640, 900);
 		
 		// Creo un panel para añadir la foto de perfil y el nombre de usuario debajo de esa foto de perfil.
 		JPanel panelFotoNombre = new JPanel(new BorderLayout());
@@ -85,7 +78,7 @@ public class VentanaUsuario extends JFrame{
 		    nuevaVentana.setVisible(true);
 		});
 		
-		
+
 		botonEtiquetaFotoPerfil.add(etiquetaFotoPerfil);
 		botonEtiquetaFotoPerfil.setBackground(colorAisia);
 		
