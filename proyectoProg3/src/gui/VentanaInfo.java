@@ -49,7 +49,6 @@ public class VentanaInfo extends JFrame {
         JPanel panelTitulo = new JPanel();
         JLabel titulo = new JLabel("Titulo:");
         JLabel infoTitulo = new JLabel("DatosTitulo");
-        Font fuente = new Font("SansSerif", 24, Font.BOLD);
         panelTitulo.setLayout(new FlowLayout());
         panelTitulo.add(titulo);
         panelTitulo.add(infoTitulo);
