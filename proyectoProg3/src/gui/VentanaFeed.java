@@ -12,6 +12,10 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,6 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -196,12 +201,20 @@ public class VentanaFeed extends VentanaBase {
 		panelHeader.add(feedTitulo, BorderLayout.CENTER);
 
 		// PANEL ENVIO POSTS
-		JPanel panelPostTextArea = new JPanel(new BorderLayout());
-		// JTextArea con un padding tambien de 10 pixeles
-		JTextArea postTextArea = new JTextArea();
-		postTextArea.setRows(3);
-		// BOTON ENVIAR
+		
+	
 		JButton botonEnviar = new JButton("Enviar");
+		
+		JPanel panelPostTextArea = new JPanel(new BorderLayout());
+		JTextArea postTextArea = new JTextArea();
+		postTextArea.setRows(6);  
+		postTextArea.setLineWrap(true);
+		postTextArea.setWrapStyleWord(true);
+
+		panelPostTextArea.add(new JScrollPane(postTextArea), BorderLayout.CENTER);
+	
+		panelPostTextArea.add(botonEnviar, BorderLayout.SOUTH);
+		
 		// 29 161 242 es el codigo RGB del azul de Twitter
 		botonEnviar.setBackground(new Color(29, 161, 242));
 		botonEnviar.setForeground(Color.white);
@@ -216,22 +229,60 @@ public class VentanaFeed extends VentanaBase {
 		JPanel panelPosts = new JPanel();
 		panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 			JPanel panelPostIndividual = crearPost(
-					new Post(i, "Este es mi post numero " + i, null, 0, i, i, null, null));
+					new Post(i, "Este es mi post numero " + i, LocalDate.now(), 0, i, i, null, null));
 			panelPosts.add(panelPostIndividual);
 		}
 
 		JScrollPane scrollPosts = new JScrollPane(panelPosts);
+		
+		botonEnviar.addActionListener((e -> {
+			//SACAR HORA DEL POST (En Unix epoch)
+			
+			long horaPost = e.getWhen();
+			//Convertir a una fecha (LocalDate), a UTC!!! 
+			
+			LocalDate fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("UTC")).toLocalDate();
+		    if (!postTextArea.getText().trim().isEmpty()) {
+		        Post p = new Post(0, postTextArea.getText(),fechaPost, 0, 0, 0, null, null);
+		        JPanel p1 = crearPost(p);
+		        //SI panel posts tiene más de 5 componentes ( tiene paneles) 
+		        // borramos el primero, que es que se añadio primero. 
+		        //De esta forma no se llena de posts
+		        if (panelPosts.getComponentCount() >= 10) {
+		            panelPosts.remove(0);
+		        }
+		        
+		        panelPosts.add(p1);
+		        
+		        //Limpiar el JTextAREA despues de añadir dicho evento
+		        postTextArea.setText("");
+		        //Hacer que la ScrollBar este siempre abajo (Para ver el ultimo post)
+		        SwingUtilities.invokeLater(() -> {
+		            JScrollBar barraVertical = scrollPosts.getVerticalScrollBar();
+		            barraVertical.setValue(barraVertical.getMaximum());
+		        });
 
-		panelCentral.add(panelHeader, BorderLayout.NORTH);
-		panelCentral.add(panelPostTextArea, BorderLayout.CENTER);
-		panelCentral.add(scrollPosts, BorderLayout.SOUTH);
+		        // Revalidar y repintar 
+		        panelPosts.revalidate();
+		        panelPosts.repaint();
+
+		    }
+		}));
+		
+
+
+		panelCentral.add(panelPostTextArea, BorderLayout.NORTH);
+		panelCentral.add(scrollPosts, BorderLayout.CENTER);
 
 		// Añadimos al panel Principal todo
 		panelPrincipal.add(setupPanelNoticias(), BorderLayout.EAST);
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		
+		
 
 		// Despues de acabar toda la configuracion, añadimos el panel general a la
 		// ventana
@@ -242,6 +293,8 @@ public class VentanaFeed extends VentanaBase {
 		this.setVisible(true);
 
 	}
+
+
 
 	/**
 	 * Crear un Post/Publicacion. Esta funcion se encarga de crear un panel y llenar
@@ -254,7 +307,8 @@ public class VentanaFeed extends VentanaBase {
 	private JPanel crearPost(Post postEscrito) {
 		JPanel post = new JPanel(new BorderLayout(10, 15));
 		post.setBorder(new EmptyBorder(10, 10, 10, 10));
-		JLabel usuarioPost = new JLabel("Usuario");
+		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		JLabel usuarioPost = new JLabel("Usuario - " + postEscrito.getFechaPost().format(fechaFormato));
 		JTextArea mensajePost = new JTextArea(postEscrito.getContenido());
 		mensajePost.setBorder(new EmptyBorder(10, 10, 10, 10));
 		mensajePost.setEditable(false);
