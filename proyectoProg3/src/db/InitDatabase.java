@@ -146,8 +146,8 @@ public class InitDatabase {
 			prepStmt.executeUpdate();
 			
 			prepStmt.setString(1,"Tom Cruise Eyeing ‘Days of Thunder’ Sequel for Paramount");
-			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
-			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/");
+			prepStmt.setString(2,"The actor-producer is exploring a follow-up to his 1990 NASCAR racing film while also developing a ‘Top Gun: Maverick’ sequel and figuring out the future of the ‘Mission: Impossible' franchise");
+			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/tom-cruise-days-of-thunder-sequel-paramount-1236051723/");
 			prepStmt.setString(4, "THR");
 			prepStmt.executeUpdate();
 			
@@ -158,7 +158,7 @@ public class InitDatabase {
 			prepStmt.executeUpdate();
 			
 			prepStmt.setString(1,"How Netflix won the streaming wars");
-			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(2,"The company has staged a remarkable recovery since the ‘great correction’ of 2022 and now has the edge over Hollywood rivals");
 			prepStmt.setString(3, "https://www.ft.com/content/465a2d0d-8973-4d8d-827d-8729737e6606");
 			prepStmt.setString(4, "FT");
 			prepStmt.executeUpdate();
@@ -306,7 +306,7 @@ public class InitDatabase {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
 		db.insertarSeriesYPeliculasDefault();
-//		db.insertarPersonasDesdeCSV();
+		db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
 
 	}
