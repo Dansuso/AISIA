@@ -7,21 +7,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
-import domain.Contenido;
-import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
-import domain.Pelicula;
-import domain.Serie;
-
 import java.sql.Statement;
-import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS
@@ -58,8 +49,6 @@ public class InitDatabase {
 			e.printStackTrace();
 		}
 	}
-		
-
 
 	/**
 	 * Metodo que crea las tablas necesarias para el proyecto. Antes de nada, borra
@@ -98,28 +87,27 @@ public class InitDatabase {
 				    fecha TEXT
 				);
 				""";
-		
+
 		String sqlTablaNoticia = """
 				CREATE TABLE IF NOT EXISTS NOTICIA (
 				    id INTEGER PRIMARY KEY AUTOINCREMENT,
 				    titulo TEXT NOT NULL,
 				    resumen TEXT,
 				    url TEXT NOT NULL,
-				    fuente TEXT NOT NULL	 
+				    fuente TEXT NOT NULL
 				);
 				""";
-		
-		
-		 String sqlTablaPersonas = """
-			        CREATE TABLE IF NOT EXISTS PERSONAS (
-			            ID INTEGER PRIMARY KEY,
-			            NOMBRE TEXT NOT NULL,
-			            APELLIDO TEXT NOT NULL,
-			            EDAD INTEGER,
-			            EMAIL TEXT
-			        );
-			    """;
-	
+
+		String sqlTablaPersonas = """
+				    CREATE TABLE IF NOT EXISTS PERSONAS (
+				        ID INTEGER PRIMARY KEY,
+				        NOMBRE TEXT NOT NULL,
+				        APELLIDO TEXT NOT NULL,
+				        EDAD INTEGER,
+				        EMAIL TEXT
+				    );
+				""";
+
 		// Nos conectamos a la base de datos
 
 		try {
@@ -128,6 +116,7 @@ public class InitDatabase {
 			stmt.execute("DROP TABLE IF EXISTS PELICULA");
 			stmt.execute("DROP TABLE IF EXISTS SERIE");
 			stmt.execute("DROP TABLE IF EXISTS PERSONAS");
+			stmt.execute("DROP TABLE IF EXISTS NOTICIA");
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);
 			stmt.execute(sqlTablaNoticia);
@@ -139,10 +128,47 @@ public class InitDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 
+	}
+	
+	public void insertarNoticiasDefault() {
+		try(Connection con = DriverManager.getConnection(CONNECTION_STRING)){
+			String insertNoticia = """
+					INSERT INTO NOTICIA(TITULO,RESUMEN,URL,FUENTE)
+					VALUES(?,?,?,?);
+					""";
+			
+			PreparedStatement prepStmt = con.prepareStatement(insertNoticia);
+			prepStmt.setString(1,"Netflix Password Crackdown Delivers Millions of New Customers");
+			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3, "https://www.wsj.com/business/earnings/netflix-nflx-q1-earnings-report-2024-78eababf");
+			prepStmt.setString(4, "WSJ");
+			prepStmt.executeUpdate();
+			
+			prepStmt.setString(1,"Tom Cruise Eyeing ‘Days of Thunder’ Sequel for Paramount");
+			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/");
+			prepStmt.setString(4, "THR");
+			prepStmt.executeUpdate();
+			
+			prepStmt.setString(1,"Joker’ Box Office Shocker: ‘Folie à Deux’ Bombs With $37.8M Opening After Receiving D CinemaScore");
+			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/");
+			prepStmt.setString(4, "THR");
+			prepStmt.executeUpdate();
+			
+			prepStmt.setString(1,"How Netflix won the streaming wars");
+			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3, "https://www.ft.com/content/465a2d0d-8973-4d8d-827d-8729737e6606");
+			prepStmt.setString(4, "FT");
+			prepStmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -230,57 +256,58 @@ public class InitDatabase {
 
 			// Cerramos la conexion
 			con.close();
-		} catch (FileNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			System.err.println("Archivo CSV no encontrado: " + e.getMessage());
+		} catch (SQLException e) {
+			System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
 		}
 	}
-	
+
 	public void insertarPersonasDesdeCSV() {
-	    try (Scanner sc = new Scanner(new File("resources/data/personas.csv"))) {
-	        // Abro conexión con la base de datos
-	        con = DriverManager.getConnection(CONNECTION_STRING);
+		try (Scanner sc = new Scanner(new File("resources/data/personas.csv"))) {
+			// Abro conexión con la base de datos
+			con = DriverManager.getConnection(CONNECTION_STRING);
 
-	        // Nos saltamos la primera línea (cabecera)
-	        sc.nextLine();
-	        while (sc.hasNext()) {
-	            String linea = sc.nextLine();
-	            String[] campos = linea.split(";");
-	            String nombre = campos[0];
-	            String apellido = campos[1];
-	            int edad = Integer.parseInt(campos[2]);
-	            String email = campos[3];
-	            int id = Integer.parseInt(campos[4]);
+			// Nos saltamos la primera línea (cabecera)
+			sc.nextLine();
+			while (sc.hasNext()) {
+				String linea = sc.nextLine();
+				String[] campos = linea.split(";");
+				String nombre = campos[0];
+				String apellido = campos[1];
+				int edad = Integer.parseInt(campos[2]);
+				String email = campos[3];
+				int id = Integer.parseInt(campos[4]);
 
-	            String sqlInsertPersona = """
-	                INSERT INTO PERSONAS (ID, NOMBRE, APELLIDO, EDAD, EMAIL)
-	                VALUES (?, ?, ?, ?, ?);
-	            """;
+				String sqlInsertPersona = """
+						    INSERT INTO PERSONAS (ID, NOMBRE, APELLIDO, EDAD, EMAIL)
+						    VALUES (?, ?, ?, ?, ?);
+						""";
 
-	            try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
-	                prepStmt.setInt(1, id);
-	                prepStmt.setString(2, nombre);
-	                prepStmt.setString(3, apellido);
-	                prepStmt.setInt(4, edad);
-	                prepStmt.setString(5, email);
-	                prepStmt.executeUpdate();
-	            }
-	        }
-	        con.close();
-	        System.out.println("Datos del CSV insertados correctamente en la tabla PERSONAS.");
-	    } catch (FileNotFoundException e) {
-	        System.err.println("Archivo CSV no encontrado: " + e.getMessage());
-	    } catch (SQLException e) {
-	        System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
-	    }
+				try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
+					prepStmt.setInt(1, id);
+					prepStmt.setString(2, nombre);
+					prepStmt.setString(3, apellido);
+					prepStmt.setInt(4, edad);
+					prepStmt.setString(5, email);
+					prepStmt.executeUpdate();
+				}
+			}
+			con.close();
+			System.out.println("Datos del CSV insertados correctamente en la tabla PERSONAS.");
+		} catch (FileNotFoundException e) {
+			System.err.println("Archivo CSV no encontrado: " + e.getMessage());
+		} catch (SQLException e) {
+			System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
+		}
 	}
-	
 
 	public static void main(String[] args) {
-		InitDatabase db = new InitDatabase();	
+		InitDatabase db = new InitDatabase();
 		db.crearTablas();
 		db.insertarSeriesYPeliculasDefault();
-	    
+//		db.insertarPersonasDesdeCSV();
+		db.insertarNoticiasDefault();
 
 	}
 }

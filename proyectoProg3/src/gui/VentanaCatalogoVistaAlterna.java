@@ -1,4 +1,4 @@
-	package gui;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,12 +39,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 import db.GestorDB;
-import db.InitDatabase;
 import domain.Contenido;
-import domain.Pelicula;
-import domain.Serie;
 import domain.Contenido.Genero;
-import domain.Contenido.TIPO;
 
 public class VentanaCatalogoVistaAlterna extends JFrame {
 	
@@ -219,7 +215,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				
 				Contenido contenidoSeleccionado = listaContenidos.getSelectedValue();
                 if (contenidoSeleccionado != null) {
-                	int resultado = JOptionPane.showConfirmDialog(null, "Favorito anadido", "Favoritos", JOptionPane.PLAIN_MESSAGE);
+                	JOptionPane.showConfirmDialog(null, "Favorito anadido", "Favoritos", JOptionPane.PLAIN_MESSAGE);
                     // Añadir contenido seleccionado a la tabla
                     modeloTabla.addRow(new Object[] {
                             contenidoSeleccionado.getTitulo(),
@@ -405,7 +401,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	private void filtroContenidos(String text) {
     	modelo = new DefaultListModel<>();
     	
-		for (Contenido contenido : contenidos) {
+		for (Contenido contenido : contenidosBD) {
 			if(contenido.getTitulo().toLowerCase().contains(text.toLowerCase())) {
 				modelo.addElement(contenido);
 			}
