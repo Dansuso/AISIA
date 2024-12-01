@@ -454,6 +454,11 @@ public class VentanaFeed extends VentanaBase {
 					label.setBackground(new Color(211,211,211));
 				}
 			
+				//Mostrar como tooltip el nombre de la pelicula
+				if(column == 1) {
+					label.setToolTipText(value.toString());
+				}
+				
 
 				if (column == 2) {
 					// Convertimos el value en un Double
@@ -464,8 +469,9 @@ public class VentanaFeed extends VentanaBase {
 					Double recuadacionValor = Double.parseDouble(valueSinDolar);
 					// Si la recaudacion es mayor a $1.000.0000.000 (Mil millones)
 					if (recuadacionValor > 1000000000) {
-						//COLOR DORADO
-						label.setForeground(new Color(255, 215, 0));
+						//COLOR DORADO+
+						label.setFont(new Font(label.getFont().getName(),Font.BOLD, label.getFont().getSize()));
+						label.setForeground(Color.black);
 					}
 					
 				}
