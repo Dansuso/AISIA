@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-
 import domain.Contenido.TIPO;
 import java.sql.Statement;
 

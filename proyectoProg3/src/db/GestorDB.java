@@ -129,7 +129,7 @@ public class GestorDB {
 	        while (rsPelicula.next()) {
 	        	Genero generoPeli = Genero.valueOf(rsPelicula.getString("GENERO").toUpperCase());
 	        	
-	        	Pelicula pelicula = new Pelicula(rsPelicula.getInt("ID"), 
+	        	Pelicula pelicula = new Pelicula(rsPelicula.getInt("ID_PELICULA"), 
 	        										Contenido.TIPO.PELICULA, 
 	        										rsPelicula.getString("TITULO"), 
 	        										generoPeli, 
@@ -159,7 +159,7 @@ public class GestorDB {
 	        while(rsSerie.next()) {
 	        	Genero generoSerie = Genero.valueOf(rsSerie.getString("GENERO").toUpperCase());
 	        	
-	        	Serie serie = new Serie(rsSerie.getInt("ID"),
+	        	Serie serie = new Serie(rsSerie.getInt("ID_SERIE"),
 	                    				Contenido.TIPO.SERIE, 
 	        							rsSerie.getString("TITULO"), 
 	        							generoSerie, 

@@ -11,14 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,12 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import db.GestorDB;
-import db.InitDatabase;
 import domain.Contenido;
-import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
-import domain.Pelicula;
-import domain.Serie;
 
 public class VentanaCatalogo extends JFrame {
 	
@@ -136,8 +127,6 @@ public class VentanaCatalogo extends JFrame {
 		this.setLocationRelativeTo(null);
 	
 		
-		HashMap<String, ArrayList<Contenido>> mapaConts = new HashMap<>();
-		//mapaConts = cargarContenido();
 		mapaContenido = new HashMap<>();
 		
 		this.addWindowListener(new WindowAdapter() {

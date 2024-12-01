@@ -1,6 +1,5 @@
 package domain;
 
-import java.awt.Image;
 import java.time.LocalDate;
 import java.util.Objects;
 
