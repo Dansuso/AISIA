@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import domain.Contenido;
 import domain.Pelicula;
 import domain.Serie;
 import domain.Contenido.Genero;
+import domain.Noticia;
 
 public class GestorDB {
 	private static String DRIVER_NAME;
@@ -84,6 +86,34 @@ public class GestorDB {
 			e.printStackTrace();
 		}
 	
+	}
+	
+	public List<Noticia> obtenerNoticias(){
+		
+		List<Noticia> noticias = new ArrayList<Noticia>();
+		try(Connection con = DriverManager.getConnection(CONNECTION_STRING)){
+			String sqlNoticias = "SELECT * FROM NOTICIA";
+			PreparedStatement stmt = con.prepareStatement(sqlNoticias);
+			ResultSet rsNoticias = stmt.executeQuery();
+			while(rsNoticias.next()) {
+				noticias.add(new Noticia(
+						rsNoticias.getInt("ID"),
+						rsNoticias.getString("TITULO"), 
+						rsNoticias.getString("RESUMEN"), 
+						rsNoticias.getString("URL"),
+						rsNoticias.getString("FUENTE")
+						));
+			}
+			
+				
+		} catch (SQLException e) {
+			System.err.println("Ha habido algun problema con la consulta SQL");
+			e.printStackTrace();
+		}
+		
+		
+		
+		return noticias;
 	}
 	
 	public List<Contenido> obtenerContenidos() {
