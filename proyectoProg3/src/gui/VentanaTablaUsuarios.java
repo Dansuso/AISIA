@@ -52,8 +52,6 @@ public class VentanaTablaUsuarios extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private  DefaultTableModel model;
-	
     private static  JTable tabla;
     protected JFrame frame;
     protected Usuario perso;
@@ -71,29 +69,13 @@ public class VentanaTablaUsuarios extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
-		setSize(640,640);
+		setSize(1100,900);
 		setLocationRelativeTo(null);
 		
-		
-		
-		
-		
-
-        // Crear un panel para la tabla
-      
-		
-		
 		  String[] colubnas = {"Nombre", "Apellido", "Edad","Correo", "Contraseña"};
-		  // Agregar algunas columnas a las tablas
-		// Crear modelos de tabla
-	
 		
-	        cargarDatosCSV("resources/data/personas.csv", model);
-	        
-	        
-	        // Crear modelo de tabla no editable
-	        DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
-	        
+		  DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
+		        
 
 				/**
 				 * 
@@ -106,16 +88,21 @@ public class VentanaTablaUsuarios extends JFrame {
 	            }
 	        };
 	        
-
+	
+		
+	        cargarDatosCSV("resources/data/personas.csv", model);
 	        
-	      
+	        // Inicializar la tabla
+	        tabla = new JTable(model);
+	        tabla.setFillsViewportHeight(true);
+	       
+	        
+	    
 			if (vacio != null && vacio.length == colubnas.length) {
 	            model.addRow(vacio);
 	        }
 	        
-	        
-	        // Inicializar la tabla
-	        tabla = new JTable(model);
+	    
 	        
 	        sorter = new TableRowSorter<>(model);
 	        tabla.setRowSorter(sorter);
@@ -137,8 +124,9 @@ public class VentanaTablaUsuarios extends JFrame {
 	                }
 	            }
 	        });
-
-	        // Agregar el campo de texto para búsqueda al panel superior
+	        
+	        
+	        //Buscador
 	        JPanel searchPanel = new JPanel();
 	        searchPanel.setLayout(new FlowLayout());
 	        searchPanel.add(new JLabel("Buscar por Nombre:"));
@@ -153,6 +141,13 @@ public class VentanaTablaUsuarios extends JFrame {
 	        panelTabla.add(searchPanel, BorderLayout.NORTH);
 	        panelTabla.add(new JScrollPane(tabla), BorderLayout.CENTER);
 	        
+	        add(panelTabla , BorderLayout.CENTER);        
+	        
+	        
+
+	        // Agregar el campo de texto para búsqueda al panel superior
+	       
+	      
 	     // Crear los botones
 	    	JButton botonInsertar = new JButton("Insertar");
 	    	JButton botonEliminar = new JButton("Eliminar");
@@ -166,9 +161,13 @@ public class VentanaTablaUsuarios extends JFrame {
 	    	panelBotones.add(botonazar);
 	    	getContentPane().add(panelBotones, BorderLayout.SOUTH);
 	   	 
-	     // Añadir el panel de la tabla al JTabbedPane
+	    
 	        
 	    	setVisible(true);
+	    	
+	    	
+	    	
+	    	//Interecccione con el raton
 	     
 	        botonazar.addActionListener(new ActionListener() {
 				
@@ -295,7 +294,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	    			String apellidos = model.getValueAt(indice, 1).toString();
 	    			String edad = model.getValueAt(indice, 2).toString();
 	    			String Correo = model.getValueAt(indice, 3).toString();
-	    			String contraseña = model.getValueAt(indice, 2).toString();
+	    			String contraseña = model.getValueAt(indice, 4).toString();
 	    			
 	    			VentanaDatos modificar = new VentanaDatos(nombre,apellidos,edad,Correo,contraseña);
 					modificar.setVisible(true);

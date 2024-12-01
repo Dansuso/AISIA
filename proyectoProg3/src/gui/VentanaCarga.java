@@ -35,16 +35,21 @@ public class VentanaCarga extends JFrame {
                 while (cont <= 100) {
                     try {
                         Thread.sleep(50); // Espera 50 ms entre incrementos
-                        cont++;
+                        
                         jProgressBar.setValue(cont); // Actualizar barra
 
                         // Mensajes en consola según el progreso
                         if (cont == 0) {
                             System.out.println("Programa iniciado...");
+                            cont++;
                         } else if (cont == 50) {
                             System.out.println("En proceso...");
+                            cont++;
                         } else if (cont == 100) {
                             System.out.println("Carga completa. Programa iniciado.");
+                            cont++;
+                        }else {
+                        	cont++;
                         }
 
                     } catch (InterruptedException e) {
