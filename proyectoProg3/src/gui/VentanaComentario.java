@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class ventanaComentario {
-	public static ActionListener ventanacomentario(String comentario, String nombre, String calif, String foto) {
+public class VentanaComentario {
+	public static ActionListener VentanaComent(String comentario, String nombre, String calif, String foto) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
