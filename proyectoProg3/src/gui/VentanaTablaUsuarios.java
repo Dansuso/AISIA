@@ -66,10 +66,11 @@ public class VentanaTablaUsuarios extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
 		setSize(640,640);
+		setLocationRelativeTo(null);
 		
 		
 		
-		
+       
 		
 
         // Crear un panel para la tabla
@@ -80,11 +81,21 @@ public class VentanaTablaUsuarios extends JFrame {
 		  // Agregar algunas columnas a las tablas
 		// Crear modelos de tabla
 	
-		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
+		
 	        cargarDatosCSV("resources/data/personas.csv", model);
 	        
 	        
+	        // Crear modelo de tabla no editable
+	        DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
 	        
+
+				@Override
+	            public boolean isCellEditable(int row, int column) {
+	                return false; // Ninguna celda es editable
+	            }
+	        };
+	        
+
 	        
 	      
 			if (vacio != null && vacio.length == colubnas.length) {
@@ -338,7 +349,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	
 	 public static void main(String[] args) {
 			String[] vacio = null;
-			 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(vacio);
+			new VentanaTablaUsuarios(vacio);
 	 }
 
 	   
