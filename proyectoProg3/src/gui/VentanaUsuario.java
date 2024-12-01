@@ -250,11 +250,7 @@ public class VentanaUsuario extends JFrame{
         
 	}
 	public static void main(String[] args) {
-<<<<<<< HEAD
-		 new VentanaUsuario();
-=======
 		new VentanaUsuario();
->>>>>>> origin/master
 	}
 	
 }
