@@ -59,9 +59,44 @@ public class InitDatabase {
 
 	public void crearTablas() {
 
+		String sqlTablaUsuario = """
+
+						CREATE TABLE usuario (
+					    id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
+					    username TEXT NOT NULL UNIQUE,
+					    displayname TEXT NOT NULL,
+					    creacionCuenta TEXT NOT NULL,
+					    pais TEXT,
+					    numSeguidores INTEGER DEFAULT 0,
+					    numSeguidos INTEGER DEFAULT 0,
+					    foto TEXT,
+					    contrasena TEXT NOT NULL
+						);
+				""";
+
+		String sqlPeliculaFavorito = """
+				CREATE TABLE IF NOT EXISTS Pelicula_Favorito (
+				    id_pelicula INTEGER,
+				    id_usuario INTEGER,
+				    PRIMARY KEY(id_pelicula,id_usuario),
+				    FOREIGN KEY(id_pelicula) REFERENCES Pelicula(id_pelicula),
+				    FOREIGN KEY(id_usuario) REFERENCES Usuario(id_usuario)
+				);
+				""";
+
+		String sqlSerieFavorito = """
+				CREATE TABLE IF NOT EXISTS Serie_Favorito (
+				    id_serie INTEGER,
+				    id_usuario INTEGER,
+				    PRIMARY KEY(id_pelicula,id_usuario),
+				    FOREIGN KEY(id_pelicula) REFERENCES Serie(id_serie),
+				    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+				);
+				""";
+
 		String sqlTablaPelicula = """
 				CREATE TABLE IF NOT EXISTS Pelicula (
-				    id INTEGER PRIMARY KEY,
+				    id_pelicula INTEGER PRIMARY KEY,
 				    titulo TEXT NOT NULL,
 				    genero TEXT,
 				    duracion INTEGER,
@@ -76,7 +111,7 @@ public class InitDatabase {
 
 		String sqlTablaSerie = """
 				CREATE TABLE IF NOT EXISTS Serie (
-				    id INTEGER PRIMARY KEY,
+				    id_serie INTEGER PRIMARY KEY,
 				      titulo TEXT NOT NULL,
 				    genero TEXT,
 				    calificacion INTEGER,
@@ -115,14 +150,18 @@ public class InitDatabase {
 		try {
 			con = DriverManager.getConnection(CONNECTION_STRING);
 			Statement stmt = con.createStatement();
+			stmt.execute("DROP TABLE IF EXISTS USUARIO");
 			stmt.execute("DROP TABLE IF EXISTS PELICULA");
 			stmt.execute("DROP TABLE IF EXISTS SERIE");
 			stmt.execute("DROP TABLE IF EXISTS PERSONAS");
 			stmt.execute("DROP TABLE IF EXISTS NOTICIA");
+			stmt.execute("DROP TABLE IF EXISTS USUARIO");
+			stmt.execute(sqlTablaUsuario);
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);
 			stmt.execute(sqlTablaNoticia);
 			stmt.execute(sqlTablaPersonas);
+			
 			stmt.close();
 			con.close();
 			System.out.println("TABLAS CREADAS");
@@ -132,45 +171,50 @@ public class InitDatabase {
 		}
 
 	}
-	
+
 	public void insertarNoticiasDefault() {
-		try(Connection con = DriverManager.getConnection(CONNECTION_STRING)){
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			String insertNoticia = """
 					INSERT INTO NOTICIA(TITULO,RESUMEN,URL,FUENTE)
 					VALUES(?,?,?,?);
 					""";
-			
+
 			PreparedStatement prepStmt = con.prepareStatement(insertNoticia);
-			prepStmt.setString(1,"Netflix Password Crackdown Delivers Millions of New Customers");
-			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
-			prepStmt.setString(3, "https://www.wsj.com/business/earnings/netflix-nflx-q1-earnings-report-2024-78eababf");
+			prepStmt.setString(1, "Netflix Password Crackdown Delivers Millions of New Customers");
+			prepStmt.setString(2, "Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3,
+					"https://www.wsj.com/business/earnings/netflix-nflx-q1-earnings-report-2024-78eababf");
 			prepStmt.setString(4, "WSJ");
 			prepStmt.executeUpdate();
-			
-			prepStmt.setString(1,"Tom Cruise Eyeing ‘Days of Thunder’ Sequel for Paramount");
-			prepStmt.setString(2,"The actor-producer is exploring a follow-up to his 1990 NASCAR racing film while also developing a ‘Top Gun: Maverick’ sequel and figuring out the future of the ‘Mission: Impossible' franchise");
-			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/tom-cruise-days-of-thunder-sequel-paramount-1236051723/");
+
+			prepStmt.setString(1, "Tom Cruise Eyeing ‘Days of Thunder’ Sequel for Paramount");
+			prepStmt.setString(2,
+					"The actor-producer is exploring a follow-up to his 1990 NASCAR racing film while also developing a ‘Top Gun: Maverick’ sequel and figuring out the future of the ‘Mission: Impossible' franchise");
+			prepStmt.setString(3,
+					"https://www.hollywoodreporter.com/movies/movie-news/tom-cruise-days-of-thunder-sequel-paramount-1236051723/");
 			prepStmt.setString(4, "THR");
 			prepStmt.executeUpdate();
-			
-			prepStmt.setString(1,"Joker’ Box Office Shocker: ‘Folie à Deux’ Bombs With $37.8M Opening After Receiving D CinemaScore");
-			prepStmt.setString(2,"Streaming giant says it will continue to diversify its slate and product features");
-			prepStmt.setString(3, "https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/");
+
+			prepStmt.setString(1,
+					"Joker’ Box Office Shocker: ‘Folie à Deux’ Bombs With $37.8M Opening After Receiving D CinemaScore");
+			prepStmt.setString(2, "Streaming giant says it will continue to diversify its slate and product features");
+			prepStmt.setString(3,
+					"https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/");
 			prepStmt.setString(4, "THR");
 			prepStmt.executeUpdate();
-			
-			prepStmt.setString(1,"How Netflix won the streaming wars");
-			prepStmt.setString(2,"The company has staged a remarkable recovery since the ‘great correction’ of 2022 and now has the edge over Hollywood rivals");
+
+			prepStmt.setString(1, "How Netflix won the streaming wars");
+			prepStmt.setString(2,
+					"The company has staged a remarkable recovery since the ‘great correction’ of 2022 and now has the edge over Hollywood rivals");
 			prepStmt.setString(3, "https://www.ft.com/content/465a2d0d-8973-4d8d-827d-8729737e6606");
 			prepStmt.setString(4, "FT");
 			prepStmt.executeUpdate();
-			
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -204,7 +248,7 @@ public class InitDatabase {
 					int duracion = Integer.parseInt(campos[9]);
 
 					String sqlInsertPelicula = """
-							INSERT INTO PELICULA (ID,TITULO,GENERO,DURACION,CALIFICACION,DISTRIBUIDORA,EDADRECOMENDADA,OSCAR,CARATULA,FECHA)
+							INSERT INTO PELICULA (id_pelicula,TITULO,GENERO,DURACION,CALIFICACION,DISTRIBUIDORA,EDADRECOMENDADA,OSCAR,CARATULA,FECHA)
 							VALUES(?,?,?,?,?,?,?,?,NULL,?);
 							""";
 
@@ -231,7 +275,7 @@ public class InitDatabase {
 					boolean emmy = Boolean.parseBoolean(campos[13]);
 
 					String sqlInsertSerie = """
-							INSERT INTO SERIE(ID,TITULO,GENERO,CALIFICACION,DISTRIBUIDORA,EDADRECOMENDADA,NUMEROEPISODIOS,NUMEROTEMPORADAS,EMMY,FECHA)
+							INSERT INTO SERIE(id_serie,TITULO,GENERO,CALIFICACION,DISTRIBUIDORA,EDADRECOMENDADA,NUMEROEPISODIOS,NUMEROTEMPORADAS,EMMY,FECHA)
 							VALUES(?,?,?,?,?,?,?,?,?,?);
 
 							""";
@@ -296,20 +340,25 @@ public class InitDatabase {
 				}
 			}
 			con.close();
-            // Mostrar mensaje con JDialog al finalizar
-            mostrarMensaje("Éxito", "Datos del CSV insertados correctamente en la tabla PERSONAS.", JOptionPane.INFORMATION_MESSAGE);
+			// Mostrar mensaje con JDialog al finalizar
+			//ESTO ES HORRIBLE
+			//mostrarMensaje("Éxito", "Datos del CSV insertados correctamente en la tabla PERSONAS.",
+			//	JOptionPane.INFORMATION_MESSAGE);
 
-        } catch (FileNotFoundException e) {
-            mostrarMensaje("Error", "Archivo CSV no encontrado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            mostrarMensaje("Error", "Error al insertar datos en la base de datos: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
-        }
-    }
+		} catch (FileNotFoundException e) {
+			System.err.println("Archivo no encontrado");
+		//	mostrarMensaje("Error", "Archivo CSV no encontrado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			System.err.println("Error al insertar datos en la base de datos " + e.getMessage());
 
-    private void mostrarMensaje(String titulo, String mensaje, int tipoMensaje) {
-        JOptionPane.showMessageDialog(null, mensaje, titulo, tipoMensaje);
-    }
+		//	mostrarMensaje("Error", "Error al insertar datos en la base de datos: " + e.getMessage(),
+			//		JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
+	//private void mostrarMensaje(String titulo, String mensaje, int tipoMensaje) {
+	//	JOptionPane.showMessageDialog(null, mensaje, titulo, tipoMensaje);
+	//}
 
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
@@ -317,6 +366,5 @@ public class InitDatabase {
 		db.insertarSeriesYPeliculasDefault();
 		db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
-
 	}
 }

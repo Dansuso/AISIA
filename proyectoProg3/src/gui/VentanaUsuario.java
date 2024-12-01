@@ -163,7 +163,9 @@ public class VentanaUsuario extends JFrame{
         Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
         ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
         JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
-		panelPelis.add(etiquetaCaratula, BorderLayout.CENTER);
+        JLabel etiquetaCaratula2 = new JLabel(escaladoCaratulaFin);
+		panelPelis.add(etiquetaCaratula, BorderLayout.WEST);
+		panelPelis.add(etiquetaCaratula2, BorderLayout.EAST);
 		
 		// Creamos un JLabel con "Contenido Favorito".  
 		JLabel contenidoFavorito = new JLabel("Contenido favorito");
