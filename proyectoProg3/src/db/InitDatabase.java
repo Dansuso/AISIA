@@ -88,8 +88,8 @@ public class InitDatabase {
 				CREATE TABLE IF NOT EXISTS Serie_Favorito (
 				    id_serie INTEGER,
 				    id_usuario INTEGER,
-				    PRIMARY KEY(id_pelicula,id_usuario),
-				    FOREIGN KEY(id_pelicula) REFERENCES Serie(id_serie),
+				    PRIMARY KEY(id_serie,id_usuario),
+				    FOREIGN KEY(id_serie) REFERENCES Serie(id_serie),
 				    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 				);
 				""";
@@ -161,6 +161,8 @@ public class InitDatabase {
 			stmt.execute(sqlTablaSerie);
 			stmt.execute(sqlTablaNoticia);
 			stmt.execute(sqlTablaPersonas);
+			stmt.execute(sqlSerieFavorito);
+			stmt.execute(sqlPeliculaFavorito);
 			
 			stmt.close();
 			con.close();
