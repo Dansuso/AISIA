@@ -6,15 +6,17 @@ import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.net.URI;
+import java.net.URL;
 import java.time.LocalDate;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import domain.Usuario;
 import domain.Contenido;
@@ -30,7 +32,7 @@ public class VentanaUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	Contenido contenido = new Pelicula(1, TIPO.PELICULA, "Gladiator", Genero.AVENTURA, 143, 5, "Sony", 12, true, "resources/images/recursos/contenido/gladiator.jpg", LocalDate.of(2010, 2, 2));
-	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "España",143, 100, "resources/images/recursos/defautUsuario.png", "1234", contenido);
+	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "spain",143, 100, "resources/images/recursos/defautUsuario.png", "1234", contenido);
 	
 	public VentanaUsuario() {
 		setLayout(new GridLayout(3, 1));
@@ -136,7 +138,8 @@ public class VentanaUsuario extends JFrame{
 		
 		JLabel pais = new JLabel(String.valueOf(usuario.getPais()));
 		pais.setFont(new Font("Monospaced", Font.BOLD, 20));
-		panelPais.add(pais);
+		panelPais.add(pais, BorderLayout.SOUTH);
+		panelPais.add(BanderaUtil.obtenerBandera(usuario.getPais()));
 		
 		JLabel paisStr = new JLabel("País");
 		paisStr.setFont(new Font("Arial", Font.BOLD, 16));
