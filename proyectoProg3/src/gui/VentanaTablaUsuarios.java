@@ -43,6 +43,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import VentanaTabla.VentanaModificar;
 import domain.Usuario;
 
 public class VentanaTablaUsuarios extends JFrame {
@@ -70,7 +71,7 @@ public class VentanaTablaUsuarios extends JFrame {
 		
 		
 		
-       
+		
 		
 
         // Crear un panel para la tabla
@@ -141,11 +142,33 @@ public class VentanaTablaUsuarios extends JFrame {
 	        JPanel panelTabla = new JPanel(new BorderLayout());
 	        panelTabla.add(searchPanel, BorderLayout.NORTH);
 	        panelTabla.add(new JScrollPane(tabla), BorderLayout.CENTER);
+	        
+	     // Crear los botones
+	    	JButton botonInsertar = new JButton("Insertar");
+	    	JButton botonEliminar = new JButton("Eliminar");
+	    	JButton botonGuardar = new JButton("Guardar");
+	    	JButton botonazar = new JButton("A lazar");
+
+	    	JPanel panelBotones = new JPanel();
+	    	panelBotones.add(botonInsertar);
+	    	panelBotones.add(botonEliminar);
+	    	panelBotones.add(botonGuardar);
+	    	panelBotones.add(botonazar);
+	    	getContentPane().add(panelBotones, BorderLayout.SOUTH);
+	   	 
 	     // Añadir el panel de la tabla al JTabbedPane
 	        
 	    	setVisible(true);
 	     
-	        
+	        botonazar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					VentanaSeleccionPersona selec = new VentanaSeleccionPersona();
+					selec.setVisible(true);
+				}
+			});
 	       
 	       
 

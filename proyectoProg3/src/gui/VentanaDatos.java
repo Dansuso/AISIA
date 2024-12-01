@@ -45,13 +45,19 @@ public class VentanaDatos extends JFrame {
 
         add(botonAgregar);
         add(botonCerrar);
+        
+//    	// Escribimos los campos de texto
+    	campoNombre.setText(nombre);
+    	campoApellidos.setText(apellidos);
+    	campoEdad.setText(edad);
+    	campoCorreo.setText(correo);
+    	campoContraseña.setText(contraseña);
+    	
 
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new VentanaDatos();
-    }
+
 }                          
 
 	
