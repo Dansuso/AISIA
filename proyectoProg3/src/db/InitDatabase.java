@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import domain.Contenido.TIPO;
 import java.sql.Statement;
 
@@ -294,19 +296,26 @@ public class InitDatabase {
 				}
 			}
 			con.close();
-			System.out.println("Datos del CSV insertados correctamente en la tabla PERSONAS.");
-		} catch (FileNotFoundException e) {
-			System.err.println("Archivo CSV no encontrado: " + e.getMessage());
-		} catch (SQLException e) {
-			System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
-		}
-	}
+            // Mostrar mensaje con JDialog al finalizar
+            mostrarMensaje("Éxito", "Datos del CSV insertados correctamente en la tabla PERSONAS.", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (FileNotFoundException e) {
+            mostrarMensaje("Error", "Archivo CSV no encontrado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            mostrarMensaje("Error", "Error al insertar datos en la base de datos: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarMensaje(String titulo, String mensaje, int tipoMensaje) {
+        JOptionPane.showMessageDialog(null, mensaje, titulo, tipoMensaje);
+    }
+
 
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
 		db.insertarSeriesYPeliculasDefault();
-//		db.insertarPersonasDesdeCSV();
+		db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
 
 	}
