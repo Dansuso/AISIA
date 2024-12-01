@@ -6,11 +6,8 @@ import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.net.URI;
-import java.net.URL;
 import java.time.LocalDate;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import domain.Usuario;
+import utils.BanderaUtil;
 import domain.Contenido;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
