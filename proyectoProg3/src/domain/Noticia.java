@@ -6,16 +6,25 @@ public class Noticia {
 	
 	private String url;
 	private String fuente;
+	private int id;
 	
 	
-	public Noticia(String titulo, String resumen, String url, String fuente) {
+	public Noticia( int id,String titulo, String resumen, String url, String fuente) {
 		super();
+		this.id = id;
 		this.titulo = titulo;
 		this.resumen = resumen;
 		this.url = url;
 		this.fuente = fuente;
 		
 	}
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
 	public String getTitulo() {
 		return titulo;
 	}
