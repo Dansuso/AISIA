@@ -533,6 +533,8 @@ public class VentanaFeed extends VentanaBase {
 				return label;
 			}
 		});
+		
+		// Al hacer doble click en una fila , abrira un Dialog con el poster de la pelicula
 		tablaTaquilla.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -554,9 +556,6 @@ public class VentanaFeed extends VentanaBase {
 		
 		
 		
-
-		System.out.println(tablaTaquilla.getSelectedRow());
-
 		JScrollPane taquillaScroll = new JScrollPane(tablaTaquilla);
 		panelTaquilla.add(taquillaScroll);
 		// panelTaquilla.add(tablaTaquilla);
