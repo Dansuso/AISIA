@@ -7,39 +7,23 @@ public class Usuario {
 	
 	protected int codigo;
 	protected String username;
-	protected String displayname;
 	protected LocalDate creacionCuenta;
 	protected String pais;
-	protected int numSeguidores;
-	protected int numSeguidos;
 	protected String foto;
 	protected String contrasena;
-	protected Contenido favorito;
 	
 	
-	public Usuario(int codigo, String username, String displayname, LocalDate creacionCuenta, String pais,
-			int numSeguidores, int numSeguidos, String foto, String contrasena) {
+	public Usuario(int codigo, String username, LocalDate creacionCuenta, String pais,
+			 String foto, String contrasena) {
 		super();
 		this.codigo = codigo;
 		this.username = username;
-		this.displayname = displayname;
 		this.creacionCuenta = creacionCuenta;
 		this.pais = pais;
-		this.numSeguidores = numSeguidores;
-		this.numSeguidos = numSeguidos;
 		this.foto = foto;
 		this.contrasena = contrasena;
 	}
 
-
-	public Contenido getFavorito() {
-		return favorito;
-	}
-
-
-	public void setFavorito(Contenido favorito) {
-		this.favorito = favorito;
-	}
 
 
 	public int getCodigo() {
@@ -56,14 +40,8 @@ public class Usuario {
 	}
 
 
-	public String getDisplayname() {
-		return displayname;
-	}
 
 
-	public void setDisplayname(String displayname) {
-		this.displayname = displayname;
-	}
 
 
 	public LocalDate getCreacionCuenta() {
@@ -86,24 +64,6 @@ public class Usuario {
 	}
 
 
-	public int getNumSeguidores() {
-		return numSeguidores;
-	}
-
-
-	public void setNumSeguidores(int numSeguidores) {
-		this.numSeguidores = numSeguidores;
-	}
-
-
-	public int getNumSeguidos() {
-		return numSeguidos;
-	}
-
-
-	public void setNumSeguidos(int numSeguidos) {
-		this.numSeguidos = numSeguidos;
-	}
 
 
 	public String getFoto() {
@@ -126,14 +86,13 @@ public class Usuario {
 	}
 
 
-	
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, contrasena, creacionCuenta, displayname, favorito, foto, numSeguidores, numSeguidos,
-				pais, username);
+		return Objects.hash(codigo);
 	}
+
 
 
 	@Override
@@ -145,21 +104,36 @@ public class Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return codigo == other.codigo && Objects.equals(contrasena, other.contrasena)
-				&& Objects.equals(creacionCuenta, other.creacionCuenta)
-				&& Objects.equals(displayname, other.displayname) && Objects.equals(favorito, other.favorito)
-				&& Objects.equals(foto, other.foto) && numSeguidores == other.numSeguidores
-				&& numSeguidos == other.numSeguidos && Objects.equals(pais, other.pais)
-				&& Objects.equals(username, other.username);
+		return codigo == other.codigo;
 	}
+
+
+
+
+
 
 
 	@Override
 	public String toString() {
-		return "Usuario [codigo=" + codigo + ", username=" + username + ", displayname=" + displayname
-				+ ", creacionCuenta=" + creacionCuenta + ", pais=" + pais + ", numSeguidores=" + numSeguidores
-				+ ", numSeguidos=" + numSeguidos + ", foto=" + foto + ", contrasena=" + contrasena + ", contenido favorito"+ favorito +"]";
+		return "Usuario [codigo=" + codigo + ", username=" + username + ", creacionCuenta=" + creacionCuenta + ", pais="
+				+ pais + ", foto=" + foto + "]";
 	}
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+
+
 	
 	
 
