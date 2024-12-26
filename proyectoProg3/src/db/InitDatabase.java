@@ -62,11 +62,8 @@ public class InitDatabase {
 						CREATE TABLE usuario (
 					    id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
 					    username TEXT NOT NULL UNIQUE,
-					    displayname TEXT NOT NULL,
-					    creacionCuenta TEXT NOT NULL,
+					    creacionCuenta INT NOT NULL,
 					    pais TEXT,
-					    numSeguidores INTEGER DEFAULT 0,
-					    numSeguidos INTEGER DEFAULT 0,
 					    foto TEXT,
 					    contrasena TEXT NOT NULL
 						);
@@ -133,15 +130,6 @@ public class InitDatabase {
 				);
 				""";
 
-		String sqlTablaPersonas = """
-				    CREATE TABLE IF NOT EXISTS PERSONAS (
-				        ID INTEGER PRIMARY KEY,
-				        NOMBRE TEXT NOT NULL,
-				        APELLIDO TEXT NOT NULL,
-				        EDAD INTEGER,
-				        EMAIL TEXT
-				    );
-				""";
 		
 		String sqlTablaSeguidores = """
 				
@@ -151,6 +139,18 @@ public class InitDatabase {
 					PRIMARY KEY(ID_SEGUIDOR,ID_SEGUIDO),
 					FOREIGN KEY(ID_SEGUIDOR) REFERENCES USUARIO(ID_USUARIO),
 					FOREIGN KEY(ID_SEGUIDO) REFERENCES USUARIO(ID_USUARIO)
+				);
+				
+				""";
+		
+	String sqlTablaPost = """
+				
+				CREATE TABLE IF NOT EXISTS POST(
+					ID_POST INTEGER PRIMARY KEY AUTOINCREMENT,
+					CONTENIDO TEXT NOT NULL,
+					FECHA_POST INTEGER NOT NULL,
+					ID_USUARIO_CREADOR INTEGER NOT NULL,
+					FOREIGN KEY (ID_USUARIO_CREADOR) REFERENCES USUARIO(ID_USUARIO)
 				);
 				
 				""";
@@ -166,14 +166,15 @@ public class InitDatabase {
 			stmt.execute("DROP TABLE IF EXISTS PERSONAS");
 			stmt.execute("DROP TABLE IF EXISTS NOTICIA");
 			stmt.execute("DROP TABLE IF EXISTS USUARIO");
+			stmt.execute("DROP TABLE IF EXISTS POST");
 			stmt.execute(sqlTablaUsuario);
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);
 			stmt.execute(sqlTablaNoticia);
-			stmt.execute(sqlTablaPersonas);
 			stmt.execute(sqlSerieFavorito);
 			stmt.execute(sqlPeliculaFavorito);
 			stmt.execute(sqlTablaSeguidores);
+			stmt.execute(sqlTablaPost);
 			
 			stmt.close();
 			con.close();
@@ -379,7 +380,7 @@ public class InitDatabase {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
 		db.insertarSeriesYPeliculasDefault();
-		db.insertarPersonasDesdeCSV();
+	//	db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
 	}
 }
