@@ -18,7 +18,7 @@ public class Usuario {
 	
 	
 	public Usuario(int codigo, String username, String displayname, LocalDate creacionCuenta, String pais,
-			int numSeguidores, int numSeguidos, String foto, String contrasena, Contenido favorito) {
+			int numSeguidores, int numSeguidos, String foto, String contrasena) {
 		super();
 		this.codigo = codigo;
 		this.username = username;
@@ -29,7 +29,6 @@ public class Usuario {
 		this.numSeguidos = numSeguidos;
 		this.foto = foto;
 		this.contrasena = contrasena;
-		this.favorito = favorito;
 	}
 
 
