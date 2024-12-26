@@ -24,9 +24,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -68,7 +66,7 @@ public class VentanaFeed extends VentanaBase {
 	private JComboBox<String> comboBoxAnos;
 	private JLabel labelTaquilla;
 	private GestorDB db;
-	private final int IDUSUARIO;
+	private final Usuario usuario;
 
 	// CLASES INTERNAS
 
@@ -145,9 +143,9 @@ public class VentanaFeed extends VentanaBase {
 	 * Constructor de la ventana de la Feed
 	 * @param idUsuario idUsuario que ha abierto esta ventana. Para simular las "cookies" de un navegador.
 	 */
-	public VentanaFeed(int idUsuario) {
+	public VentanaFeed(Usuario usuario) {
 		super("Feed");
-		this.IDUSUARIO = idUsuario;
+		this.usuario = usuario;
 
 		
 		db = new GestorDB();
@@ -204,54 +202,39 @@ public class VentanaFeed extends VentanaBase {
 		// Eje VERTICAL, ya que la feed va para abajo.
 		JPanel panelPosts = new JPanel();
 		panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
-		  Usuario usuario = new Usuario(
-  	            1,                                
-  	            "usuario123",                     
-  	            "Usuario Ejemplo",                
-  	            LocalDate.of(2023, 12, 25),       
-  	            "España",                         
-  	            100,                              
-  	            50,                               
-  	            "foto_perfil.jpg",                
-  	            "miContrasenaSegura"              
-  	        );
-		  
-		  Usuario usuario1 = new Usuario(
-	  	            2,                                
-	  	            "usuario123",                     
-	  	            "Usuario Ejemplo",                
-	  	            LocalDate.of(2023, 12, 25),      
-	  	            "España",                         
-	  	            100,                              
-	  	            50,                               
-	  	            "foto_perfil.jpg",                
-	  	            "miContrasenaSegura"             
-	  	        );
+		/*
 		for (int i = 0; i < 3; i++) {
 			JPanel panelPostIndividual = crearPost(
-					new Post(i, "Este es mi post numero " + i, LocalDateTime.now(),usuario));
+					new Post(i, "Este es mi post numero " + i, LocalDateTime.now(),1));
 			panelPosts.add(panelPostIndividual);
+		}
+		*/
+		
+		List<Post> postsFeed = db.obtenerPostFeed(usuario.getCodigo());
+		for (Post post : postsFeed) {
+			JPanel panelPostIndividual = crearPost(post);
+			panelPosts.add(panelPostIndividual);
+			
 		}
 
 		JScrollPane scrollPosts = new JScrollPane(panelPosts);
 		
 		botonEnviar.addActionListener((e -> {
+			
 			//SACAR HORA DEL POST (En Unix epoch)
-			
+		
+			// IAG Claude Sonnet 3.5
+			//ADAPTADO : Estaba hecho para LocalDate y UTC, cambiado a CET y LocalDateTime
+	
+			//Convertir a una fecha (LocalDateTime), a CET!!! 
 			long horaPost = e.getWhen();
-			//Convertir a una fecha (LocalDate), a UTC!!! 
-			// IAG  @Claude
-			
-			
-			LocalDateTime fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("UTC")).toLocalDateTime();
+			LocalDateTime fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("CET")).toLocalDateTime();
 		    if (!postTextArea.getText().trim().isEmpty()) {
 		    	 
-		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario1);
-		        
+		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario);
+				db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
+
 		        JPanel p1 = crearPost(p);
-		        //SI panel posts tiene más de 5 componentes ( tiene paneles) 
-		        // borramos el primero, que es que se añadio primero. 
-		        //De esta forma no se llena de posts
 		        if (panelPosts.getComponentCount() >= 10) {
 		            panelPosts.remove(0);
 		        }
@@ -296,8 +279,6 @@ public class VentanaFeed extends VentanaBase {
 
 	}
 
-
-
 	/**
 	 * Crear un Post/Publicacion. Esta funcion se encarga de crear un panel y llenar
 	 * el panel con el texto así como con los botones necesarios.
@@ -307,10 +288,11 @@ public class VentanaFeed extends VentanaBase {
 	 * @return Un Panel que representa un post
 	 */
 	private JPanel crearPost(Post postEscrito) {
+		
 		JPanel post = new JPanel(new BorderLayout(10, 15));
 		post.setBorder(new EmptyBorder(10, 10, 10, 10));
-		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		JLabel usuarioPost = new JLabel("Usuario - " + postEscrito.getFechaPost().format(fechaFormato));
+		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH::mm");
+		JLabel usuarioPost = new JLabel(postEscrito.getCreadorPost().getUsername() + " - " + postEscrito.getFechaPost().format(fechaFormato));
 		JTextArea mensajePost = new JTextArea(postEscrito.getContenido());
 		mensajePost.setBorder(new EmptyBorder(10, 10, 10, 10));
 		mensajePost.setEditable(false);
@@ -320,28 +302,30 @@ public class VentanaFeed extends VentanaBase {
 		// INTERACCIONES POSIBLES : RESPONDER, LIKE
 		JPanel interacciones = new JPanel();
 		interacciones.setLayout(new FlowLayout(FlowLayout.LEFT));
-		/*
-		JButton botonResponder = new JButton("Responder");
-		botonResponder.setBackground(new Color(0, 102, 204));
-		botonResponder.setForeground(Color.white);
-		JButton botonLike = new JButton("Like " + postEscrito.getNumLikes());
-		botonLike.setBackground(new Color(36, 160, 237));
-		botonLike.setForeground(Color.white);
-
-		interacciones.add(botonResponder);
-		interacciones.add(botonLike);
-		*/
-	    // Botón de eliminar
+		
+	    // Boton de eliminar
 	    JButton botonEliminar = new JButton("Eliminar");
 	    botonEliminar.setBackground(Color.RED);
 	    botonEliminar.setForeground(Color.WHITE);
 	    botonEliminar.setBorder(new EmptyBorder(5, 10, 5, 10));
 	    
+	    //Boton de Perfil (Abre el perfil)
+	    JButton botonPerfil = new JButton("Perfil");
+	    botonPerfil.setBackground(new Color(29,161,242));
+	    botonPerfil.setForeground(Color.white);
+	    botonPerfil.setBorder(new EmptyBorder(5,10,5,10));
+	    botonPerfil.addActionListener( (e) -> {
+	    	SwingUtilities.invokeLater(( ) -> new VentanaUsuario());
+	    });
+	    
+	    
 	    //Solamente aparecera el boton de Eliminar para los posts escritos por nosotros.
-	    if(postEscrito.getCreadorPost().getCodigo() == IDUSUARIO)
+	    if(postEscrito.getCreadorPost().getCodigo() == usuario.getCodigo())
 	    {
 	    interacciones.add(botonEliminar);
 	    }
+	    interacciones.add(botonPerfil);
+
 	    // Acción del botón de eliminar
 	    botonEliminar.addActionListener(e -> {
 	        // Obtenemos el panel padre del panel de post
@@ -351,6 +335,7 @@ public class VentanaFeed extends VentanaBase {
 	            parent.remove(post);
 	            parent.revalidate();
 	            parent.repaint();
+	            db.borrarPost(postEscrito.getCodigoPost());
 	        }
 	    });
 
@@ -445,6 +430,7 @@ public class VentanaFeed extends VentanaBase {
 
 		panelTaquilla.add(comboBoxAnos, BorderLayout.NORTH);
 
+		//Por defecto 
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -452,7 +438,7 @@ public class VentanaFeed extends VentanaBase {
 			}
 		});
 		t1.start();
-
+		
 		comboBoxAnos.addItemListener((e) -> {
 			comboBoxAnos.setEnabled(false);
 			Thread t2 = new Thread(() -> {
@@ -472,7 +458,7 @@ public class VentanaFeed extends VentanaBase {
 		// TABLA
 
 		tablaTaquilla = new JTable(new PeliculaTableModel(recaudacionPorPelicula));
-		tablaTaquilla.setRowHeight(40);
+		tablaTaquilla.setRowHeight(35);
 
 		// Renderer para las Columnas
 
@@ -573,7 +559,7 @@ public class VentanaFeed extends VentanaBase {
 					
 					
 				
-					
+				
 				}
 			}
 			
@@ -643,6 +629,6 @@ public class VentanaFeed extends VentanaBase {
 	
 	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new VentanaFeed(1));
+		SwingUtilities.invokeLater(() -> new VentanaFeed(new Usuario(3, "Dani", LocalDate.now(), "España", "jpg", "12345")));
 	}
 }
