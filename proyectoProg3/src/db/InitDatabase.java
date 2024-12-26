@@ -142,6 +142,18 @@ public class InitDatabase {
 				        EMAIL TEXT
 				    );
 				""";
+		
+		String sqlTablaSeguidores = """
+				
+				CREATE TABLE IF NOT EXISTS SEGUIDORES(
+					ID_SEGUIDOR INTEGER,
+					ID_SEGUIDO INTEGER,
+					PRIMARY KEY(ID_SEGUIDOR,ID_SEGUIDO),
+					FOREIGN KEY(ID_SEGUIDOR) REFERENCES USUARIO(ID_USUARIO),
+					FOREIGN KEY(ID_SEGUIDO) REFERENCES USUARIO(ID_USUARIO)
+				);
+				
+				""";
 
 		// Nos conectamos a la base de datos
 
@@ -161,17 +173,20 @@ public class InitDatabase {
 			stmt.execute(sqlTablaPersonas);
 			stmt.execute(sqlSerieFavorito);
 			stmt.execute(sqlPeliculaFavorito);
+			stmt.execute(sqlTablaSeguidores);
 			
 			stmt.close();
 			con.close();
 			System.out.println("TABLAS CREADAS");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Ha habido algun problema al crear las tablas! " + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
 
+	
+	
 	public void insertarNoticiasDefault() {
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			String insertNoticia = """
@@ -211,7 +226,7 @@ public class InitDatabase {
 			prepStmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error al insertar las noticias! " + e.getMessage());
 			e.printStackTrace();
 		}
 
