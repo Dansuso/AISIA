@@ -9,14 +9,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import domain.Contenido;
 import domain.Pelicula;
+import domain.Post;
 import domain.Serie;
+import domain.Usuario;
 import domain.Contenido.Genero;
 import domain.Noticia;
 
@@ -78,7 +83,6 @@ public class GestorDB {
 			prepStmt.setString(3, url);
 			prepStmt.setString(4, fuente);
 			prepStmt.executeUpdate();
-			con.close();
 
 		} catch (SQLException e) {
 			System.err.println("Error con la consulta de insercion de noticias: " + e.getMessage());
@@ -90,9 +94,8 @@ public class GestorDB {
 	public List<Noticia> obtenerNoticias(){
 		
 		List<Noticia> noticias = new ArrayList<Noticia>();
-		try(Connection con = DriverManager.getConnection(CONNECTION_STRING)){
-			String sqlNoticias = "SELECT * FROM NOTICIA";
-			PreparedStatement stmt = con.prepareStatement(sqlNoticias);
+		String sqlNoticias = "SELECT * FROM NOTICIA";
+		try(PreparedStatement stmt = con.prepareStatement(sqlNoticias)){
 			ResultSet rsNoticias = stmt.executeQuery();
 			while(rsNoticias.next()) {
 				noticias.add(new Noticia(
@@ -114,6 +117,85 @@ public class GestorDB {
 		
 		return noticias;
 	}
+	
+	
+	public void insertarPost(String contenido, long fechaPost, int idCreadorPost) {
+		String sqlInsertarPost = "INSERT INTO POST (CONTENIDO,FECHA_POST,ID_USUARIO_CREADOR) VALUES(?,?,?)";
+		try(PreparedStatement prepStmt = con.prepareStatement(sqlInsertarPost)){
+			prepStmt.setString(1,contenido);
+			prepStmt.setLong(2, fechaPost); //Es un unix timestamp
+			prepStmt.setInt(3, idCreadorPost);
+			prepStmt.executeUpdate();
+			prepStmt.close();
+		} catch (SQLException e) {
+			System.err.println("Error al insertar Post ! " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Metodo que devuelve los 10 ultimos posts nuestros y de nuestros seguidores, ordenados por fecha.
+	 * @param idUsuario Id del Usuario de que se quieren sacar los posts (y de los que sigue)
+	 * @return Lista con 10 posts o menos
+	 */
+	public List<Post> obtenerPostFeed(int idUsuario){
+		List<Post> listaPost = new ArrayList<>();
+		String sqlObtenerPostFeed = """
+				
+				SELECT ID_POST,CONTENIDO,FECHA_POST,ID_USUARIO_CREADOR,USERNAME,CREACIONCUENTA,PAIS,FOTO,CONTRASENA 
+				FROM POST P
+				JOIN USUARIO U ON P.ID_USUARIO_CREADOR =  U.ID_USUARIO
+				WHERE ID_USUARIO_CREADOR = ? OR ID_USUARIO_CREADOR IN 
+				(SELECT ID_SEGUIDO FROM SEGUIDORES WHERE ID_SEGUIDOR = ? )
+				""";
+		try(PreparedStatement prepStmt = con.prepareStatement(sqlObtenerPostFeed)){
+			prepStmt.setInt(1, idUsuario);
+			prepStmt.setInt(2, idUsuario);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next()) {
+				int idPost = rs.getInt("ID_POST"); //ID del Post
+				String contenido = rs.getString("CONTENIDO"); //Conenido
+				long fechaPost = rs.getLong("FECHA_POST"); //Fecha (TimeStamp!!)
+				//Tranformar la fecha del Post a un LocalDateTime
+				LocalDateTime fechaFormateada = LocalDateTime.ofInstant(Instant.ofEpochMilli(fechaPost), ZoneId.of("CET"));
+				int idUsuarioCreador = rs.getInt("ID_USUARIO_CREADOR");
+				String username = rs.getString("USERNAME");
+				int creacionCuenta = rs.getInt("CREACIONCUENTA");
+				LocalDate fechaFormateadaCreacionCuenta = LocalDate.ofInstant(Instant.ofEpochMilli(creacionCuenta), ZoneId.of("CET"));
+				String pais = rs.getString("PAIS");
+				String foto = rs.getString("FOTO");
+				String contrasena = rs.getString("CONTRASENA");
+				Usuario u = new Usuario(idUsuarioCreador, username, fechaFormateadaCreacionCuenta, pais, foto, contrasena);
+				Post p = new Post(idPost, contenido, fechaFormateada,u);
+				listaPost.add(p);
+			}
+			
+		
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return listaPost;
+		
+	}
+	
+	public void borrarPost(int postID) {
+		String sqlBorrarPost = "DELETE FROM POST WHERE ID_POST = ? ";
+		try(PreparedStatement prepStmt = con.prepareStatement(sqlBorrarPost)){
+			prepStmt.setInt(1, postID);
+			prepStmt.executeUpdate();
+			prepStmt.close();
+		} catch (SQLException e) {
+			System.err.println("Error al borrar Post ! " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	
 	public List<Contenido> obtenerContenidos() {
 		List<Contenido> contenidos = new ArrayList<>();
@@ -180,7 +262,6 @@ public class GestorDB {
 			
 	        rsSerie.close();
 	        stmtSerie.close();
-	        con.close();
 	        
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
