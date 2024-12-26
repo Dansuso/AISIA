@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ import org.jsoup.select.Elements;
 import db.GestorDB;
 import domain.Noticia;
 import domain.Post;
+import domain.Usuario;
 
 /**
  * Clase que representa la ventana del feed, donde los usuarios podran enviar y
@@ -65,40 +68,9 @@ public class VentanaFeed extends VentanaBase {
 	private JComboBox<String> comboBoxAnos;
 	private JLabel labelTaquilla;
 	private GestorDB db;
+	private final int IDUSUARIO;
 
 	// CLASES INTERNAS
-
-	/**
-	 * Clase del Renderer de la Lista de Noticias.
-	 */
-	private class CellRendererNoticias extends DefaultListCellRenderer {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			// Guardamos en c el componente (Es un JLABEL) creado por el renderer.
-			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			// Casteamos el componente a JLabel
-
-			JLabel labelNoticia = (JLabel) c;
-
-			// El value es una instancia de Noticia, asi que casteamos tambien
-			Noticia noticia = (Noticia) value;
-
-			labelNoticia.setText(noticia.getTitulo());
-			// Cuando el usuario pase el raton por la noticia, mostrara el titulo completo.
-			labelNoticia.setToolTipText(noticia.getTitulo());
-			// Poner como icono el logo de la fuente de la noticia.
-			labelNoticia
-					.setIcon(new ImageIcon("resources/images/fuentes/" + noticia.getFuente().toLowerCase() + ".png"));
-
-			return labelNoticia;
-
-		}
-
-	}
 
 	/**
 	 * Clase para el TableModel de la Tabla.
@@ -125,6 +97,7 @@ public class VentanaFeed extends VentanaBase {
 			this.recaudacionPorPelicula = recaudacionPorPelicula;
 			peliculasModelLista.addAll(recaudacionPorPelicula.keySet());
 		}
+		
 		
 
 		public List<String> getModelLista(){
@@ -170,9 +143,12 @@ public class VentanaFeed extends VentanaBase {
 
 	/**
 	 * Constructor de la ventana de la Feed
+	 * @param idUsuario idUsuario que ha abierto esta ventana. Para simular las "cookies" de un navegador.
 	 */
-	public VentanaFeed() {
+	public VentanaFeed(int idUsuario) {
 		super("Feed");
+		this.IDUSUARIO = idUsuario;
+
 		
 		db = new GestorDB();
 	
@@ -228,10 +204,32 @@ public class VentanaFeed extends VentanaBase {
 		// Eje VERTICAL, ya que la feed va para abajo.
 		JPanel panelPosts = new JPanel();
 		panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
-
+		  Usuario usuario = new Usuario(
+  	            1,                                
+  	            "usuario123",                     
+  	            "Usuario Ejemplo",                
+  	            LocalDate.of(2023, 12, 25),       
+  	            "España",                         
+  	            100,                              
+  	            50,                               
+  	            "foto_perfil.jpg",                
+  	            "miContrasenaSegura"              
+  	        );
+		  
+		  Usuario usuario1 = new Usuario(
+	  	            2,                                
+	  	            "usuario123",                     
+	  	            "Usuario Ejemplo",                
+	  	            LocalDate.of(2023, 12, 25),      
+	  	            "España",                         
+	  	            100,                              
+	  	            50,                               
+	  	            "foto_perfil.jpg",                
+	  	            "miContrasenaSegura"             
+	  	        );
 		for (int i = 0; i < 3; i++) {
 			JPanel panelPostIndividual = crearPost(
-					new Post(i, "Este es mi post numero " + i, LocalDate.now(), 0, i, i, null, null));
+					new Post(i, "Este es mi post numero " + i, LocalDateTime.now(),usuario));
 			panelPosts.add(panelPostIndividual);
 		}
 
@@ -242,10 +240,14 @@ public class VentanaFeed extends VentanaBase {
 			
 			long horaPost = e.getWhen();
 			//Convertir a una fecha (LocalDate), a UTC!!! 
+			// IAG  @Claude
 			
-			LocalDate fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("UTC")).toLocalDate();
+			
+			LocalDateTime fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("UTC")).toLocalDateTime();
 		    if (!postTextArea.getText().trim().isEmpty()) {
-		        Post p = new Post(0, postTextArea.getText(),fechaPost, 0, 0, 0, null, null);
+		    	 
+		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario1);
+		        
 		        JPanel p1 = crearPost(p);
 		        //SI panel posts tiene más de 5 componentes ( tiene paneles) 
 		        // borramos el primero, que es que se añadio primero. 
@@ -318,6 +320,7 @@ public class VentanaFeed extends VentanaBase {
 		// INTERACCIONES POSIBLES : RESPONDER, LIKE
 		JPanel interacciones = new JPanel();
 		interacciones.setLayout(new FlowLayout(FlowLayout.LEFT));
+		/*
 		JButton botonResponder = new JButton("Responder");
 		botonResponder.setBackground(new Color(0, 102, 204));
 		botonResponder.setForeground(Color.white);
@@ -327,10 +330,35 @@ public class VentanaFeed extends VentanaBase {
 
 		interacciones.add(botonResponder);
 		interacciones.add(botonLike);
+		*/
+	    // Botón de eliminar
+	    JButton botonEliminar = new JButton("Eliminar");
+	    botonEliminar.setBackground(Color.RED);
+	    botonEliminar.setForeground(Color.WHITE);
+	    botonEliminar.setBorder(new EmptyBorder(5, 10, 5, 10));
+	    
+	    //Solamente aparecera el boton de Eliminar para los posts escritos por nosotros.
+	    if(postEscrito.getCreadorPost().getCodigo() == IDUSUARIO)
+	    {
+	    interacciones.add(botonEliminar);
+	    }
+	    // Acción del botón de eliminar
+	    botonEliminar.addActionListener(e -> {
+	        // Obtenemos el panel padre del panel de post
+	        Container parent = post.getParent();
+	        //Lo eliminamos y revalidamos y repintamos
+	        if (parent != null) {
+	            parent.remove(post);
+	            parent.revalidate();
+	            parent.repaint();
+	        }
+	    });
 
+		
 		post.add(usuarioPost, BorderLayout.NORTH);
 		post.add(mensajePost, BorderLayout.CENTER);
 		post.add(interacciones, BorderLayout.SOUTH);
+
 		return post;
 
 	}
@@ -428,15 +456,7 @@ public class VentanaFeed extends VentanaBase {
 		comboBoxAnos.addItemListener((e) -> {
 			comboBoxAnos.setEnabled(false);
 			Thread t2 = new Thread(() -> {
-				try {
-					t1.join();
-					peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());
-
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+					peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());					
 			});
 
 			t2.start();
@@ -452,7 +472,7 @@ public class VentanaFeed extends VentanaBase {
 		// TABLA
 
 		tablaTaquilla = new JTable(new PeliculaTableModel(recaudacionPorPelicula));
-		tablaTaquilla.setRowHeight(20);
+		tablaTaquilla.setRowHeight(40);
 
 		// Renderer para las Columnas
 
@@ -460,7 +480,7 @@ public class VentanaFeed extends VentanaBase {
 		// NO permitir que se puedan reordenar las columnas.
 		headerTabla.setReorderingAllowed(false);
 		/**
-		 * Renderer para los Headers
+		 * Renderer para los Headers	
 		 */
 		headerTabla.setDefaultRenderer(new DefaultTableCellRenderer() {
 
@@ -511,6 +531,8 @@ public class VentanaFeed extends VentanaBase {
 				//Mostrar como tooltip el nombre de la pelicula
 				if(column == 1) {
 					label.setToolTipText(value.toString());
+					//Añadir un poco de padding
+					label.setBorder(new EmptyBorder(0, 20, 0, 20));
 				}
 				
 
@@ -543,8 +565,12 @@ public class VentanaFeed extends VentanaBase {
 				if(e.getClickCount() == 2) {
 					//Hay que obtener que valor hemos obtenido
 					PeliculaTableModel ptm = (PeliculaTableModel) tablaTaquilla.getModel();
-					String peliculaClickada = ptm.getModelLista().get(tablaTaquilla.getSelectedRow());
-					new DialogoInfoTaquilla(peliculaClickada);
+					if(tablaTaquilla.getSelectedRow() !=-1) {
+						String peliculaClickada = ptm.getModelLista().get(tablaTaquilla.getSelectedRow());
+						new DialogoInfoTaquilla(peliculaClickada);
+						
+					}
+					
 					
 				
 					
@@ -607,6 +633,7 @@ public class VentanaFeed extends VentanaBase {
 
 
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 		}
 
@@ -616,6 +643,6 @@ public class VentanaFeed extends VentanaBase {
 	
 	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new VentanaFeed());
+		SwingUtilities.invokeLater(() -> new VentanaFeed(1));
 	}
 }
