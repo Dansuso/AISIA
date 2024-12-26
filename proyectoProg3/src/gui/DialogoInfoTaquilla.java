@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import utils.HttpRequestAPI;
 
@@ -37,8 +38,9 @@ public class DialogoInfoTaquilla extends JDialog {
 			try {
 				URL url = new URL(enlaceImagen);
 			    ImageIcon image  = new ImageIcon(url);
-			    labelImagen.setText("");
-			    labelImagen.setIcon(image);
+			    SwingUtilities.invokeLater(() -> labelImagen.setText(""));
+			    SwingUtilities.invokeLater(() -> labelImagen.setIcon(image));
+
 			    this.add(labelImagen);
 			  
 			} catch (MalformedURLException e) {
