@@ -1,0 +1,14 @@
+dic 26, 2024 8:32:50 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:32:52 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:32:52 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:32:56 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:32:56 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:36:30 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:44:25 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo para el año 2019

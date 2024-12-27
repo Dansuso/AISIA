@@ -21,6 +21,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -67,6 +70,8 @@ public class VentanaFeed extends VentanaBase {
 	private JLabel labelTaquilla;
 	private GestorDB db;
 	private final Usuario usuario;
+    private static final Logger LOGGER = Logger.getLogger(VentanaFeed.class.getName());
+
 
 	// CLASES INTERNAS
 
@@ -601,6 +606,17 @@ public class VentanaFeed extends VentanaBase {
 			// Despues de scrappearlo, hay que parsearlo para obtener los datos que nos
 			// interesan.
 			Document doc = Jsoup.connect("https://www.boxofficemojo.com/year/world/" + ano).get();
+			//FUENTE-EXTERNA
+			//URL: https://stackoverflow.com/questions/15758685/how-to-write-logs-in-text-file-when-using-java-util-logging-logger
+			//ADAPTADO : Añadido cerrado del fichero, si no se cierra no se guarda bien
+			FileHandler fh = new FileHandler("log/logBoxOfficeMojo.txt",true);
+			LOGGER.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			LOGGER.setUseParentHandlers(false);
+			LOGGER.info("Se ha hecho una petición a BoxOfficeMojo para el año " + ano);
+			fh.close();
+			
 			// Vamos a obtener SOLO LOS NOMBRES
 			Elements filas = doc.select("#table tbody tr");
 			// Vamos a sacar los trs del 1-10 que son el TOP 10

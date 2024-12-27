@@ -1,0 +1,8 @@
+dic 26, 2024 8:36:31 P. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:36:33 P. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:36:35 P. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+dic 26, 2024 8:44:25 P. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
