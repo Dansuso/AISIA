@@ -30,7 +30,7 @@ public class VentanaUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	Contenido contenido = new Pelicula(1, TIPO.PELICULA, "Gladiator", Genero.AVENTURA, 143, 5, "Sony", 12, true, "resources/images/recursos/contenido/gladiator.jpg", LocalDate.of(2010, 2, 2));
-	Usuario usuario = new Usuario(111, "Nombre real", "Nombre Usuario", LocalDate.of(2024, 10, 31), "spain",143, 100, "resources/images/recursos/defautUsuario.png", "1234", contenido);
+	Usuario usuario = new Usuario(111,"Nombre Usuario", LocalDate.of(2024, 10, 31), "argentina", "resources/images/recursos/defautUsuario.png", "1234");
 	
 	public VentanaUsuario() {
 		setLayout(new GridLayout(3, 1));

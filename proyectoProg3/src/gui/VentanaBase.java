@@ -93,7 +93,7 @@ public class VentanaBase extends JFrame {
 		// FEED
 		JMenuItem menuItemFeed = new JMenuItem("Feed");
 		menuItemFeed.setMnemonic(KeyEvent.VK_F);
-		menuItemFeed.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaFeed()));
+		menuItemFeed.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaFeed(null)));
 		
 		// SALIR
 		JMenuItem menuItemSalir = new JMenuItem("Salir");
