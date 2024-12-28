@@ -89,13 +89,9 @@ public class VentanaUsuario extends JFrame{
 		JLabel etiquetaFotoAisia = new JLabel(fotoAisia);
 		panelFotoNombre.add(etiquetaFotoAisia, BorderLayout.EAST);
 	
-		JLabel nombreUsuario = new JLabel("@" + usuario.getDisplayname());
+		JLabel nombreUsuario = new JLabel("@" + usuario.getUsername());
 		panelFotoNombre.add(nombreUsuario);
 		nombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
-		
-
-		JLabel nombreRealUsuario = new JLabel("           " + usuario.getUsername());
-		panelFotoNombre.add(nombreRealUsuario, BorderLayout.AFTER_LAST_LINE);
 		
 		/* Prohibido
 		nombreRealUsuario.setBounds(178, 75, 100, 100);

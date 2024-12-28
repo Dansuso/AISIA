@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 
 import domain.Contenido.TIPO;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS
@@ -375,6 +377,65 @@ public class InitDatabase {
 	//private void mostrarMensaje(String titulo, String mensaje, int tipoMensaje) {
 	//	JOptionPane.showMessageDialog(null, mensaje, titulo, tipoMensaje);
 	//}
+	public void insertarUsuarioDesdeCSV() {
+		try (Scanner sc = new Scanner(new File("resources/data/usuario.csv"))) {
+			// Abro conexión con la base de datos
+			con = DriverManager.getConnection(CONNECTION_STRING);
+
+			// Nos saltamos la primera línea (cabecera)
+			sc.nextLine();
+			while (sc.hasNext()) {
+				/*
+				 * 	protected int codigo;
+					protected String username;
+					protected LocalDate creacionCuenta;
+					protected String pais;
+					protected String foto;
+					protected String contrasena;
+				 */
+				
+				String linea = sc.nextLine();
+				String[] campos = linea.split(";");
+				int codigo = Integer.parseInt(campos[0]);
+				String username = campos[1];
+				String fechaInic = campos[2];
+				String pais = campos[3];
+				String foto = campos[4];
+				String contraseña = campos[5];
+
+				String sqlInsertPersona = """
+						    INSERT INTO usuario (id_usuario, username, creacionCuenta, pais, foto, contrasena)
+						    VALUES (?, ?, ?, ?, ?, ?);
+						""";
+
+				try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
+					prepStmt.setInt(1, codigo);
+					prepStmt.setString(2, username);
+					prepStmt.setString(3, fechaInic);
+					prepStmt.setString(4, pais);
+					prepStmt.setString(5, foto);
+					prepStmt.setString(6, contraseña);
+					prepStmt.executeUpdate();
+					prepStmt.close();
+				}
+				
+			}
+			con.close();
+			// Mostrar mensaje con JDialog al finalizar
+			//ESTO ES HORRIBLE
+			//mostrarMensaje("Éxito", "Datos del CSV insertados correctamente en la tabla PERSONAS.",
+			//	JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (FileNotFoundException e) {
+			System.err.println("Archivo no encontrado");
+		//	mostrarMensaje("Error", "Archivo CSV no encontrado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			System.err.println("Error al insertar datos en la base de datos " + e.getMessage());
+
+		//	mostrarMensaje("Error", "Error al insertar datos en la base de datos: " + e.getMessage(),
+			//		JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
@@ -382,5 +443,6 @@ public class InitDatabase {
 		db.insertarSeriesYPeliculasDefault();
 	//	db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
+		db.insertarUsuarioDesdeCSV();
 	}
 }
