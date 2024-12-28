@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import domain.Usuario;
 import utils.BanderaUtil;
+import utils.cargarFotoDePerfil;
 import domain.Contenido;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
@@ -30,9 +31,8 @@ public class VentanaUsuario extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	Contenido contenido = new Pelicula(1, TIPO.PELICULA, "Gladiator", Genero.AVENTURA, 143, 5, "Sony", 12, true, "resources/images/recursos/contenido/gladiator.jpg", LocalDate.of(2010, 2, 2));
-	Usuario usuario = new Usuario(111,"Nombre Usuario", LocalDate.of(2024, 10, 31), "argentina", "resources/images/recursos/defautUsuario.png", "1234");
 	
-	public VentanaUsuario() {
+	public VentanaUsuario(Usuario user) {
 		setLayout(new GridLayout(3, 1));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Usuario");
@@ -56,8 +56,12 @@ public class VentanaUsuario extends JFrame{
 		panelFotoNombre.setBackground(colorAisia);
 //		panelFotoNombre.setPreferredSize(new Dimension(125, 125));
 		
-		ImageIcon fotoPerfilDefecto = new ImageIcon(usuario.getFoto());
-		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+		String direccionPredeterminada = "resources/images/recursos/perfil/";
+		
+		// Reescalamos la imagen
+		
+		ImageIcon fotoPerfilDefecto = new ImageIcon(direccionPredeterminada + user.getFoto());
+		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         ImageIcon fotoPerfil = new ImageIcon(scaledImage);
         
 		JLabel etiquetaFotoPerfil = new JLabel(fotoPerfil);
@@ -68,10 +72,14 @@ public class VentanaUsuario extends JFrame{
 			nuevaVentana.setSize(600, 600);
 		    nuevaVentana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Para cerrar solo esta ventana al cerrar
 		    
+		    // Reascalamos para que sea más grande
+		    
+		    Image scaledImageG = fotoPerfilDefecto.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+	        ImageIcon fotoPerfilG = new ImageIcon(scaledImageG);
 			JPanel nuevaVentanaPanel = new JPanel();
 			nuevaVentanaPanel.setBackground(colorAisia);
 			nuevaVentana.add(nuevaVentanaPanel);
-		    JLabel fotoPerfilDefectoLabel = new JLabel(fotoPerfilDefecto);
+		    JLabel fotoPerfilDefectoLabel = new JLabel(fotoPerfilG);
 		    nuevaVentanaPanel.add(fotoPerfilDefectoLabel);
 		    
 		    nuevaVentana.setLocationRelativeTo(VentanaUsuario.this);
@@ -88,8 +96,10 @@ public class VentanaUsuario extends JFrame{
 		
 		JLabel etiquetaFotoAisia = new JLabel(fotoAisia);
 		panelFotoNombre.add(etiquetaFotoAisia, BorderLayout.EAST);
+		
+		// TODO
 	
-		JLabel nombreUsuario = new JLabel("@" + usuario.getUsername());
+		JLabel nombreUsuario = new JLabel("@" + user.getUsername());
 		panelFotoNombre.add(nombreUsuario);
 		nombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
@@ -101,15 +111,22 @@ public class VentanaUsuario extends JFrame{
 		/*
 		 * Cración del panel con la información básica y la película favorita. A continuacion viene la parte de información.
 		 */
+		
+		
 		JPanel panelPeliculas = new JPanel(new GridLayout(1, 2));
 		JPanel panelInformacion = new JPanel(new GridLayout(1, 3));
 		
 		JPanel panelSeg = new JPanel(new BorderLayout());
 		panelSeg.setBackground(colorAisia2);
 		
+		
+		// TODO
+		
+		/*
 		JLabel seguidores = new JLabel(String.valueOf(usuario.getNumSeguidores()));
 		seguidores.setFont(new Font("Monospaced", Font.BOLD, 20));
 		panelSeg.add(seguidores);
+		*/
 		
 		JLabel seguidoresStr = new JLabel("Seguidores");
 		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -118,9 +135,14 @@ public class VentanaUsuario extends JFrame{
 		JPanel panelSeguidos = new JPanel(new BorderLayout());
 		panelSeguidos.setBackground(colorAisia2);
 		
+		
+		// TODO
+		
+		/*
 		JLabel seguidos = new JLabel(String.valueOf(usuario.getNumSeguidos()));
 		seguidos.setFont(new Font("Monospaced", Font.BOLD, 20));
 		panelSeguidos.add(seguidos);
+		*/
 		
 		JLabel seguidosStr = new JLabel("Seguidos");
 		seguidosStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -130,10 +152,15 @@ public class VentanaUsuario extends JFrame{
 		JPanel panelPais = new JPanel(new BorderLayout());
 		panelPais.setBackground(colorAisia2);
 		
+		
+		// TODO
+		
+		/*
 		JLabel pais = new JLabel(String.valueOf(usuario.getPais()));
 		pais.setFont(new Font("Monospaced", Font.BOLD, 20));
 		panelPais.add(pais, BorderLayout.SOUTH);
 		panelPais.add(BanderaUtil.obtenerBandera(usuario.getPais()));
+		*/
 		
 		JLabel paisStr = new JLabel("País");
 		paisStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -155,13 +182,16 @@ public class VentanaUsuario extends JFrame{
 		// lo añadimos reescalado para que sea del tamaño ideal.
 		JPanel panelPelis = new JPanel(new BorderLayout());
 		panelPelis.setBackground(colorAisia2);
-		ImageIcon caratula = new ImageIcon(usuario.getFavorito().getCaratula());
-        Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
-        ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
-        JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
-        JLabel etiquetaCaratula2 = new JLabel(escaladoCaratulaFin);
-		panelPelis.add(etiquetaCaratula, BorderLayout.WEST);
-		panelPelis.add(etiquetaCaratula2, BorderLayout.EAST);
+		
+		
+		 // TODO
+//		ImageIcon caratula = new ImageIcon(usuario.getFavorito().getCaratula());
+//      Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
+//      ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
+//      JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
+//      JLabel etiquetaCaratula2 = new JLabel(escaladoCaratulaFin);
+//		panelPelis.add(etiquetaCaratula, BorderLayout.WEST);
+//		panelPelis.add(etiquetaCaratula2, BorderLayout.EAST);
 		
 		// Creamos un JLabel con "Contenido Favorito".  
 		JLabel contenidoFavorito = new JLabel("Contenidos favoritos");
@@ -246,7 +276,8 @@ public class VentanaUsuario extends JFrame{
         
 	}
 	public static void main(String[] args) {
-		new VentanaUsuario();
+		Usuario user = new Usuario(0, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
+		new VentanaUsuario(user);
 	}
 	
 }
