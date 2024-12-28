@@ -59,8 +59,14 @@ public class VentanaUsuario extends JFrame{
 		String direccionPredeterminada = "resources/images/recursos/perfil/";
 		
 		// Reescalamos la imagen
+		String dirFoto = "";
+		if (user.getFoto() == null) {
+			dirFoto = "defautUsuario.png";
+		} else {
+			dirFoto = user.getFoto();
+		}
 		
-		ImageIcon fotoPerfilDefecto = new ImageIcon(direccionPredeterminada + user.getFoto());
+		ImageIcon fotoPerfilDefecto = new ImageIcon(direccionPredeterminada + dirFoto);
 		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         ImageIcon fotoPerfil = new ImageIcon(scaledImage);
         
@@ -276,7 +282,7 @@ public class VentanaUsuario extends JFrame{
         
 	}
 	public static void main(String[] args) {
-		Usuario user = new Usuario(0, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
+		Usuario user = new Usuario(0, "johndoe", LocalDate.parse("2024-01-01"), "united-states", null, "12345");
 		new VentanaUsuario(user);
 	}
 	
