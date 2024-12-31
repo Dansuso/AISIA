@@ -38,9 +38,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import com.google.gson.JsonElement;
+
 import db.GestorDB;
 import domain.Contenido;
 import domain.Contenido.Genero;
+import utils.HttpRequestAPI;
 
 public class VentanaCatalogoVistaAlterna extends JFrame {
 	
@@ -389,10 +392,22 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                         SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion));
                     }).start();
                 }
+                
+                else if(filaSeleccionada != -1 && columnaSeleccionada == 0) {
+                	String titulo = (String) modeloTabla.getValueAt(filaSeleccionada, columnaSeleccionada);
+                	
+                	
+                	new Thread(() -> {
+                		JsonElement descripcion = HttpRequestAPI.hacerPeticion(titulo).get("Plot");
+                        SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion.toString()));
+                    }).start();
+                }
             }
 			
 			
 		});
+		
+		
 		
 		JButton botonPromedio = new JButton("Calcular Promedio");
 		botonPromedio.addActionListener(new ActionListener() {
