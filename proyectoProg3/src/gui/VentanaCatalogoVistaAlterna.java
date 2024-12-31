@@ -158,7 +158,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
         JEditorPane panelDescripcion = new JEditorPane();
         panelDescripcion.setContentType("text/html");
         panelDescripcion.setEditable(false);
-        panelDescripcion.setText("<html><i>Selecciona un genero para ver su descripción aquí.</i></html>");
+        panelDescripcion.setText("<html><i>Selecciona un campo para ver su descripción aquí.</i></html>");
         JScrollPane scrollDescripcion = new JScrollPane(panelDescripcion);
         
         String[] columnas = { "Título", "Género", "Calificacion", "Distribuidora" }; // Columnas de la tabla
@@ -402,6 +402,14 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                         SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion.toString()));
                     }).start();
                 }
+                else if(filaSeleccionada != -1 && columnaSeleccionada == 3) {
+                	String titulo = (String) modeloTabla.getValueAt(filaSeleccionada, columnaSeleccionada);
+                	new Thread(() -> {
+                        String descripcion = obtenerDescripcionDistribuidora(titulo);
+                        SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion));
+                    }).start();
+                	
+                }
             }
 			
 			
@@ -483,7 +491,42 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
             default:
                 return "Descripción no disponible para este género.";
         	}
+        
+        
         }
+	
+	private String obtenerDescripcionDistribuidora(String distribuidora) {
+		try {
+            // Simular un retardo de red
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+	    switch (distribuidora) {
+	        case "Disney":
+	            return "Gigante del entretenimiento, conocido por sus películas animadas y franquicias como Marvel y Star Wars.";
+	        case "Fox":
+	            return "Reconocida por su diversidad de producciones, desde animación hasta películas de drama y acción.";
+	        case "Universal":
+	            return "Estudio legendario, creador de clásicos del cine y franquicias populares como Jurassic Park.";
+	        case "Warner":
+	            return "Líder en la industria del entretenimiento, famoso por el Universo DC y muchas producciones aclamadas.";
+	        case "Sony":
+	            return "Compañía multinacional con películas icónicas y una gran presencia en el entretenimiento global.";
+	        case "Liongate":
+	            return "Estudio especializado en películas independientes y grandes éxitos de taquilla como Los Juegos del Hambre.";
+	        case "Paramount":
+	            return "Pionero en el cine, conocido por producciones como Transformers y series icónicas.";
+	        case "Netflix":
+	            return "Plataforma de streaming líder, destacada por sus producciones originales de cine y televisión.";
+	        case "HBO":
+	            return "Conocido por series de alta calidad y películas premiadas, como Game of Thrones y Chernobyl.";
+	        case "Amazon":
+	            return "Plataforma de streaming y productora, creadora de éxitos como The Boys y The Marvelous Mrs. Maisel.";
+	        default:
+	            return "Distribuidora no identificada o con información limitada.";
+	    }
+	}
 	
 	private double calcularPromedioRecursivo(List<Contenido> contenidos, int index, double suma) {
 	    // Caso base: si hemos recorrido toda la lista
