@@ -394,6 +394,32 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			
 		});
 		
+		JButton botonPromedio = new JButton("Calcular Promedio");
+		botonPromedio.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        if (!contenidosBD.isEmpty()) {
+		            double promedio = calcularPromedioRecursivo(contenidosBD, 0, 0.0);
+		            JOptionPane.showMessageDialog(
+		                VentanaCatalogoVistaAlterna.this,
+		                "El promedio de calificaciones es: " + String.format("%.2f", promedio),
+		                "Promedio de Calificaciones",
+		                JOptionPane.INFORMATION_MESSAGE
+		            );
+		        } else {
+		            JOptionPane.showMessageDialog(
+		                VentanaCatalogoVistaAlterna.this,
+		                "No hay contenidos disponibles para calcular el promedio.",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE
+		            );
+		        }
+		    }
+		});
+
+		// Añadimos el botón al panel izquierdo de botones
+		panelIzqBotones.add(botonPromedio);
+		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
 		
@@ -443,6 +469,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                 return "Descripción no disponible para este género.";
         	}
         }
+	
+	private double calcularPromedioRecursivo(List<Contenido> contenidos, int index, double suma) {
+	    // Caso base: si hemos recorrido toda la lista
+	    if (index == contenidos.size()) {
+	        return suma / contenidos.size();
+	    }
+
+	    // Acumulamos la calificación del contenido actual
+	    suma += contenidos.get(index).getCalificacion();
+
+	    // Llamada recursiva con el siguiente índice
+	    return calcularPromedioRecursivo(contenidos, index + 1, suma);
+	}
 	
 	public void mostrarContenidos() {
         // Recorremos y mostramos los contenidos en la consola, o los cargamos en la interfaz
