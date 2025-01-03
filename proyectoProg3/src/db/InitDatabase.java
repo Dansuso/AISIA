@@ -437,6 +437,8 @@ public class InitDatabase {
 		}
 	}
 	
+	
+	// Generado por ChatGPT
     public void insertarPostDefault() {
         String insertNoticia = """
                 INSERT INTO POST (ID_POST, CONTENIDO, FECHA_POST, ID_USUARIO_CREADOR)

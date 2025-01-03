@@ -334,5 +334,62 @@ public class GestorDB {
 	
 	
 	
+	/**
+	 * Metodo que devuelve los  posts nuestros ordenados por fecha.
+	 * @param idUsuario Id del Usuario de que se quieren sacar los posts 
+	 * @return Lista con posts o menos
+	 */
+	public List<Post> obtenerPostUsuario(int idUsuario){
+		List<Post> listaPost = new ArrayList<>();
+	    String sqlObtenerPostUsuario = "SELECT POST.*, usuario.* " +
+	            "FROM usuario, POST " +
+	            "WHERE POST.ID_USUARIO_CREADOR = usuario.id_usuario " +
+	            "AND usuario.id_usuario = ? " +
+	            "ORDER BY POST.FECHA_POST DESC";
+
+	    try (PreparedStatement prepStmt = con.prepareStatement(sqlObtenerPostUsuario)) {
+	        prepStmt.setInt(1, idUsuario); // Parametrizar el ID del usuario
+	        ResultSet rs = prepStmt.executeQuery();
+
+	        while (rs.next()) {
+	            // Datos de la tabla POST
+	            int idPost = rs.getInt("ID_POST");
+	            String contenido = rs.getString("CONTENIDO");
+	            long fechaPost = rs.getLong("FECHA_POST");
+
+	            // Transformar la fecha del post a LocalDateTime
+	            LocalDateTime fechaFormateada = LocalDateTime.ofInstant(Instant.ofEpochMilli(fechaPost), ZoneId.of("CET"));
+	            int idUsuarioCreador = rs.getInt("ID_USUARIO_CREADOR");
+
+	            // Datos de la tabla usuario
+	            String usernameDB = rs.getString("USERNAME");
+	            long creacionCuenta = rs.getLong("CREACIONCUENTA");
+
+	            // Transformar la fecha de creación de la cuenta a LocalDate
+	            LocalDate fechaFormateadaCreacionCuenta = Instant.ofEpochMilli(creacionCuenta).atZone(ZoneId.of("CET")).toLocalDate();
+	            String pais = rs.getString("PAIS");
+	            String foto = rs.getString("FOTO");
+	            String contrasena = rs.getString("CONTRASENA");
+
+	            // Crear objeto Usuario
+	            Usuario u = new Usuario(idUsuarioCreador, usernameDB, fechaFormateadaCreacionCuenta, pais, foto, contrasena);
+
+	            // Crear objeto Post
+	            Post p = new Post(idPost, contenido, fechaFormateada, u);
+
+	            // Añadir a la lista
+	            listaPost.add(p);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return listaPost;
+	}
+		
+	
+	
+	
 
 }

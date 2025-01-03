@@ -226,8 +226,8 @@ public class VentanaUsuario extends JFrame{
 		ultimoComentario.setFont(new Font("Agency FB", Font.BOLD, 25));
 		
 		GestorDB bd = new GestorDB();
-		List<Post> comentarios = bd.obtenerPostFeed(user.getCodigo());
-		
+		List<Post> comentarios = bd.obtenerPostUsuario(user.getCodigo());
+		System.out.println(comentarios);
 		
 		JPanel panelConComentarios = new JPanel(new GridLayout(3, 1));
 		
@@ -236,6 +236,7 @@ public class VentanaUsuario extends JFrame{
 				JButton botonAbreComentario = botonFormatoComentario(comentarios.get(i));
 				botonAbreComentario.setBackground(colorAisia3);
 				panelConComentarios.add(botonAbreComentario);
+				botonAbreComentario.addActionListener(VentanaComentario.VentanaComent(comentarios.get(i)));
 			} catch (IndexOutOfBoundsException e) {
 				JLabel EtiquetaAbreComentario = new JLabel("Sin comentario.");
 				JPanel panelSinComentario = new JPanel(new BorderLayout());
@@ -264,7 +265,7 @@ public class VentanaUsuario extends JFrame{
 		panelConComentarios.add(botonAbreComentario3, BorderLayout.SOUTH);
 		*/
 		
-		panelUltiComentario.add(panelConComentarios, BorderLayout.EAST);
+		panelUltiComentario.add(panelConComentarios, BorderLayout.CENTER);
 		
 		panelUltiComentario.add(ultimoComentario, BorderLayout.WEST);
 
@@ -320,7 +321,7 @@ public class VentanaUsuario extends JFrame{
     }
 	
 	public static void main(String[] args) {
-		Usuario user = new Usuario(3, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
+		Usuario user = new Usuario(2, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
 		new VentanaUsuario(user);
 	}
 	
