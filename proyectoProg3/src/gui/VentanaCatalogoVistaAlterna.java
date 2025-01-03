@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -142,7 +143,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		JButton eliminarFavs = new JButton("Eliminar favs");
 		
 		JPanel panelIzqBotones = new JPanel();
-		panelIzqBotones.setLayout(new FlowLayout());
+		panelIzqBotones.setLayout(new GridLayout(2,2, 5, 5));
 		panelIzqBotones.add(favoritos);
 		panelIzqBotones.add(eliminarFavs);
 		
