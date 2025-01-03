@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import domain.Contenido.TIPO;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS
@@ -394,6 +395,7 @@ public class InitDatabase {
 				
 				String linea = sc.nextLine();
 				String[] campos = linea.split(";");
+				
 				int codigo = Integer.parseInt(campos[0]);
 				String username = campos[1];
 				String fechaInic = campos[2];
@@ -434,6 +436,47 @@ public class InitDatabase {
 			//		JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+    public void insertarPostDefault() {
+        String insertNoticia = """
+                INSERT INTO POST (ID_POST, CONTENIDO, FECHA_POST, ID_USUARIO_CREADOR)
+                VALUES (?, ?, ?, ?);
+                """;
+
+        // Datos para los comentarios
+        Object[][] posts = {
+                // Usuario 1: 4 comentarios
+                {1, "¡El Señor de los Anillos es mi trilogía favorita!", LocalDate.of(2024, 1, 2), 1},
+                {2, "Recientemente volví a ver 'Matrix' y sigue siendo impresionante.", LocalDate.of(2024, 1, 3), 1},
+                {3, "¿Alguien más ama las películas de Studio Ghibli?", LocalDate.of(2024, 1, 4), 1},
+                {4, "La dirección de Peter Jackson en 'El Hobbit' es fenomenal.", LocalDate.of(2024, 1, 5), 1},
+
+                // Usuario 2: 2 comentarios
+                {5, "'Inception' me dejó pensando en cómo funcionan los sueños.", LocalDate.of(2024, 1, 6), 2},
+                {6, "¡No puedo esperar a la próxima película de Christopher Nolan!", LocalDate.of(2024, 1, 7), 2},
+
+                // Otros usuarios
+                {7, "'Parasite' merece todos los premios que recibió. ¡Espectacular!", LocalDate.of(2024, 1, 8), 3}, // Usuario 3
+                {8, "'The Dark Knight' es mi película favorita de superhéroes.", LocalDate.of(2024, 1, 9), 4}, // Usuario 4
+                {9, "La animación en 'Spider-Man: Into the Spider-Verse' es increíble.", LocalDate.of(2024, 1, 10), 5}, // Usuario 5
+                {10, "'Pulp Fiction' tiene los mejores diálogos del cine.", LocalDate.of(2024, 1, 11), 6} // Usuario 6
+            };
+
+        try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+            try (PreparedStatement prepStmt = con.prepareStatement(insertNoticia)) {
+                for (Object[] post : posts) {
+                    prepStmt.setInt(1, (int) post[0]); // ID_POST
+                    prepStmt.setString(2, (String) post[1]); // CONTENIDO
+                    prepStmt.setDate(3, java.sql.Date.valueOf((LocalDate) post[2])); // FECHA_POST
+                    prepStmt.setInt(4, (int) post[3]); // ID_USUARIO_CREADOR
+                    prepStmt.executeUpdate();
+                }
+                System.out.println("10 publicaciones insertadas correctamente.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
@@ -442,5 +485,6 @@ public class InitDatabase {
 	//	db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
 		db.insertarUsuarioDesdeCSV();
+		db.insertarPostDefault();
 	}
 }

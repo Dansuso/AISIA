@@ -15,8 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import domain.Post;
+
 public class VentanaComentario {
-	public static ActionListener VentanaComent(String comentario, String nombre, String calif, String foto) {
+	public static ActionListener VentanaComent(Post post) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -33,7 +35,7 @@ public class VentanaComentario {
                 panelVentanaComentario.setBackground(colorAisia3);
 
                 
-                JTextArea areaComentario = new JTextArea(comentario);
+                JTextArea areaComentario = new JTextArea(post.getContenido());
                 areaComentario.setBackground(colorAisia3);
                 areaComentario.setLineWrap(true);       // Ajustar texto
                 areaComentario.setWrapStyleWord(true);	// Que no se partan las palabras

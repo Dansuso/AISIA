@@ -6,7 +6,12 @@ import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Label;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,7 +19,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
+import db.GestorDB;
 import domain.Usuario;
 import utils.BanderaUtil;
 import utils.cargarFotoDePerfil;
@@ -22,9 +29,12 @@ import domain.Contenido;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
 import domain.Pelicula;
+import domain.Post;
 
 public class VentanaUsuario extends JFrame{
-	
+	public Color colorAisia = new Color(184, 232, 229);
+	public Color colorAisia2 = new Color(120, 142, 227);
+	public Color colorAisia3 = new Color(235, 155, 195);
 	/**
 	 * 
 	 */
@@ -47,9 +57,6 @@ public class VentanaUsuario extends JFrame{
 		 * panelFotoNombre.setBounds(0, 0, 630, 200);
 		 */
 		
-		Color colorAisia = new Color(184, 232, 229);
-		Color colorAisia2 = new Color(120, 142, 227);
-		Color colorAisia3 = new Color(235, 155, 195);
 		
 		// Establecer color y tomaño del panel.
 		
@@ -58,7 +65,8 @@ public class VentanaUsuario extends JFrame{
 		
 		String direccionPredeterminada = "resources/images/recursos/perfil/";
 		
-		// Reescalamos la imagen
+		
+		// Qué hacer en caso de que el usuario no quiera tener foto de perfil.
 		String dirFoto = "";
 		if (user.getFoto() == null) {
 			dirFoto = "defautUsuario.png";
@@ -67,6 +75,7 @@ public class VentanaUsuario extends JFrame{
 		}
 		
 		ImageIcon fotoPerfilDefecto = new ImageIcon(direccionPredeterminada + dirFoto);
+		// Reescalamos la imagen
 		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         ImageIcon fotoPerfil = new ImageIcon(scaledImage);
         
@@ -103,7 +112,6 @@ public class VentanaUsuario extends JFrame{
 		JLabel etiquetaFotoAisia = new JLabel(fotoAisia);
 		panelFotoNombre.add(etiquetaFotoAisia, BorderLayout.EAST);
 		
-		// TODO
 	
 		JLabel nombreUsuario = new JLabel("@" + user.getUsername());
 		panelFotoNombre.add(nombreUsuario);
@@ -213,43 +221,53 @@ public class VentanaUsuario extends JFrame{
 		JPanel panelUltiComentario = new JPanel(new BorderLayout());
 		panelUltiComentario.setBackground(colorAisia3);
 		
-		JPanel panelConComentarios = new JPanel(new GridLayout(3, 1));
-		String emogiPeli = "🎥 ";
-		String emogiJuego = "🎮 ";
 		
 		JLabel ultimoComentario = new JLabel("<html>Últimos <br> comentarios.<html>");
 		ultimoComentario.setFont(new Font("Agency FB", Font.BOLD, 25));
 		
-		String comentario1 = "Horror, no perdaís el tiempo en esta película porque de verdad no merece nada la pena. Es incrible ver a la gente abandonado la sala. Las canciones insoportables, me pitaban los oidos.";
-		String nombre1 = "Joker: Folie à Deux";
-		String calif1 = "✰";
-		String foto1 = "resources/images/recursos/contenido/joker2.jpg";
+		GestorDB bd = new GestorDB();
+		List<Post> comentarios = bd.obtenerPostFeed(user.getCodigo());
 		
-		JLabel ejemploComentario1 = new JLabel(emogiPeli + " " + nombre1 + ": " + calif1 +  " " + acortarComentario(comentario1));
 		
-		JButton botonAbreComentario1 = new JButton();
-		botonAbreComentario1.addActionListener(VentanaComentario.VentanaComent(comentario1, nombre1, calif1, foto1));
-		botonAbreComentario1.setBackground(colorAisia3);
-		botonAbreComentario1.add(ejemploComentario1);
+		JPanel panelConComentarios = new JPanel(new GridLayout(3, 1));
+		
+		for (int i = 0; i < 3; i++) {
+			try {
+				JButton botonAbreComentario = botonFormatoComentario(comentarios.get(i));
+				botonAbreComentario.setBackground(colorAisia3);
+				panelConComentarios.add(botonAbreComentario);
+			} catch (IndexOutOfBoundsException e) {
+				JLabel EtiquetaAbreComentario = new JLabel("Sin comentario.");
+				JPanel panelSinComentario = new JPanel(new BorderLayout());
+				panelSinComentario.add(EtiquetaAbreComentario, BorderLayout.WEST);
+				panelSinComentario.setBackground(colorAisia3);
+				panelConComentarios.add(panelSinComentario);
+			}
+		}
+		
+		
 		
 		// TODO
+//		botonAbreComentario1.addActionListener(VentanaComentario.VentanaComent(comentarios.get(0)));
+
 		
-		JLabel ejemploComentario2 = new JLabel(emogiPeli + "Titanic: " +  "✰✰✰✰✰" + " 'Me ha encantado, no he podido evitar llorar con el final'");
-		JButton botonAbreComentario2 = new JButton();
+
+		/*
+		JButton botonAbreComentario2 = botonFormatoComentario(comentarios.get(1));
 		botonAbreComentario2.setBackground(colorAisia3);
-		botonAbreComentario2.add(ejemploComentario2);
 		
-		JLabel ejemploComentario3 = new JLabel(emogiJuego + "Grand Theft Auto: Vice City: " +  "✰✰✰✰✰" + " 'Que decir de un juego clasico que nos ha...'");
-		JButton botonAbreComentario3 = new JButton();
+		JButton botonAbreComentario3 = botonFormatoComentario(comentarios.get(2));
 		botonAbreComentario3.setBackground(colorAisia3);
-		botonAbreComentario3.add(ejemploComentario3);
+
 		
-		panelConComentarios.add(botonAbreComentario1, BorderLayout.NORTH);
 		panelConComentarios.add(botonAbreComentario2, BorderLayout.CENTER);
 		panelConComentarios.add(botonAbreComentario3, BorderLayout.SOUTH);
+		*/
+		
+		panelUltiComentario.add(panelConComentarios, BorderLayout.EAST);
 		
 		panelUltiComentario.add(ultimoComentario, BorderLayout.WEST);
-		panelUltiComentario.add(panelConComentarios, BorderLayout.EAST);
+
 		
 		
 		add(panelFotoNombre, BorderLayout.NORTH);
@@ -258,6 +276,18 @@ public class VentanaUsuario extends JFrame{
 		
 		
 		setVisible(true);
+	}
+
+	private JButton botonFormatoComentario(Post post) {
+		String contenido = acortarComentario(post.getContenido());
+		JLabel contenidoEtiqueta = new JLabel(contenido);
+		JButton boton = new JButton();
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(formatearFecha(post.getFechaPost()), BorderLayout.NORTH);
+		panel.add(contenidoEtiqueta);
+		panel.setBackground(colorAisia3);
+		boton.add(panel);
+		return boton;
 	}
 
 	private String acortarComentario(String comentario) {
@@ -281,8 +311,16 @@ public class VentanaUsuario extends JFrame{
         
         
 	}
+	public static JLabel formatearFecha(LocalDateTime fecha) {
+        // Crear un formato con el patrón deseado
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy");
+        JLabel etiqueta = new JLabel(fecha.format(formato));
+        etiqueta.setFont(new Font("Serif", Font.BOLD, 17));
+        return etiqueta;
+    }
+	
 	public static void main(String[] args) {
-		Usuario user = new Usuario(0, "johndoe", LocalDate.parse("2024-01-01"), "united-states", null, "12345");
+		Usuario user = new Usuario(3, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
 		new VentanaUsuario(user);
 	}
 	
