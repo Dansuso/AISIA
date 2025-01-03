@@ -439,9 +439,53 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		        }
 		    }
 		});
+		
+		JButton botonPromedioFavoritos = new JButton("Promedio Favoritos");
+		botonPromedioFavoritos.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        if (modeloTabla.getRowCount() > 0) {
+		            // Crear una lista temporal con las calificaciones de la tabla de favoritos
+		            List<Double> calificacionesFavoritos = new ArrayList<>();
+		            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+		                // Convertir el valor a Double de forma segura
+		                Object valor = modeloTabla.getValueAt(i, 2);
+		                if (valor instanceof Number) {
+		                    calificacionesFavoritos.add(((Number) valor).doubleValue());
+		                }
+		            }
+		            // Verificar que haya valores en la lista
+		            if (!calificacionesFavoritos.isEmpty()) {
+		                // Calcular el promedio recursivamente
+		                double promedioFavoritos = calcularPromedioRecursivoFavoritos(calificacionesFavoritos, 0, 0.0);
+		                JOptionPane.showMessageDialog(
+		                    VentanaCatalogoVistaAlterna.this,
+		                    "El promedio de calificaciones de favoritos es: " + String.format("%.2f", promedioFavoritos),
+		                    "Promedio de Favoritos",
+		                    JOptionPane.INFORMATION_MESSAGE
+		                );
+		            } else {
+		                JOptionPane.showMessageDialog(
+		                    VentanaCatalogoVistaAlterna.this,
+		                    "No hay calificaciones válidas en favoritos para calcular el promedio.",
+		                    "Error",
+		                    JOptionPane.ERROR_MESSAGE
+		                );
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(
+		                VentanaCatalogoVistaAlterna.this,
+		                "No hay contenidos en favoritos para calcular el promedio.",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE
+		            );
+		        }
+		    }
+		});
 
 		// Añadimos el botón al panel izquierdo de botones
 		panelIzqBotones.add(botonPromedio);
+		panelIzqBotones.add(botonPromedioFavoritos);
 		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
@@ -539,6 +583,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 
 	    // Llamada recursiva con el siguiente índice
 	    return calcularPromedioRecursivo(contenidos, index + 1, suma);
+	}
+	
+	private double calcularPromedioRecursivoFavoritos(List<Double> calificaciones, int index, double suma) {
+	    // Caso base: si hemos recorrido toda la lista
+	    if (index == calificaciones.size()) {
+	        return suma / calificaciones.size();
+	    }
+
+	    // Acumulamos la calificación actual
+	    suma += calificaciones.get(index);
+
+	    // Llamada recursiva con el siguiente índice
+	    return calcularPromedioRecursivoFavoritos(calificaciones, index + 1, suma);
 	}
 	
 	public void mostrarContenidos() {
