@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -13,23 +14,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import db.GestorDB;
 import domain.Usuario;
 import utils.BanderaUtil;
-import utils.cargarFotoDePerfil;
+import utils.HttpRequestAPI;
+import utils.cargarFoto;
 import domain.Contenido;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
 import domain.Pelicula;
 import domain.Post;
+import domain.Serie;
 
 public class VentanaUsuario extends JFrame{
 	public Color colorAisia = new Color(184, 232, 229);
@@ -47,6 +53,8 @@ public class VentanaUsuario extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Usuario");
 		setSize(640, 900);
+		
+		GestorDB bd = new GestorDB();
 		
 		// Creo un panel para añadir la foto de perfil y el nombre de usuario debajo de esa foto de perfil.
 		JPanel panelFotoNombre = new JPanel(new BorderLayout());
@@ -127,7 +135,7 @@ public class VentanaUsuario extends JFrame{
 		 */
 		
 		
-		JPanel panelPeliculas = new JPanel(new GridLayout(1, 2));
+		JPanel panelTercero = new JPanel(new GridLayout(1, 2));
 		JPanel panelInformacion = new JPanel(new GridLayout(1, 3));
 		
 		JPanel panelSeg = new JPanel(new BorderLayout());
@@ -166,15 +174,34 @@ public class VentanaUsuario extends JFrame{
 		JPanel panelPais = new JPanel(new BorderLayout());
 		panelPais.setBackground(colorAisia2);
 		
+	
+		JLabel etiquetaCarga = new JLabel("Cargando bandera");
+	    panelPais.add(etiquetaCarga, BorderLayout.EAST);
+	    panelPais.revalidate();
+	    panelPais.repaint();
+
+		Thread hiloBandera = new Thread(() -> {
+	        try {
+	    		JLabel bandera = BanderaUtil.obtenerBandera(user.getPais());
+
+	            SwingUtilities.invokeLater(() -> {
+	                panelPais.add(bandera);
+	                etiquetaCarga.setText(""); // Quitar el texto "Cargando imagen"
+	                panelPais.revalidate();
+	                panelPais.repaint();
+	            });
+	        } catch (Exception e) {
+	            SwingUtilities.invokeLater(() -> {
+	                etiquetaCarga.setText(user.getPais());
+	                panelPais.revalidate();
+	                panelPais.repaint();
+	            });
+	            e.printStackTrace();
+	        }
+	    });
+
+	    hiloBandera.start();
 		
-		// TODO
-		
-		/*
-		JLabel pais = new JLabel(String.valueOf(usuario.getPais()));
-		pais.setFont(new Font("Monospaced", Font.BOLD, 20));
-		panelPais.add(pais, BorderLayout.SOUTH);
-		panelPais.add(BanderaUtil.obtenerBandera(usuario.getPais()));
-		*/
 		
 		JLabel paisStr = new JLabel("País");
 		paisStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -188,33 +215,141 @@ public class VentanaUsuario extends JFrame{
 		
 		
 		/*
-		 * Ahora vienen la parte de la película favorita
+		 * Ahora vienen la parte de la películas y series favoritas
 		 * 
 		 */
 		
 		// Cogemas el contenido favorito del usuario, cogemos la ubicacion de la caratula de ese contenido y
 		// lo añadimos reescalado para que sea del tamaño ideal.
-		JPanel panelPelis = new JPanel(new BorderLayout());
-		panelPelis.setBackground(colorAisia2);
 		
+		JPanel panelPelisSeries = new JPanel(new GridLayout(2,1));
+		panelPelisSeries.setBackground(colorAisia2);
 		
-		 // TODO
-//		ImageIcon caratula = new ImageIcon(usuario.getFavorito().getCaratula());
-//      Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
-//      ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
-//      JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
-//      JLabel etiquetaCaratula2 = new JLabel(escaladoCaratulaFin);
-//		panelPelis.add(etiquetaCaratula, BorderLayout.WEST);
-//		panelPelis.add(etiquetaCaratula2, BorderLayout.EAST);
+		// Panel con las SERIE
+		JPanel panelSeriesPrin = new JPanel(new BorderLayout());
+		JLabel palabraSerie = new JLabel("Series Favoritas");
+		palabraSerie.setFont(new Font("Arial", Font.BOLD, 15));
+		panelSeriesPrin.add(palabraSerie, BorderLayout.NORTH);
+		panelSeriesPrin.setBackground(colorAisia2);
+		
+//		for (Serie serie : seriesFav) {
+//			Thread hilo = new Thread();
+//			ImageIcon caratula = cargarFoto.cargarImagenDesdeURL(HttpRequestAPI.hacerPeticion(serie.getTitulo()).get("Poster").getAsString());
+//			Image escaladoCaratula = caratula.getImage().getScaledInstance(195, 280, Image.SCALE_SMOOTH);
+//		    ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
+//		    JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
+//			panelSeries.add(etiquetaCaratula, BorderLayout.WEST);
+//
+//		}
+		JPanel panelSeries = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelSeries.setBackground(colorAisia2);
+		
+		List<Serie> seriesFav = bd.obtenerSeriesFav(user.getCodigo());
+		for (Serie serie : seriesFav) {
+		    // Crear un JLabel con el texto "Cargando imagen"
+		    JLabel etiquetaCaratula = new JLabel("Cargando imagen");
+		    panelSeries.add(etiquetaCaratula, BorderLayout.EAST);
+		    panelSeries.revalidate();
+		    panelSeries.repaint();
+
+		    // Crear un hilo para cargar la imagen
+		    Thread h = new Thread(() -> {
+		        try {
+		            String urlPoster = HttpRequestAPI.hacerPeticion(serie.getTitulo()).get("Poster").getAsString();
+		            ImageIcon caratula = cargarFoto.cargarImagenDesdeURL(urlPoster);
+		            // Escalar la imagen
+		            Image escaladoCaratula = caratula.getImage().getScaledInstance(125, 155, Image.SCALE_SMOOTH);
+		            ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
+
+		            SwingUtilities.invokeLater(() -> {
+		                etiquetaCaratula.setIcon(escaladoCaratulaFin);
+		                etiquetaCaratula.setText(""); // Quitar el texto "Cargando imagen"
+		                panelSeries.revalidate();
+		                panelSeries.repaint();
+		            });
+		        } catch (Exception e) {
+		            SwingUtilities.invokeLater(() -> {
+		                etiquetaCaratula.setText(serie.getTitulo());
+		                panelSeries.revalidate();
+		                panelSeries.repaint();
+		            });
+		            e.printStackTrace();
+		        }
+		    });
+
+		    h.start();
+		}
+		
+		JScrollPane panelDeslizaSeries = new JScrollPane(panelSeries);
+		panelDeslizaSeries.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		panelDeslizaSeries.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		panelDeslizaSeries.getVerticalScrollBar().setUnitIncrement(16); // Incremento suave para el scroll
+		panelSeriesPrin.add(panelDeslizaSeries, BorderLayout.CENTER);
+			
 		
 		// Creamos un JLabel con "Contenido Favorito".  
-		JLabel contenidoFavorito = new JLabel("Contenidos favoritos");
-		contenidoFavorito.setFont(new Font("Arial", Font.BOLD, 15));
-		panelPelis.add(contenidoFavorito, BorderLayout.NORTH);
+
+		
+		// Ahora viene la parte de películas favoritas
+		// Panel con las PELICULAS
+				JPanel panelPelisPrin = new JPanel(new BorderLayout());
+				JLabel palabraPeli = new JLabel("Peliculas Favoritas");
+				palabraPeli.setFont(new Font("Arial", Font.BOLD, 15));
+				panelPelisPrin.add(palabraPeli, BorderLayout.NORTH);
+				panelPelisPrin.setBackground(colorAisia2);
+				
+				JPanel panelPeliculas = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				panelPeliculas.setBackground(colorAisia2);
+				
+				List<Pelicula> PeliculasFav = bd.obtenerPelisFav(user.getCodigo());
+				for (Pelicula pelicula : PeliculasFav) {
+				    // Crear un JLabel con el texto "Cargando imagen"
+				    JLabel etiquetaCaratula = new JLabel("Cargando imagen");
+				    panelPeliculas.add(etiquetaCaratula, BorderLayout.EAST);
+				    panelPeliculas.revalidate();
+				    panelPeliculas.repaint();
+
+				    // Crear un hilo para cargar la imagen
+				    Thread hiloObtenerSerie = new Thread(() -> {
+				        try {
+				            String urlPoster = HttpRequestAPI.hacerPeticion(pelicula.getTitulo()).get("Poster").getAsString();
+				            ImageIcon caratula = cargarFoto.cargarImagenDesdeURL(urlPoster);
+				            // Escalar la imagen
+				            Image escaladoCaratula = caratula.getImage().getScaledInstance(125, 155, Image.SCALE_SMOOTH);
+				            ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
+
+				            SwingUtilities.invokeLater(() -> {
+				                etiquetaCaratula.setIcon(escaladoCaratulaFin);
+				                etiquetaCaratula.setText(""); // Quitar el texto "Cargando imagen"
+				                panelSeries.revalidate();
+				                panelSeries.repaint();
+				            });
+				        } catch (Exception e) {
+				            SwingUtilities.invokeLater(() -> {
+				                etiquetaCaratula.setText(pelicula.getTitulo());
+				                panelSeries.revalidate();
+				                panelSeries.repaint();
+				            });
+				            e.printStackTrace();
+				        }
+				    });
+
+				    hiloObtenerSerie.start();
+				}
+				
+				JScrollPane panelDeslizaPelis = new JScrollPane(panelPeliculas);
+				panelDeslizaPelis.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				panelDeslizaPelis.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				panelDeslizaPelis.getVerticalScrollBar().setUnitIncrement(16); // Incremento suave para el scroll
+				panelPelisPrin.add(panelDeslizaPelis, BorderLayout.CENTER);
+
 		
 		// Añadimos ambos paneles
-		panelPeliculas.add(panelPelis);
-		panelPeliculas.add(panelInformacion);
+		panelPelisSeries.add(panelSeriesPrin);
+		panelPelisSeries.add(panelPelisPrin);
+		
+		panelTercero.add(panelPelisSeries);
+		panelTercero.add(panelInformacion);
 		
 
 		
@@ -225,7 +360,6 @@ public class VentanaUsuario extends JFrame{
 		JLabel ultimoComentario = new JLabel("<html>Últimos <br> comentarios.<html>");
 		ultimoComentario.setFont(new Font("Agency FB", Font.BOLD, 25));
 		
-		GestorDB bd = new GestorDB();
 		List<Post> comentarios = bd.obtenerPostUsuario(user.getCodigo());
 		System.out.println(comentarios);
 		
@@ -273,7 +407,7 @@ public class VentanaUsuario extends JFrame{
 		
 		add(panelFotoNombre, BorderLayout.NORTH);
 		add(panelUltiComentario, BorderLayout.CENTER);
-		add(panelPeliculas, BorderLayout.SOUTH);
+		add(panelTercero, BorderLayout.SOUTH);
 		
 		
 		setVisible(true);
@@ -321,8 +455,9 @@ public class VentanaUsuario extends JFrame{
     }
 	
 	public static void main(String[] args) {
-		Usuario user = new Usuario(2, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
-		new VentanaUsuario(user);
+		GestorDB bd = new GestorDB();
+		new VentanaUsuario(bd.obtenerUsuarios().get(4));
+		System.out.println(bd.obtenerUsuarios().get(1).getCodigo());
 	}
 	
 }

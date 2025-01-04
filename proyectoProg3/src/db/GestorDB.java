@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,6 +24,7 @@ import domain.Post;
 import domain.Serie;
 import domain.Usuario;
 import domain.Contenido.Genero;
+import domain.Contenido.TIPO;
 import domain.Noticia;
 
 public class GestorDB {
@@ -387,9 +389,90 @@ public class GestorDB {
 
 	    return listaPost;
 	}
+	
+	public List<Usuario> obtenerUsuarios() {
+	    List<Usuario> usuarios = new ArrayList<>();
+	    String sql = "SELECT * FROM usuario";
+
+	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	         PreparedStatement stmt = con.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	                
+	                Usuario usuario = new Usuario(rs.getInt("id_usuario"), rs.getString("username"), LocalDate.parse(rs.getString("creacionCuenta")),
+			                rs.getString("pais"), rs.getString("foto"), rs.getString("contrasena"));
+	            
+	            usuarios.add(usuario);
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener datos de la tabla Usuarios: " + e.getMessage());
+	    }
+	    return usuarios;
+	}
 		
+	/**
+	 * Metodo que devuelve las series favoritas de un usuario
+	 * @param idUsuario Id del Usuario de que se quieren sacar las series favoritas
+	 * @return Lista con las series favoritas
+	 */
+	public List<Serie> obtenerSeriesFav(int idUsuario) {
+	    List<Serie> series = new ArrayList<>();
+	    
+	    String sqlObtenerSeriesFav = """
+	    		SELECT * FROM Serie WHERE id_serie in 
+	    		(SELECT id_serie FROM Serie_Favorito WHERE id_usuario = ?)
+	    		""";
+
+	    try(PreparedStatement prepStmt = con.prepareStatement(sqlObtenerSeriesFav)){
+			prepStmt.setInt(1, idUsuario);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next()) {
+				
+				// int id, TIPO tipo, String titulo, Genero genero, int calificacion, String distribuidora,
+				// int edadRecomendada, String caratula, int numTemporadas, int numCapitulos, boolean emmy,LocalDate fecha
+				Serie s = new Serie(rs.getInt("id_serie"),TIPO.SERIE, rs.getString("titulo"), Contenido.Genero.fromString(rs.getString("genero")), rs.getInt("calificacion"),
+						rs.getString("distribuidora"), rs.getInt("edadrecomendada"),rs.getString("caratula"), rs.getInt("numerotemporadas"), rs.getInt("numeroepisodios"), 
+						rs.getBoolean("emmy"), LocalDate.parse(rs.getString("fecha")));
+				series.add(s);
+			}
+		
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return series;
+	}
 	
-	
+	public List<Pelicula> obtenerPelisFav(int idUsuario) {
+	    List<Pelicula> peliculas = new ArrayList<>();
+	    
+	    String sqlObtenerSeriesFav = """
+	    		SELECT * FROM Pelicula WHERE id_pelicula in 
+	    		(SELECT id_pelicula FROM Pelicula_Favorito WHERE id_usuario = ?)
+	    		""";
+
+	    try(PreparedStatement prepStmt = con.prepareStatement(sqlObtenerSeriesFav)){
+			prepStmt.setInt(1, idUsuario);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next()) {
+				
+//				int id,TIPO tipo, String titulo, Genero genero, int duracion, int calificacion,
+//				String distribuidora, int edadRecomendada, boolean oscar, String caratula,LocalDate fecha
+				Pelicula p = new Pelicula(rs.getInt("id_pelicula"),TIPO.PELICULA, rs.getString("titulo"), Contenido.Genero.fromString(rs.getString("genero")), 
+						rs.getInt("duracion"), rs.getInt("calificacion"), rs.getString("distribuidora"), rs.getInt("edadrecomendada"),rs.getBoolean("oscar"), 
+						rs.getString("caratula"), LocalDate.parse(rs.getString("fecha")));
+				peliculas.add(p);
+			}
+		
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return peliculas;
+	}
 	
 
 }

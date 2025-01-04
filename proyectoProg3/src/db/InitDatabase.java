@@ -479,7 +479,126 @@ public class InitDatabase {
             e.printStackTrace();
         }
     }
+    
+    public void insertarSeriesFavoritas() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO SERIE_FAVORITO(ID_SERIE, ID_USUARIO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 8);
+			prepStmt.executeUpdate();
 
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 10);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 43);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 24);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 20);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 34);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 11);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 21);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 49);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 45);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las series favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+
+    public void insertarPelisFavoritas() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO PELICULA_FAVORITO(ID_PELICULA, ID_USUARIO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 6);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 43);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 24);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 25);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 34);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 14);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 21);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 49);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 45);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las series favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
@@ -488,5 +607,7 @@ public class InitDatabase {
 		db.insertarNoticiasDefault();
 		db.insertarUsuarioDesdeCSV();
 		db.insertarPostDefault();
+		db.insertarSeriesFavoritas();
+		db.insertarPelisFavoritas();
 	}
 }

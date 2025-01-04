@@ -13,7 +13,9 @@ public class BanderaUtil {
 
         String codigoPais = obtenerCodigoPais(pais);
         if (codigoPais == null) {
-            return new JLabel("País no encontrado");
+        	JLabel fin = new JLabel(pais);
+    		fin.setFont(new Font("Monospaced", Font.BOLD, 20));
+            return fin;
         }
 
         String urlBase = "https://flagcdn.com/w40/"; // Ruta del servicio de banderas
@@ -29,7 +31,7 @@ public class BanderaUtil {
                 throw new IOException("La imagen descargada es nula. Verifica la URL: " + url);
             }
 
-            Image imagenEscalada = imagen.getScaledInstance(70, 45, Image.SCALE_SMOOTH);
+            Image imagenEscalada = imagen.getScaledInstance(110, 72, Image.SCALE_SMOOTH);
             ImageIcon iconoBandera = new ImageIcon(imagenEscalada);
             return new JLabel(iconoBandera);
 
@@ -49,6 +51,7 @@ public class BanderaUtil {
             case "france": return "fr";
             case "germany": return "de";
             case "italy": return "it";
+            case "canada": return "ca";
             default: return null; 
         }
     }

@@ -42,7 +42,7 @@ public class VentanaComentario {
                 areaComentario.setLineWrap(true);       // Ajustar texto
                 areaComentario.setWrapStyleWord(true);	// Que no se partan las palabras
                 areaComentario.setEditable(false);
-        		areaComentario.setFont(new Font("Arial", Font.BOLD, 15));
+        		areaComentario.setFont(new Font("Arial", Font.BOLD, 19));
         		
         		JScrollPane deslizanteComentario = new JScrollPane(areaComentario);
                 panelVentanaComentario.add(deslizanteComentario);

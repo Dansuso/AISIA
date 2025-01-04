@@ -10,7 +10,19 @@ public abstract class Contenido {
 	}
 	
 	public enum Genero {
-		ACCION, COMEDIA, DRAMA, TERROR, ROMANCE, AVENTURA, FANTASIA
+		ACCION, COMEDIA, DRAMA, TERROR, ROMANCE, AVENTURA, FANTASIA;
+		
+		public static Genero fromString(String genero) {
+	        if (genero == null) {
+	            throw new IllegalArgumentException("El valor de género no puede ser nulo.");
+	        }
+	        try {
+	            return Genero.valueOf(genero.trim().toUpperCase());
+	        } catch (IllegalArgumentException e) {
+	            throw new IllegalArgumentException("El valor '" + genero + "' no es un género válido.", e);
+	        }
+	        
+		}
 	}
 	protected int id;
 	protected TIPO tipo;
