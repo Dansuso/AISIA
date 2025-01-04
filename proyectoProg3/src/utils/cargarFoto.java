@@ -5,7 +5,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-public class cargarFotoDePerfil {
+public class cargarFoto {
 	
 	    public static ImageIcon cargarImagenDesdeURL(String url) {
 	        if (url == null || url.isEmpty()) {

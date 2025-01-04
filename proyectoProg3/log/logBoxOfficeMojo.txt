@@ -12,7 +12,11 @@ dic 26, 2024 8:36:30 P. M. gui.VentanaFeed peliculasTaquillaScrapping
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
 dic 26, 2024 8:44:25 P. M. gui.VentanaFeed peliculasTaquillaScrapping
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo para el año 2019
+<<<<<<< HEAD
 dic 27, 2024 6:10:13 P. M. gui.VentanaFeed peliculasTaquillaScrapping
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo para el año 2019
 dic 27, 2024 6:13:40 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+=======
+dic 28, 2024 7:31:27 P. M. gui.VentanaFeed peliculasTaquillaScrapping
+>>>>>>> origin/master
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo para el año 2019

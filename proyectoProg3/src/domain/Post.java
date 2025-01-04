@@ -8,7 +8,6 @@ import java.util.Objects;
  */
 public class Post {
 	
-	
 	private int codigoPost;
 	private String contenido;
 	private LocalDateTime fechaPost;

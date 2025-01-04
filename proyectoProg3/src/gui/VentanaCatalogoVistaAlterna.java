@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,7 @@ import com.google.gson.JsonElement;
 
 import db.GestorDB;
 import domain.Contenido;
+import domain.Usuario;
 import domain.Contenido.Genero;
 import utils.HttpRequestAPI;
 
@@ -116,6 +119,16 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		
 		menuCatalogo.addSeparator();
 		
+		JMenuItem usuario = new JMenuItem("Usuario");
+		menuCatalogo.add(usuario);
+		
+		menuCatalogo.addSeparator();
+		
+		JMenuItem feed = new JMenuItem("Feed principal");
+		menuCatalogo.add(feed);
+		
+		menuCatalogo.addSeparator();
+		
 		JMenuItem salir = new JMenuItem("Salir");
 		menuCatalogo.add(salir);
 		
@@ -142,7 +155,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		JButton eliminarFavs = new JButton("Eliminar favs");
 		
 		JPanel panelIzqBotones = new JPanel();
-		panelIzqBotones.setLayout(new FlowLayout());
+		panelIzqBotones.setLayout(new GridLayout(2,2, 5, 5));
 		panelIzqBotones.add(favoritos);
 		panelIzqBotones.add(eliminarFavs);
 		
@@ -283,6 +296,29 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new VentanaInicio();
+				
+			}
+			
+		});
+		
+		usuario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Usuario user = new Usuario(3, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
+				new VentanaUsuario(user);
+				
+			}
+			
+		});
+		
+		feed.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				//Por completar
 				
 			}
 			
@@ -439,9 +475,53 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		        }
 		    }
 		});
+		
+		JButton botonPromedioFavoritos = new JButton("Promedio Favoritos");
+		botonPromedioFavoritos.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        if (modeloTabla.getRowCount() > 0) {
+		            // Crear una lista temporal con las calificaciones de la tabla de favoritos
+		            List<Double> calificacionesFavoritos = new ArrayList<>();
+		            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+		                // Convertir el valor a Double de forma segura
+		                Object valor = modeloTabla.getValueAt(i, 2);
+		                if (valor instanceof Number) {
+		                    calificacionesFavoritos.add(((Number) valor).doubleValue());
+		                }
+		            }
+		            // Verificar que haya valores en la lista
+		            if (!calificacionesFavoritos.isEmpty()) {
+		                // Calcular el promedio recursivamente
+		                double promedioFavoritos = calcularPromedioRecursivoFavoritos(calificacionesFavoritos, 0, 0.0);
+		                JOptionPane.showMessageDialog(
+		                    VentanaCatalogoVistaAlterna.this,
+		                    "El promedio de calificaciones de favoritos es: " + String.format("%.2f", promedioFavoritos),
+		                    "Promedio de Favoritos",
+		                    JOptionPane.INFORMATION_MESSAGE
+		                );
+		            } else {
+		                JOptionPane.showMessageDialog(
+		                    VentanaCatalogoVistaAlterna.this,
+		                    "No hay calificaciones válidas en favoritos para calcular el promedio.",
+		                    "Error",
+		                    JOptionPane.ERROR_MESSAGE
+		                );
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(
+		                VentanaCatalogoVistaAlterna.this,
+		                "No hay contenidos en favoritos para calcular el promedio.",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE
+		            );
+		        }
+		    }
+		});
 
 		// Añadimos el botón al panel izquierdo de botones
 		panelIzqBotones.add(botonPromedio);
+		panelIzqBotones.add(botonPromedioFavoritos);
 		
 		this.add(panelSuperior, BorderLayout.NORTH);
 		this.add(panelIzquierda, BorderLayout.WEST);
@@ -539,6 +619,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 
 	    // Llamada recursiva con el siguiente índice
 	    return calcularPromedioRecursivo(contenidos, index + 1, suma);
+	}
+	
+	private double calcularPromedioRecursivoFavoritos(List<Double> calificaciones, int index, double suma) {
+	    // Caso base: si hemos recorrido toda la lista
+	    if (index == calificaciones.size()) {
+	        return suma / calificaciones.size();
+	    }
+
+	    // Acumulamos la calificación actual
+	    suma += calificaciones.get(index);
+
+	    // Llamada recursiva con el siguiente índice
+	    return calcularPromedioRecursivoFavoritos(calificaciones, index + 1, suma);
 	}
 	
 	public void mostrarContenidos() {

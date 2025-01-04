@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import domain.Contenido.TIPO;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 /**
  * INICIALIZAR BASE DE DATOS. ESTE SCRIPT NO ESTÁ PENSADO PARA EJECUTARSE VARIAS
@@ -394,6 +395,7 @@ public class InitDatabase {
 				
 				String linea = sc.nextLine();
 				String[] campos = linea.split(";");
+				
 				int codigo = Integer.parseInt(campos[0]);
 				String username = campos[1];
 				String fechaInic = campos[2];
@@ -434,7 +436,243 @@ public class InitDatabase {
 			//		JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	
+	// Generado por ChatGPT
+    public void insertarPostDefault() {
+        String insertNoticia = """
+                INSERT INTO POST (ID_POST, CONTENIDO, FECHA_POST, ID_USUARIO_CREADOR)
+                VALUES (?, ?, ?, ?);
+                """;
 
+        // Datos para los comentarios
+        Object[][] posts = {
+                // Usuario 1: 4 comentarios
+                {1, "¡El Señor de los Anillos es mi trilogía favorita!", LocalDate.of(2024, 1, 2), 1},
+                {2, "Recientemente volví a ver 'Matrix' y sigue siendo impresionante.", LocalDate.of(2024, 1, 3), 1},
+                {3, "¿Alguien más ama las películas de Studio Ghibli?", LocalDate.of(2024, 1, 4), 1},
+                {4, "La dirección de Peter Jackson en 'El Hobbit' es fenomenal.", LocalDate.of(2024, 1, 5), 1},
+
+                // Usuario 2: 2 comentarios
+                {5, "'Inception' me dejó pensando en cómo funcionan los sueños.", LocalDate.of(2024, 1, 6), 2},
+                {6, "¡No puedo esperar a la próxima película de Christopher Nolan!", LocalDate.of(2024, 1, 7), 2},
+
+                // Otros usuarios
+                {7, "'Parasite' merece todos los premios que recibió. ¡Espectacular!", LocalDate.of(2024, 1, 8), 3}, // Usuario 3
+                {8, "'The Dark Knight' es mi película favorita de superhéroes.", LocalDate.of(2024, 1, 9), 4}, // Usuario 4
+                {9, "La animación en 'Spider-Man: Into the Spider-Verse' es increíble.", LocalDate.of(2024, 1, 10), 5}, // Usuario 5
+                {10, "'Pulp Fiction' tiene los mejores diálogos del cine.", LocalDate.of(2024, 1, 11), 6} // Usuario 6
+            };
+
+        try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+            try (PreparedStatement prepStmt = con.prepareStatement(insertNoticia)) {
+                for (Object[] post : posts) {
+                    prepStmt.setInt(1, (int) post[0]); // ID_POST
+                    prepStmt.setString(2, (String) post[1]); // CONTENIDO
+                    prepStmt.setDate(3, java.sql.Date.valueOf((LocalDate) post[2])); // FECHA_POST
+                    prepStmt.setInt(4, (int) post[3]); // ID_USUARIO_CREADOR
+                    prepStmt.executeUpdate();
+                }
+                System.out.println("10 publicaciones insertadas correctamente.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertarSeriesFavoritas() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO SERIE_FAVORITO(ID_SERIE, ID_USUARIO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 8);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 10);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 43);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 24);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 20);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 34);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 11);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 21);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 49);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 45);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las series favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+
+    public void insertarPelisFavoritas() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO PELICULA_FAVORITO(ID_PELICULA, ID_USUARIO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 6);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 43);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 24);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 25);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 34);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 14);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 21);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 49);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 45);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las peliculas favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+    
+    public void insertarSeguidores() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO SEGUIDORES(ID_SEGUIDOR, ID_SEGUIDO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 6);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 11);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 8);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 3);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 8);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 9);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 7);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 9);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las peliculas favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+    
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
@@ -442,5 +680,9 @@ public class InitDatabase {
 	//	db.insertarPersonasDesdeCSV();
 		db.insertarNoticiasDefault();
 		db.insertarUsuarioDesdeCSV();
+		db.insertarPostDefault();
+		db.insertarSeriesFavoritas();
+		db.insertarPelisFavoritas();
+		db.insertarSeguidores();
 	}
 }
