@@ -31,7 +31,7 @@ public class BanderaUtil {
                 throw new IOException("La imagen descargada es nula. Verifica la URL: " + url);
             }
 
-            Image imagenEscalada = imagen.getScaledInstance(110, 72, Image.SCALE_SMOOTH);
+            Image imagenEscalada = imagen.getScaledInstance(80, 55, Image.SCALE_SMOOTH);
             ImageIcon iconoBandera = new ImageIcon(imagenEscalada);
             return new JLabel(iconoBandera);
 

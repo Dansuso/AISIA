@@ -594,11 +594,85 @@ public class InitDatabase {
 			con.close();
 
 		} catch (SQLException e) {
-			System.err.println("Error al insertar las series favoritas! " + e.getMessage());
+			System.err.println("Error al insertar las peliculas favoritas! " + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
+    
+    public void insertarSeguidores() {
+    	String insertSerieFav = """
+    	        INSERT OR IGNORE INTO SEGUIDORES(ID_SEGUIDOR, ID_SEGUIDO)
+    	        VALUES(?, ?);
+    	    """;
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+		
+			PreparedStatement prepStmt = con.prepareStatement(insertSerieFav);
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 6);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 1);
+			prepStmt.setInt(1, 11);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 8);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 3);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 2);
+			prepStmt.setInt(1, 8);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 3);
+			prepStmt.setInt(1, 9);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 4);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 5);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 6);
+			prepStmt.setInt(1, 7);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 7);
+			prepStmt.setInt(1, 9);
+			prepStmt.executeUpdate();
+			
+			con.close();
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar las peliculas favoritas! " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+    
 	public static void main(String[] args) {
 		InitDatabase db = new InitDatabase();
 		db.crearTablas();
@@ -609,5 +683,6 @@ public class InitDatabase {
 		db.insertarPostDefault();
 		db.insertarSeriesFavoritas();
 		db.insertarPelisFavoritas();
+		db.insertarSeguidores();
 	}
 }

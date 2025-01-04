@@ -474,5 +474,55 @@ public class GestorDB {
 	    return peliculas;
 	}
 	
+	public ArrayList<Usuario> obtenerSeguidores(int idUsuario) {
+	    ArrayList<Usuario> seguidores = new ArrayList<>();
+	    String sqlSeguidores = """
+	    		
+	    		SELECT * FROM usuario WHERE ID_USUARIO IN (SELECT ID_SEGUIDOR FROM SEGUIDORES
+	    		WHERE ID_SEGUIDO = ?) """;
+	    
+	    try(PreparedStatement prepStmt = con.prepareStatement(sqlSeguidores)){
+			prepStmt.setInt(1, idUsuario);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next()) {
+				
+				Usuario seguidor = new Usuario(rs.getInt("id_usuario"), rs.getString("username"), LocalDate.parse(rs.getString("creacionCuenta")),
+		                rs.getString("pais"), rs.getString("foto"), rs.getString("contrasena"));
+            
+            seguidores.add(seguidor);
+			}
+
+	   
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener datos de la SEGUIDORES: " + e.getMessage());
+	    }
+	    return seguidores;
+	}
+	
+	public ArrayList<Usuario> obtenerSeguidos(int idUsuario) {
+	    ArrayList<Usuario> seguidos = new ArrayList<>();
+	    String sqlSeguidos = """
+	    		
+	    		SELECT * FROM usuario WHERE ID_USUARIO IN (SELECT ID_SEGUIDO FROM SEGUIDORES
+	    		WHERE ID_SEGUIDOR = ?); """;
+	    
+	    try(PreparedStatement prepStmt = con.prepareStatement(sqlSeguidos)){
+			prepStmt.setInt(1, idUsuario);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next()) {
+				
+				Usuario seguido = new Usuario(rs.getInt("id_usuario"), rs.getString("username"), LocalDate.parse(rs.getString("creacionCuenta")),
+		                rs.getString("pais"), rs.getString("foto"), rs.getString("contrasena"));
+            
+            seguidos.add(seguido);
+			}
+
+	   
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener datos de la SEGUIDOS: " + e.getMessage());
+	    }
+	    return seguidos;
+	}
+	
 
 }

@@ -11,6 +11,7 @@ import java.awt.Label;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -142,13 +143,11 @@ public class VentanaUsuario extends JFrame{
 		panelSeg.setBackground(colorAisia2);
 		
 		
-		// TODO
-		
-		/*
-		JLabel seguidores = new JLabel(String.valueOf(usuario.getNumSeguidores()));
-		seguidores.setFont(new Font("Monospaced", Font.BOLD, 20));
-		panelSeg.add(seguidores);
-		*/
+		ArrayList<Usuario> seguidores = bd.obtenerSeguidores(user.getCodigo());
+		JLabel seguidoresEtiqueta = new JLabel(String.valueOf(seguidores.size()));
+		seguidoresEtiqueta.setFont(new Font("Monospaced", Font.BOLD, 35));
+		panelSeg.add(seguidoresEtiqueta, BorderLayout.EAST);
+
 		
 		JLabel seguidoresStr = new JLabel("Seguidores");
 		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -158,13 +157,11 @@ public class VentanaUsuario extends JFrame{
 		panelSeguidos.setBackground(colorAisia2);
 		
 		
-		// TODO
+		ArrayList<Usuario> listaSeguidos = bd.obtenerSeguidos(user.getCodigo());
+		JLabel seguidos = new JLabel(String.valueOf(listaSeguidos.size()));
+		seguidos.setFont(new Font("Monospaced", Font.BOLD, 35));
+		panelSeguidos.add(seguidos, BorderLayout.EAST);
 		
-		/*
-		JLabel seguidos = new JLabel(String.valueOf(usuario.getNumSeguidos()));
-		seguidos.setFont(new Font("Monospaced", Font.BOLD, 20));
-		panelSeguidos.add(seguidos);
-		*/
 		
 		JLabel seguidosStr = new JLabel("Seguidos");
 		seguidosStr.setFont(new Font("Arial", Font.BOLD, 16));
@@ -456,7 +453,7 @@ public class VentanaUsuario extends JFrame{
 	
 	public static void main(String[] args) {
 		GestorDB bd = new GestorDB();
-		new VentanaUsuario(bd.obtenerUsuarios().get(4));
+		new VentanaUsuario(bd.obtenerUsuarios().get(0));
 		System.out.println(bd.obtenerUsuarios().get(1).getCodigo());
 	}
 	
