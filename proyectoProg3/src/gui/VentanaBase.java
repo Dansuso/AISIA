@@ -28,6 +28,7 @@ public class VentanaBase extends JFrame {
 		 */
 	private static final long serialVersionUID = 1L;
 	protected final static String NOMBRE_FUENTE = "Calibri";
+	private Usuario user;
 
 	/**
 	 * Constructor de la ventana base o por defecto.
@@ -35,7 +36,8 @@ public class VentanaBase extends JFrame {
 	 * @param titulo Titulo de la ventana. Es OBLIGATORIO.
 	 * @throws IllegalArgumentException si no se pasa ningun titulo como parametro
 	 */
-	public VentanaBase(String titulo) {
+	public VentanaBase(String titulo,Usuario user) {
+		this.user = user;
 
 		if (titulo == "") {
 			throw new IllegalArgumentException("Es obligatorio que la ventana tenga un titulo");
@@ -92,13 +94,13 @@ public class VentanaBase extends JFrame {
 		// PERFIL
 		JMenuItem menuItemPerfil = new JMenuItem("Perfil");
 		menuItemPerfil.setMnemonic(KeyEvent.VK_P);
-		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario()));
+		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario(user)));
 		dispose();
 		// FEED
 		JMenuItem menuItemFeed = new JMenuItem("Feed");
 		menuItemFeed.setMnemonic(KeyEvent.VK_F);
 		menuItemFeed.addActionListener( e ->  {
-			SwingUtilities.invokeLater(() -> new VentanaFeed(new Usuario(ABORT, NOMBRE_FUENTE, null, NOMBRE_FUENTE, NOMBRE_FUENTE, NOMBRE_FUENTE)));
+			SwingUtilities.invokeLater(() -> new VentanaFeed(user));
 			dispose();
 		});
 	
