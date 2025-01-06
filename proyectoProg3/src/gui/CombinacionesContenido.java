@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class CombinacionesContenido extends JDialog {
 	private JPanel panelArbol;
 	    
 	    public CombinacionesContenido() {
-	        this.setSize(640, 480);
+	        this.setSize(800, 600);
+	        this.setMinimumSize(new Dimension(800,600));
 	        this.setLocationRelativeTo(null);
 	        
 	        GestorDB db = new GestorDB();
