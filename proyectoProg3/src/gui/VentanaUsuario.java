@@ -7,15 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Label;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import db.GestorDB;
@@ -38,7 +33,7 @@ import domain.Pelicula;
 import domain.Post;
 import domain.Serie;
 
-public class VentanaUsuario extends JFrame{
+public class VentanaUsuario extends JDialog{
 	public Color colorAisia = new Color(184, 232, 229);
 	public Color colorAisia2 = new Color(120, 142, 227);
 	public Color colorAisia3 = new Color(235, 155, 195);
@@ -51,9 +46,11 @@ public class VentanaUsuario extends JFrame{
 	
 	public VentanaUsuario(Usuario user) {
 		setLayout(new GridLayout(3, 1));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Usuario");
-		setSize(640, 900);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setTitle(user.getUsername());
+		this.setModal(true);
+		this.setLocationRelativeTo(null);
+		setSize(900, 900);
 		
 		GestorDB bd = new GestorDB();
 		
@@ -327,7 +324,6 @@ public class VentanaUsuario extends JFrame{
 				                panelSeries.revalidate();
 				                panelSeries.repaint();
 				            });
-				            e.printStackTrace();
 				        }
 				    });
 

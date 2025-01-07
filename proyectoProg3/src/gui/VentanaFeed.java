@@ -149,7 +149,7 @@ public class VentanaFeed extends VentanaBase {
 	 * @param idUsuario idUsuario que ha abierto esta ventana. Para simular las "cookies" de un navegador.
 	 */
 	public VentanaFeed(Usuario usuario) {
-		super("Feed");
+		super("Feed",usuario);
 		this.usuario = usuario;
 
 		
@@ -320,7 +320,7 @@ public class VentanaFeed extends VentanaBase {
 	    botonPerfil.setForeground(Color.white);
 	    botonPerfil.setBorder(new EmptyBorder(5,10,5,10));
 	    botonPerfil.addActionListener( (e) -> {
-	    	SwingUtilities.invokeLater(( ) -> new VentanaUsuario());
+	    	SwingUtilities.invokeLater(( ) -> new VentanaUsuario(postEscrito.getCreadorPost()));
 	    });
 	    
 	    

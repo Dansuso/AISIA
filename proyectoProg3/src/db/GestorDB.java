@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -227,7 +226,6 @@ public class GestorDB {
 	        										);
 	        	
 	        	
-	        	System.out.println(pelicula);
 	        	contenidos.add(pelicula);
 	        }
 	        
@@ -258,7 +256,6 @@ public class GestorDB {
 
 	        				
 	        	
-	        	System.out.println(serie);
 	        	contenidos.add(serie);
 	        }
 			
