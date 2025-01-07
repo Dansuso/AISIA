@@ -11,7 +11,7 @@ public class BanderaUtil {
 
     public static JLabel obtenerBandera(String pais) {
 
-        String codigoPais = obtenerCodigoPais(pais);
+        String codigoPais = obtenerCodigoPais(pais.toLowerCase());
         if (codigoPais == null) {
         	JLabel fin = new JLabel(pais);
     		fin.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -46,21 +46,21 @@ public class BanderaUtil {
         switch (pais.toLowerCase()) {
         case "argentina": return "ar";
         case "spain": return "es";
-        case "united-states": return "us";
+        case "united states": return "us";
         case "brazil": return "br";
         case "france": return "fr";
         case "germany": return "de";
         case "italy": return "it";
         case "canada": return "ca";
-        case "united-kingdom": return "gb";
+        case "united kingdom": return "gb";
         case "japan": return "jp";
         case "china": return "cn";
         case "australia": return "au";
         case "india": return "in";
         case "mexico": return "mx";
-        case "south-africa": return "za";
+        case "south africa": return "za";
         case "russia": return "ru";
-        case "south-korea": return "kr";
+        case "south korea": return "kr";
         case "portugal": return "pt";
         case "netherlands": return "nl";
         case "sweden": return "se";
@@ -73,7 +73,7 @@ public class BanderaUtil {
         case "ireland": return "ie";
         case "greece": return "gr";
         case "poland": return "pl";
-        case "czech-republic": return "cz";
+        case "czech republic": return "cz";
         case "hungary": return "hu";
         case "turkey": return "tr";
         case "finland": return "fi";
@@ -84,7 +84,7 @@ public class BanderaUtil {
         case "malaysia": return "my";
         case "singapore": return "sg";
         case "indonesia": return "id";
-        case "saudi-arabia": return "sa";
+        case "saudi arabia": return "sa";
         case "egypt": return "eg";
         case "nigeria": return "ng";
         case "colombia": return "co";
@@ -98,6 +98,7 @@ public class BanderaUtil {
         case "israel": return "il";
         case "argelia": return "dz";
         case "morocco": return "ma";
+        case "uruguay": return "uy";
         default: return null;
         }
     }
