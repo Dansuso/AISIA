@@ -454,7 +454,6 @@ public class VentanaUsuario extends JFrame{
 	public static void main(String[] args) {
 		GestorDB bd = new GestorDB();
 		new VentanaUsuario(bd.obtenerUsuarios().get(0));
-		System.out.println(bd.obtenerUsuarios().get(1).getCodigo());
 	}
 	
 }
