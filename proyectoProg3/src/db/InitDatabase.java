@@ -381,8 +381,6 @@ public class InitDatabase {
 			// Abro conexión con la base de datos
 			con = DriverManager.getConnection(CONNECTION_STRING);
 
-			// Nos saltamos la primera línea (cabecera)
-			sc.nextLine();
 			while (sc.hasNext()) {
 				/*
 				 * 	protected int codigo;
