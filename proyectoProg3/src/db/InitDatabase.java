@@ -22,7 +22,7 @@ import java.time.LocalDate;
 public class InitDatabase {
 	private String DRIVER_NAME;
 	private String DATABASE_FILE;
-	private String CONNECTION_STRING;
+	public String CONNECTION_STRING;
 	private Connection con;
 
 	public InitDatabase() {

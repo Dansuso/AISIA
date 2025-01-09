@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import db.GestorDB;
@@ -49,7 +52,7 @@ public class VentanaUsuario extends JDialog{
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle(user.getUsername());
 		this.setModal(true);
-		this.setLocationRelativeTo(null);
+		this.setLocation(0, 0);
 		setSize(900, 900);
 		
 		GestorDB bd = new GestorDB();
@@ -136,59 +139,89 @@ public class VentanaUsuario extends JDialog{
 		JPanel panelTercero = new JPanel(new GridLayout(1, 2));
 		JPanel panelInformacion = new JPanel(new GridLayout(1, 3));
 		
-		JPanel panelSeg = new JPanel(new BorderLayout());
-		panelSeg.setBackground(colorAisia2);
+		// PANEL SEGUIDORES
+		
+		JPanel panelSeg = new JPanel(new GridLayout(2, 1));
 		
 		
+		JPanel panelSeguidoresEtiqueta = new JPanel(new BorderLayout());
+		panelSeguidoresEtiqueta.setBackground(colorAisia2);
 		ArrayList<Usuario> seguidores = bd.obtenerSeguidores(user.getCodigo());
 		JLabel seguidoresEtiqueta = new JLabel(String.valueOf(seguidores.size()));
 		seguidoresEtiqueta.setFont(new Font("Monospaced", Font.BOLD, 35));
-		panelSeg.add(seguidoresEtiqueta, BorderLayout.EAST);
-
+		panelSeguidoresEtiqueta.add(seguidoresEtiqueta, BorderLayout.NORTH);
+		seguidoresEtiqueta.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto horizontalmente
 		
+		
+		
+		JPanel panelSeguidoresNumero = new JPanel(new BorderLayout());
+		panelSeguidoresNumero.setBackground(colorAisia2);
 		JLabel seguidoresStr = new JLabel("Seguidores");
 		seguidoresStr.setFont(new Font("Arial", Font.BOLD, 16));
-		panelSeg.add(seguidoresStr, BorderLayout.NORTH);
-		
-		JPanel panelSeguidos = new JPanel(new BorderLayout());
-		panelSeguidos.setBackground(colorAisia2);
+		panelSeguidoresNumero.add(seguidoresStr, BorderLayout.SOUTH);
+		seguidoresStr.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto horizontalmente
 		
 		
-		ArrayList<Usuario> listaSeguidos = bd.obtenerSeguidos(user.getCodigo());
-		JLabel seguidos = new JLabel(String.valueOf(listaSeguidos.size()));
-		seguidos.setFont(new Font("Monospaced", Font.BOLD, 35));
-		panelSeguidos.add(seguidos, BorderLayout.EAST);
+		panelSeg.add(panelSeguidoresNumero);
+		panelSeg.add(panelSeguidoresEtiqueta);
+		
+		// PANEL SEGUIDOS
 		
 		
+		JPanel panelSeguidos = new JPanel(new GridLayout(2, 1));
+		
+		
+		JPanel panelSeguidosEtiqueta = new JPanel(new BorderLayout());
+		panelSeguidosEtiqueta.setBackground(colorAisia2);
+		ArrayList<Usuario> seguidos = bd.obtenerSeguidos(user.getCodigo());
+		JLabel seguidosEtiqueta = new JLabel(String.valueOf(seguidos.size()));
+		seguidosEtiqueta.setFont(new Font("Monospaced", Font.BOLD, 35));
+		panelSeguidosEtiqueta.add(seguidosEtiqueta, BorderLayout.NORTH);
+		seguidosEtiqueta.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto horizontalmente
+		
+		
+		
+		JPanel panelSeguidosNumero = new JPanel(new BorderLayout());
+		panelSeguidosNumero.setBackground(colorAisia2);
 		JLabel seguidosStr = new JLabel("Seguidos");
 		seguidosStr.setFont(new Font("Arial", Font.BOLD, 16));
-		panelSeguidos.add(seguidosStr, BorderLayout.NORTH);
+		panelSeguidosNumero.add(seguidosStr, BorderLayout.SOUTH);
+		seguidosStr.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto horizontalmente
 		
 		
-		JPanel panelPais = new JPanel(new BorderLayout());
-		panelPais.setBackground(colorAisia2);
+		panelSeguidos.add(panelSeguidosNumero);
+		panelSeguidos.add(panelSeguidosEtiqueta);
+		
+		
+		// PANEL BANDERAS
+		
+		JPanel panelPais = new JPanel(new GridLayout(2, 1));
+		
+		JPanel panelPaisArriba = new JPanel(new BorderLayout());
+		JPanel panelPaisAbajo = new JPanel(new BorderLayout());
 		
 	
 		JLabel etiquetaCarga = new JLabel("Cargando bandera");
-	    panelPais.add(etiquetaCarga, BorderLayout.EAST);
-	    panelPais.revalidate();
-	    panelPais.repaint();
+	    panelPaisAbajo.add(etiquetaCarga, BorderLayout.NORTH);
+	    panelPaisAbajo.revalidate();
+	    panelPaisAbajo.repaint();
 
 		Thread hiloBandera = new Thread(() -> {
 	        try {
 	    		JLabel bandera = BanderaUtil.obtenerBandera(user.getPais());
 
 	            SwingUtilities.invokeLater(() -> {
-	                panelPais.add(bandera);
-	                etiquetaCarga.setText(""); // Quitar el texto "Cargando imagen"
-	                panelPais.revalidate();
-	                panelPais.repaint();
+	                panelPaisAbajo.add(bandera, BorderLayout.NORTH);
+	                bandera.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+	                etiquetaCarga.setText(""); // Quitar el texto "Cargando bandera"
+	                panelPaisAbajo.revalidate();
+	                panelPaisAbajo.repaint();
 	            });
 	        } catch (Exception e) {
 	            SwingUtilities.invokeLater(() -> {
 	                etiquetaCarga.setText(user.getPais());
-	                panelPais.revalidate();
-	                panelPais.repaint();
+	                panelPaisAbajo.revalidate();
+	                panelPaisAbajo.repaint();
 	            });
 	            e.printStackTrace();
 	        }
@@ -199,7 +232,14 @@ public class VentanaUsuario extends JDialog{
 		
 		JLabel paisStr = new JLabel("País");
 		paisStr.setFont(new Font("Arial", Font.BOLD, 16));
-		panelPais.add(paisStr, BorderLayout.NORTH);
+		panelPaisArriba.add(paisStr, BorderLayout.SOUTH);
+		paisStr.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto horizontalmente
+		
+		panelPaisArriba.setBackground(colorAisia2);
+		panelPaisAbajo.setBackground(colorAisia2);
+		
+		panelPais.add(panelPaisArriba);
+		panelPais.add(panelPaisAbajo);
 		
 		
 		panelInformacion.add(panelSeg);
@@ -449,7 +489,7 @@ public class VentanaUsuario extends JDialog{
 	
 	public static void main(String[] args) {
 		GestorDB bd = new GestorDB();
-		new VentanaUsuario(bd.obtenerUsuarios().get(10));
+		new VentanaUsuario(bd.obtenerUsuarios().get(0));
 	}
 	
 }
