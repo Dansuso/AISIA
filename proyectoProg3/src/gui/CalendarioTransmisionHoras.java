@@ -1,10 +1,14 @@
 package gui;
 
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.io.*;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 
 public class CalendarioTransmisionHoras {
 
@@ -28,6 +32,7 @@ public class CalendarioTransmisionHoras {
     }
 
     public static void main(String[] args) {
+    	
         String archivo = "resources/data/contenido.csv";
         List<Contenido> contenidoTotal = new ArrayList<>();
 
@@ -77,14 +82,9 @@ public class CalendarioTransmisionHoras {
         Random random = new Random();
         for (int hora = 0; hora < horas.length; hora++) {
             for (int dia = 0; dia < dias.length; dia++) {
-                if (!peliculas.isEmpty() && (hora % 2 == 0)) { // Asignar película cada 2 horas
+                if (!peliculas.isEmpty() && random.nextBoolean()) { // Asignar una película aleatoriamente
                     Contenido pelicula = peliculas.remove(0);
                     calendario[hora][dia] = pelicula.toString();
-                    // Asegurarse que las películas ocupen 2 horas
-                    if (hora + 1 < 24) {
-                        calendario[hora + 1][dia] = pelicula.toString();
-                        hora++; // Avanzar 1 hora más para no solapar las películas
-                    }
                 } else {
                     // Asignar una serie, incluso repetida si se agotaron
                     if (series.isEmpty()) {
@@ -97,6 +97,8 @@ public class CalendarioTransmisionHoras {
                 }
             }
         }
+        
+        
 
         // Mostrar el calendario en una tabla Swing
         SwingUtilities.invokeLater(() -> {
@@ -108,7 +110,17 @@ public class CalendarioTransmisionHoras {
             columnas[0] = "Horario"; // Primera columna para las horas
             System.arraycopy(dias, 0, columnas, 1, dias.length);
 
-            DefaultTableModel model = new DefaultTableModel(columnas, 0);
+            DefaultTableModel model = new DefaultTableModel(columnas, 0) {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Hacer la tabla no editable
+                }
+            };
             JTable tabla = new JTable(model);
 
             for (int i = 0; i < horas.length; i++) {
@@ -118,9 +130,36 @@ public class CalendarioTransmisionHoras {
                 model.addRow(fila);
             }
 
+            // Render personalizado
+            tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    LocalDateTime now = LocalDateTime.now();
+                    int currentHour = now.getHour();
+                    DayOfWeek currentDay = now.getDayOfWeek();
+                    int currentDayIndex = currentDay.getValue() - 1; // DayOfWeek value is 1 for Monday to 7 for Sunday
+
+                    // Highlight the current hour and day
+                    if (row == currentHour && column - 1 == currentDayIndex) {
+                        c.setBackground(Color.RED); // Rojo para la hora y día actuales
+                    } else {
+                        c.setBackground(Color.WHITE); // Blanco por defecto
+                    }
+
+                    return c;
+                }
+            });
+
             frame.add(new JScrollPane(tabla));
             frame.setVisible(true);
         });
     }
 }
+
 
