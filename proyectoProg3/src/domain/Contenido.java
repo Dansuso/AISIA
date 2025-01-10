@@ -120,6 +120,8 @@ public abstract class Contenido {
 	public void setEdadRecomendada(int edadRecomendada) {
 		this.edadRecomendada = edadRecomendada;
 	}
+	
+	
 
 
 

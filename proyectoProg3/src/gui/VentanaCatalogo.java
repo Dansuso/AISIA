@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import db.GestorDB;
 import domain.Contenido;
 import domain.Contenido.TIPO;
+import domain.Serie;
 
 public class VentanaCatalogo extends JFrame {
 	
@@ -230,8 +231,12 @@ public class VentanaCatalogo extends JFrame {
             botones.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                	Contenido contenidoSeleccionado = c; // Asignar el contenido actual
                 	dispose();
-                    new VentanaInfo();  // Llama a la nueva ventana
+                    new VentanaInfo(contenidoSeleccionado.getTitulo(),
+                            contenidoSeleccionado.getGenero().toString(),
+                            String.valueOf(contenidoSeleccionado.getCalificacion()),
+                            contenidoSeleccionado.getDistribuidora());  // Llama a la nueva ventana
                 }
             });
 
@@ -313,6 +318,23 @@ public class VentanaCatalogo extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				filtrarElementos(buscador.getText());
 				
+				String textoBusqueda = buscador.getText();
+
+		        // Llamamos al método recursivo con la lista de contenidos
+		        int totalResultados = contarResultados(db.obtenerContenidos(), textoBusqueda, 0);
+
+		        // Mostrar un mensaje con el número de resultados encontrados
+		        String mensaje = totalResultados == 0 
+		            ? "No se encontraron resultados para: " + textoBusqueda 
+		            : "Se encontraron " + totalResultados + " resultados para: " + textoBusqueda;
+
+		        JOptionPane.showMessageDialog(
+		            VentanaCatalogo.this, 
+		            mensaje, 
+		            "Resultados de la búsqueda", 
+		            JOptionPane.INFORMATION_MESSAGE
+		        );
+				
 			}
         	
         });
@@ -381,6 +403,20 @@ public class VentanaCatalogo extends JFrame {
         panelGrid.revalidate();
         panelGrid.repaint();
 		
+	}
+	
+	private int contarResultados(List<Contenido> lista, String palabra, int indice) {
+	    // Caso base: si hemos llegado al final de la lista
+	    if (indice == lista.size()) {
+	        return 0;
+	    }
+
+	    // Verificar si el título contiene la palabra buscada
+	    Contenido contenido = lista.get(indice);
+	    int coincidencia = contenido.getTitulo().toLowerCase().contains(palabra.toLowerCase()) ? 1 : 0;
+
+	    // Llamada recursiva para el resto de la lista
+	    return coincidencia + contarResultados(lista, palabra, indice + 1);
 	}
 
 	public static void main(String[] args) {

@@ -20,7 +20,7 @@ public class VentanaInfo extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaInfo() {
+	public VentanaInfo(String tituloPasado, String generoPasado, String calificacionPasado, String distribuidoraPasado) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Informacion");
 		setSize(640,480);
@@ -47,14 +47,14 @@ public class VentanaInfo extends JFrame {
         
         JPanel panelTitulo = new JPanel();
         JLabel titulo = new JLabel("Titulo:");
-        JLabel infoTitulo = new JLabel("DatosTitulo");
+        JLabel infoTitulo = new JLabel(tituloPasado);
         panelTitulo.setLayout(new FlowLayout());
         panelTitulo.add(titulo);
         panelTitulo.add(infoTitulo);
         
         JPanel panelGenero = new JPanel();
         JLabel genero = new JLabel("Genero: ");
-        JLabel infoGenero = new JLabel("DatosGenero");
+        JLabel infoGenero = new JLabel(generoPasado);
         panelGenero.setLayout(new FlowLayout());
         panelGenero.add(genero);
         panelGenero.add(infoGenero);
@@ -68,21 +68,21 @@ public class VentanaInfo extends JFrame {
         
         JPanel panelCalificacion = new JPanel();
         JLabel calificacion = new JLabel("Calificacion: ");
-        JLabel infocalificacion = new JLabel("DatosCalificacion");
+        JLabel infocalificacion = new JLabel(calificacionPasado);
         panelCalificacion.setLayout(new FlowLayout());
         panelCalificacion.add(calificacion);
         panelCalificacion.add(infocalificacion);
         
         JPanel panelDistribuidora = new JPanel();
         JLabel distribuidora = new JLabel("Distribuidora: ");
-        JLabel infoDistribuidora = new JLabel("DatosDistribuidora");
+        JLabel infoDistribuidora = new JLabel(distribuidoraPasado);
         panelDistribuidora.setLayout(new FlowLayout());
         panelDistribuidora.add(distribuidora);
         panelDistribuidora.add(infoDistribuidora);
         
         JPanel panelPremios = new JPanel();
         JLabel premios = new JLabel("Premios: ");
-        JLabel infoPremios = new JLabel("DatosPremios");
+        JLabel infoPremios = new JLabel("Nada");
         panelPremios.setLayout(new FlowLayout());
         panelPremios.add(premios);
         panelPremios.add(infoPremios);
