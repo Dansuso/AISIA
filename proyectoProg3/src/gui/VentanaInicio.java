@@ -42,7 +42,7 @@ public class VentanaInicio extends JFrame{
 	
 	//Cargamos los datos para ver luego si esta en la base de tados 
 	public void cargarDatosCSV(){
-    	File f = new File("resources/data/personas.csv");
+    	File f = new File("resources/data/usuario.csv");
     	try {
 			Scanner sc = new Scanner(f);
 			while(sc.hasNextLine()) {
@@ -51,7 +51,7 @@ public class VentanaInicio extends JFrame{
 			
 				
 					
-					mapa.put(campos[3], campos[4]);
+					mapa.put(campos[1], campos[5]);
 					
 					
 					
