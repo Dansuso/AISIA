@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -20,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 
 
@@ -106,25 +110,39 @@ public class VentanaRegistro extends JFrame{
         JTextField txt4 = new JTextField(16);
         txt4.setBounds(100, 60, 150, 20);
     	mainPanel.add(txt4);
+    	
+    	 JLabel fechaNacimiento = new JLabel("Fecha:");
+         fechaNacimiento.setForeground(Color.WHITE);
+         fechaNacimiento.setBounds(30, 100, 150, 20);
+         mainPanel.add(fechaNacimiento);
+
+         JFormattedTextField txtFecha;
+         try {
+             MaskFormatter dateFormatter = new MaskFormatter("##/##/####");
+             dateFormatter.setPlaceholderCharacter('_');
+             txtFecha = new JFormattedTextField(dateFormatter);
+         } catch (Exception e) {
+             txtFecha = new JFormattedTextField();
+         }
+         txtFecha.setBounds(100, 100, 100, 20);
+         mainPanel.add(txtFecha);
+         
+
+     
         
-        JLabel edad = new JLabel("Edad:");
-        edad.setForeground(Color.WHITE);
-        edad.setBounds(30, 110, 80, 20);
-     	mainPanel.add(edad);
-     	
-        JTextField txt5 = new JTextField(16);
-        txt5.setBounds(100, 110, 150, 20);
-     	mainPanel.add(txt5);
-        
-     	  
-        JLabel nombre = new JLabel("Correo:");
-        nombre.setForeground(Color.WHITE);
-        nombre.setBounds(30, 160, 80, 20);
-        mainPanel.add(nombre);
-        
-        JTextField txt1 = new JTextField(16);
-        txt1.setBounds(100, 160, 150, 20);
-     	mainPanel.add(txt1);
+  
+     	 JLabel pais = new JLabel("Pais:");
+         pais.setForeground(Color.WHITE);
+         pais.setBounds(30, 160, 80, 20);
+         mainPanel.add(pais);
+
+         String[] paises = {
+             "United States", "Canada", "United Kingdom", "Spain", "Mexico",
+             "Argentina", "Chile", "Colombia", "Venezuela", "Peru", "Brazil", "Uruguay"
+         };
+         JComboBox<String> comboBoxPais = new JComboBox<>(paises);
+         comboBoxPais.setBounds(100, 160, 150, 20);
+         mainPanel.add(comboBoxPais);
         
         JLabel contraseña = new JLabel("Contraseña:");
         contraseña.setForeground(Color.WHITE);
@@ -234,45 +252,29 @@ public class VentanaRegistro extends JFrame{
 		 
 		 //ventanaTabla = new VentanaTablaUsuarios();
 		 botonAgregar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					   // Verificar si los campos obligatorios no están vacíos
-	                if (!txt1.getText().isEmpty() && txt2.getPassword().length > 0) {
-	                    // Concatenar los datos en el formato adecuado
-	                    String correo = txt1.getText();
-	                    String contraseña = new String(txt2.getPassword());
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
 	                    String nombre = txt3.getText();
 	                    String apellidos = txt4.getText();
-	                    String edad = txt5.getText();
+	                    //String edad = txt5.getText();
+	                    //String fecha = txtFecha.getText();
+	                    String pais = comboBoxPais.getSelectedItem().toString();
+	                    String contraseña = new String(txt2.getPassword());
 
-	                    // Crear un variable de los datos para añadirlos a la tabla
-	                    String[] datosUsuario = { nombre, apellidos, edad, correo, contraseña };
+	                    String[] datosUsuario = { nombre, apellidos, pais, contraseña };
 
-	                    // Crear la ventana de la tabla y pasarle los datos
 	                    if (ventanaTabla == null) {
 	                        ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
 	                    }
 
-	                   
-
-	                    // Mostrar la ventana de la tabla
 	                    ventanaTabla.setVisible(true);
-
-	                    // Ocultar la ventana actual de registro
 	                    dispose();
-	                    
-	                    
-					
-	                    
-					
-	                }else {
-	                	System.out.println("No has escrito Correo o COntraseña");
+	                } else {
+	                    System.out.println("No has escrito Nombre o Contraseña");
 	                }
-					
-				}
-			});
+	            }
+	        });
 	    	
 		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
 		 //Boton ocultar
