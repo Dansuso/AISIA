@@ -34,6 +34,7 @@ public class VentanaRegistro extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	private VentanaTablaUsuarios ventanaTabla;
+	private JFormattedTextField txtFecha;
 	
 	public VentanaRegistro() {
 
@@ -111,22 +112,20 @@ public class VentanaRegistro extends JFrame{
         txt4.setBounds(100, 60, 150, 20);
     	mainPanel.add(txt4);
     	
-    	 JLabel fechaNacimiento = new JLabel("Fecha:");
-         fechaNacimiento.setForeground(Color.WHITE);
-         fechaNacimiento.setBounds(30, 100, 150, 20);
-         mainPanel.add(fechaNacimiento);
+    	JLabel fechaNacimiento = new JLabel("Fecha:");
+        fechaNacimiento.setForeground(Color.WHITE);
+        fechaNacimiento.setBounds(30, 100, 150, 20);
+        mainPanel.add(fechaNacimiento);
 
-         JFormattedTextField txtFecha;
-         try {
-             MaskFormatter dateFormatter = new MaskFormatter("##/##/####");
-             dateFormatter.setPlaceholderCharacter('_');
-             txtFecha = new JFormattedTextField(dateFormatter);
-         } catch (Exception e) {
-             txtFecha = new JFormattedTextField();
-         }
-         txtFecha.setBounds(100, 100, 100, 20);
-         mainPanel.add(txtFecha);
-         
+        try {
+            MaskFormatter dateFormatter = new MaskFormatter("##/##/####");
+            dateFormatter.setPlaceholderCharacter('_');
+            txtFecha = new JFormattedTextField(dateFormatter);  // Usar la variable de instancia
+        } catch (Exception e) {
+            txtFecha = new JFormattedTextField();  // Usar la variable de instancia
+        }
+        txtFecha.setBounds(100, 100, 100, 20);
+        mainPanel.add(txtFecha);
 
      
         
@@ -250,32 +249,39 @@ public class VentanaRegistro extends JFrame{
 		 
 		 
 		 
-		 //ventanaTabla = new VentanaTablaUsuarios();
 		 botonAgregar.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
-	                    String nombre = txt3.getText();
-	                    String apellidos = txt4.getText();
-	                    //String edad = txt5.getText();
-	                    //String fecha = txtFecha.getText();
-	                    String pais = comboBoxPais.getSelectedItem().toString();
-	                    String contraseña = new String(txt2.getPassword());
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        String fecha = txtFecha.getText();
 
-	                    String[] datosUsuario = { nombre, apellidos, pais, contraseña };
+			        // Verificar si el campo de fecha está completamente lleno
+			        if (fecha.contains("_")) {
+			            JOptionPane.showMessageDialog(null, "Por favor, ingresa una fecha válida en el formato dd/MM/yyyy.");
+			            return;
+			        }
 
-	                    if (ventanaTabla == null) {
-	                        ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
-	                    }
+			        if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
+			            String nombre = txt3.getText();
+			            String apellidos = txt4.getText();
+			            String fechaNacimiento = txtFecha.getText(); // Aquí tomamos la fecha directamente
+			            String pais = comboBoxPais.getSelectedItem().toString();
+			            String contraseña = new String(txt2.getPassword());
 
-	                    ventanaTabla.setVisible(true);
-	                    dispose();
-	                } else {
-	                    System.out.println("No has escrito Nombre o Contraseña");
-	                }
-	            }
-	        });
-	    	
+			            String[] datosUsuario = { nombre, apellidos, fechaNacimiento, pais, contraseña };
+
+			            if (ventanaTabla == null) {
+			                ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
+			            }
+
+			            ventanaTabla.setVisible(true);
+			            dispose();
+			        } else {
+			            System.out.println("No has escrito Nombre o Contraseña");
+			        }
+			    }
+			});
+		 
+
 		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
 		 //Boton ocultar
 		 char valor = txt2.getEchoChar();
