@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -152,7 +151,7 @@ public class VentanaRegistro extends JFrame{
         txt2.setBounds(100,210,150,20);
         mainPanel.add(txt2);
 
-        ImageIcon foto1 = new ImageIcon("fotover.png");
+        ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotover.png");
         JButton ocultar = new JButton(foto1);
         ocultar.setBounds(210, 210, 120, 30); 
     	
@@ -276,7 +275,7 @@ public class VentanaRegistro extends JFrame{
 			            ventanaTabla.setVisible(true);
 			            dispose();
 			        } else {
-			            System.out.println("No has escrito Nombre o Contraseña");
+			        	JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
 			        }
 			    }
 			});
