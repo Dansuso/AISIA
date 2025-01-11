@@ -376,6 +376,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	    	    }
 	    	});
 	    	
+	    	
 	    	botonGuardar.addActionListener(new ActionListener() {
 
 				@Override
