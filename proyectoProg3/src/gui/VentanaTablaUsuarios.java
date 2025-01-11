@@ -115,37 +115,41 @@ public class VentanaTablaUsuarios extends JFrame {
 	        }
 		     
 	        
-	        tabla.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
-	            /**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
+	        tabla.getColumnModel().getColumn(3).setCellRenderer(new TableCellRenderer() {
+	            @Override
 	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 	                JLabel label = new JLabel();
 
-	                // Obtener el nombre del país que está en la celda
-	                String pais = value.toString().toLowerCase().replace(" ", "_");
-	                
-	                // Cargar la imagen correspondiente desde la carpeta de recursos
-	                String imagePath = "resources/data/perfil/" + pais + ".png"; // Ruta del archivo de imagen
+	                // Obtener el nombre del país que está en la celda y convertirlo a minúsculas
+	                String pais = value.toString().toLowerCase().replace(" ", "_"); // Reemplazar espacios por guiones bajos
+
+	                // Imprimir el valor del país para depuración
+	                System.out.println("Pais: " + pais);
+
+	                // Crear la ruta de la imagen
+	                String imagePath = "resources/images/recursos/Pais/" + pais + ".png"; // Ruta de la imagen
+	                System.out.println("Ruta de la imagen: " + imagePath); // Imprimir la ruta completa para ver si está correcta
 
 	                // Intentar cargar la imagen
 	                File imageFile = new File(imagePath);
 	                if (imageFile.exists()) {
 	                    // Si la imagen existe, se carga en el JLabel
 	                    ImageIcon icon = new ImageIcon(imagePath);
-	                    label.setIcon(icon);
+
+	                    // Redimensionar la imagen al tamaño de la celda
+	                    Image img = icon.getImage(); // Obtener la imagen
+	                    Image resizedImage = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Redimensionar con un tamaño adecuado
+	                    label.setIcon(new ImageIcon(resizedImage));
 	                } else {
 	                    // Si no existe la imagen, mostrar un texto predeterminado o una imagen por defecto
 	                    label.setText("No disponible");
+	                    System.out.println("La imagen no fue encontrada en la ruta: " + imagePath); // Depuración si la imagen no se encuentra
 	                }
 
-	                // Estilo de la celda
+	                // Estilo de la celda: centrar la imagen
 	                label.setHorizontalAlignment(JLabel.CENTER);
 	                label.setVerticalAlignment(JLabel.CENTER);
-	                
+
 	                // Estilos adicionales
 	                if (isSelected) {
 	                    label.setBackground(table.getSelectionBackground());
@@ -158,6 +162,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	                return label;
 	            }
 	        });
+
 	        
 	  
 
@@ -167,20 +172,31 @@ public class VentanaTablaUsuarios extends JFrame {
 	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 	                JLabel label = new JLabel();
 	                String imageName = value.toString();
-	                
+
 	                // Ruta de las imágenes
 	                String imagePath = "resources/images/recursos/perfil/" + imageName;
 	                ImageIcon icon = new ImageIcon(imagePath);
 
-	                // Redimensionar la imagen para ajustarse a la altura de la fila
-	                int rowHeight = table.getRowHeight();  // Obtener la altura de la fila
-	                Image img = icon.getImage();
-	                Image scaledImg = img.getScaledInstance(rowHeight, rowHeight, Image.SCALE_SMOOTH);  // Ajustar tamaño a la altura de la fila
-	                label.setIcon(new ImageIcon(scaledImg));
+	                // Obtener la imagen original
+	                Image originalImage = icon.getImage();
+
+	                // Ajustar el tamaño de la imagen a 25x25 píxeles
+	                Image scaledImage = originalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+
+	                // Crear un nuevo ImageIcon con la imagen redimensionada
+	                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+	                // Asignar la imagen redimensionada al JLabel
+	                label.setIcon(scaledIcon);
+
+	                // Centrar la imagen en la celda
+	                label.setHorizontalAlignment(SwingConstants.CENTER);
+	                label.setVerticalAlignment(SwingConstants.CENTER);
 
 	                return label;
 	            }
 	        });
+
 
 
 	        
@@ -200,7 +216,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	                    sorter.setRowFilter(null);  // Mostrar todo si no hay filtro
 	                } else {
 	                    // Filtro usando la expresión regular
-	                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 0)); // "(?i)" hace que la búsqueda no distinga entre mayúsculas/minúsculas
+	                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 1)); // "(?i)" hace que la búsqueda no distinga entre mayúsculas/minúsculas
 	                }
 	            }
 	        });
