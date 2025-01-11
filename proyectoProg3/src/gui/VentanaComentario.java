@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,8 +22,11 @@ public class VentanaComentario {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
             	Color colorAisia3 = new Color(235, 155, 195);
-                JFrame ventanaComentario = new JFrame();
+                JDialog ventanaComentario = new JDialog();
+                ventanaComentario.setModal(true);
+                ventanaComentario.setAlwaysOnTop(true);		// Para que se ponga delante
                 ventanaComentario.setTitle("Comentario");
                 ventanaComentario.setSize(640, 640);
                 ventanaComentario.setLayout(new GridLayout(2, 1));

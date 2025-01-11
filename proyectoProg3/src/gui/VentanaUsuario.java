@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,9 +28,6 @@ import domain.Usuario;
 import utils.BanderaUtil;
 import utils.HttpRequestAPI;
 import utils.cargarFoto;
-import domain.Contenido;
-import domain.Contenido.Genero;
-import domain.Contenido.TIPO;
 import domain.Pelicula;
 import domain.Post;
 import domain.Serie;
@@ -45,14 +41,16 @@ public class VentanaUsuario extends JDialog{
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	Contenido contenido = new Pelicula(1, TIPO.PELICULA, "Gladiator", Genero.AVENTURA, 143, 5, "Sony", 12, true, "resources/images/recursos/contenido/gladiator.jpg", LocalDate.of(2010, 2, 2));
 	
-	public VentanaUsuario(Usuario user) {
+	public VentanaUsuario(Usuario user) {		
+
 		setLayout(new GridLayout(3, 1));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle(user.getUsername());
 		this.setModal(true);
 		this.setLocation(0, 0);
+		
+		
 		setSize(900, 900);
 		
 		GestorDB bd = new GestorDB();
@@ -94,6 +92,7 @@ public class VentanaUsuario extends JDialog{
 		botonEtiquetaFotoPerfil.addActionListener(e -> {
 			JDialog nuevaVentana = new JDialog(VentanaUsuario.this, "Foto Usuario", Dialog.ModalityType.APPLICATION_MODAL);
 			nuevaVentana.setSize(600, 600);
+			nuevaVentana.setLocationRelativeTo(this);
 		    nuevaVentana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Para cerrar solo esta ventana al cerrar
 		    
 		    // Reascalamos para que sea más grande
@@ -403,6 +402,7 @@ public class VentanaUsuario extends JDialog{
 				JButton botonAbreComentario = botonFormatoComentario(comentarios.get(i));
 				botonAbreComentario.setBackground(colorAisia3);
 				panelConComentarios.add(botonAbreComentario);
+		//		ActionListener ventanaComentario = VentanaComentario
 				botonAbreComentario.addActionListener(VentanaComentario.VentanaComent(comentarios.get(i)));
 			} catch (IndexOutOfBoundsException e) {
 				JLabel EtiquetaAbreComentario = new JLabel("Sin comentario.");
