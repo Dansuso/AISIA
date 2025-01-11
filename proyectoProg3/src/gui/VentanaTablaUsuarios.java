@@ -483,6 +483,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	}
 
 		
+	
 	public void guardarEnArchivo(DefaultTableModel model) {
 	    // Usando try-with-resources para garantizar que el archivo se cierre correctamente
 	    try (PrintWriter pw = new PrintWriter(new FileWriter("resources/data/usuario.csv", false))) {

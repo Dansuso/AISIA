@@ -344,7 +344,6 @@ public class VentanaRegistro extends JFrame{
 			    }
 
 
-
 				private int obtenerUltimoCodigo() {
 			        int ultimoCodigo = 0;
 			        File file = new File("resources/data/usuario.csv");
