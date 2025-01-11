@@ -6,7 +6,7 @@ import java.awt.Component;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
+import java.net.URL;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,8 +25,7 @@ import java.util.HashMap;
 
 import java.util.Scanner;
 
-
-
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import javax.swing.JFrame;
@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -60,6 +61,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	//private int callMouseOver = -1;
 	private TableRowSorter<DefaultTableModel> sorter;
 	private JTextField searchField;
+	private HashMap<String, String> banderaUrls = new HashMap<>();
 
     
 	
@@ -72,7 +74,7 @@ public class VentanaTablaUsuarios extends JFrame {
 		setSize(1100,900);
 		setLocationRelativeTo(null);
 		
-		  String[] colubnas = {"Nombre", "Apellido", "Edad","Correo", "Contraseña"};
+		  String[] colubnas = {"Codigo", "Usuario", "Fecha","Pais", "Contraseña"};
 		
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
 		        
@@ -87,10 +89,11 @@ public class VentanaTablaUsuarios extends JFrame {
 	                return false; // Ninguna celda es editable
 	            }
 	        };
+	        inicializarBanderaUrls();
 	        
 	
 		
-	        cargarDatosCSV("resources/data/personas.csv", model);
+	        cargarDatosCSV("resources/data/usuario.csv", model);
 	        
 	        // Inicializar la tabla
 	        tabla = new JTable(model);
@@ -102,7 +105,41 @@ public class VentanaTablaUsuarios extends JFrame {
 	            model.addRow(vacio);
 	        }
 	        
-	    
+		      tabla.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+		            @Override
+		            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		                JLabel label = new JLabel();
+		                label.setOpaque(true);
+		                label.setHorizontalAlignment(SwingConstants.CENTER);
+
+		                String pais = value.toString().toLowerCase();
+		                String url = banderaUrls.get(pais);
+
+		                if (url != null) {
+		                    try {
+		                        ImageIcon icon = new ImageIcon(new URL(url));
+		                        label.setIcon(icon);
+		                    } catch (Exception e) {
+		                        e.printStackTrace();
+		                    }
+		                } else {
+		                    label.setText("No Image");
+		                }
+
+		                if (isSelected) {
+		                    label.setBackground(table.getSelectionBackground());
+		                    label.setForeground(table.getSelectionForeground());
+		                } else {
+		                    label.setBackground(table.getBackground());
+		                    label.setForeground(table.getForeground());
+		                }
+
+		                return label;
+		            }
+		        });
+		     
+		      
+
 	        
 	        sorter = new TableRowSorter<>(model);
 	        tabla.setRowSorter(sorter);
@@ -265,6 +302,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	            }
 	        });
 	        
+	        
 	        // Listeners para resaltar filas y columnas con el mouse
 	        tabla.addMouseListener(new MouseAdapter() {
 	            @Override
@@ -322,6 +360,26 @@ public class VentanaTablaUsuarios extends JFrame {
 	
 	
 
+	private void inicializarBanderaUrls() {
+		// TODO Auto-generated method stub
+		banderaUrls.put("united states", "https://flagcdn.com/us.png");
+        banderaUrls.put("canada", "https://flagcdn.com/ca.png");
+        banderaUrls.put("united kingdom", "https://flagcdn.com/gb.png");
+        banderaUrls.put("spain", "https://flagcdn.com/es.png");
+        banderaUrls.put("mexico", "https://flagcdn.com/mx.png");
+        banderaUrls.put("argentina", "https://flagcdn.com/ar.png");
+        banderaUrls.put("chile", "https://flagcdn.com/cl.png");
+        banderaUrls.put("colombia", "https://flagcdn.com/co.png");
+        banderaUrls.put("venezuela", "https://flagcdn.com/ve.png");
+        banderaUrls.put("peru", "https://flagcdn.com/pe.png");
+        banderaUrls.put("brazil", "https://flagcdn.com/br.png");
+        banderaUrls.put("uruguay", "https://flagcdn.com/uy.png");
+		
+	}
+
+
+
+
 	public void cargarDatosCSV(String n, DefaultTableModel datos){
     	File f = new File(n);
     	try {
@@ -353,7 +411,7 @@ public class VentanaTablaUsuarios extends JFrame {
 
 	 public void guardarEnArchivo(DefaultTableModel model) {
 
-	        try (PrintWriter pw = new PrintWriter(new FileWriter("personas.csv",false))) {
+	        try (PrintWriter pw = new PrintWriter(new FileWriter("resources/data/usuario.csv",false))) {
 
 
 	            for (int i = 0; i < model.getRowCount(); i++) {
@@ -388,7 +446,9 @@ public class VentanaTablaUsuarios extends JFrame {
 			String[] vacio = null;
 			new VentanaTablaUsuarios(vacio);
 	 }
+	 
 
 	   
 }
+
 	

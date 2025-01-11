@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -262,11 +265,21 @@ public class VentanaRegistro extends JFrame{
 			        if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
 			            String nombre = txt3.getText();
 			            String apellidos = txt4.getText();
+			            String nombreCompleto = nombre + " " + apellidos; // Concatenar nombre y apellidos
 			            String fechaNacimiento = txtFecha.getText(); // Aquí tomamos la fecha directamente
 			            String pais = comboBoxPais.getSelectedItem().toString();
 			            String contraseña = new String(txt2.getPassword());
 
-			            String[] datosUsuario = { nombre, apellidos, fechaNacimiento, pais, contraseña };
+			            // Leer el último código del CSV para determinar el siguiente
+			            int nuevoCodigo = obtenerUltimoCodigo() + 1;
+
+			            String[] datosUsuario = {
+			                String.valueOf(nuevoCodigo), // Añadimos el nuevo código como primer elemento
+			                nombreCompleto,             // Nombre completo en una sola columna
+			                fechaNacimiento,
+			                pais,
+			                contraseña
+			            };
 
 			            if (ventanaTabla == null) {
 			                ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
@@ -275,12 +288,31 @@ public class VentanaRegistro extends JFrame{
 			            ventanaTabla.setVisible(true);
 			            dispose();
 			        } else {
-			        	JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
+			            JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
 			        }
 			    }
-			});
-		 
 
+				private int obtenerUltimoCodigo() {
+					// TODO Auto-generated method stub
+					int ultimoCodigo = 0;
+				    File file = new File("resources/data/usuario.csv");
+				    try (Scanner scanner = new Scanner(file)) {
+				        while (scanner.hasNextLine()) {
+				            String linea = scanner.nextLine();
+				            String[] campos = linea.split(";");
+				            int codigo = Integer.parseInt(campos[0]);
+				            if (codigo > ultimoCodigo) {
+				                ultimoCodigo = codigo;
+				            }
+				        }
+				    } catch (IOException | NumberFormatException ex) {
+				        ex.printStackTrace();
+				    }
+				    return ultimoCodigo;
+				}
+			});
+
+			
 		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
 		 //Boton ocultar
 		 char valor = txt2.getEchoChar();
