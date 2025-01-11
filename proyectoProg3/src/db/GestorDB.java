@@ -271,65 +271,69 @@ public class GestorDB {
 		
 	}
 	
-	public List<String> obtenerPersonas() {
-	    List<String> personas = new ArrayList<>();
-	    String sql = "SELECT * FROM PERSONAS";
+
+	public List<Usuario> obtenerUsuarios() {
+	    List<Usuario> usuarios = new ArrayList<>();
+	    String sql = "SELECT * FROM usuario";
 
 	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
 	         PreparedStatement stmt = con.prepareStatement(sql);
 	         ResultSet rs = stmt.executeQuery()) {
 
 	        while (rs.next()) {
-	            String persona = String.format(
-	                "ID: %d, Nombre: %s, Apellido: %s, Edad: %d, Email: %s",
-	                rs.getInt("ID"),
-	                rs.getString("NOMBRE"),
-	                rs.getString("APELLIDO"),
-	                rs.getInt("EDAD"),
-	                rs.getString("EMAIL")
-	            );
-	            personas.add(persona);
+	                
+	                Usuario usuario = new Usuario(rs.getInt("id_usuario"), rs.getString("username"), LocalDate.parse(rs.getString("creacionCuenta")),
+			                rs.getString("pais"), rs.getString("foto"), rs.getString("contrasena"));
+	            
+	            usuarios.add(usuario);
 	        }
 	    } catch (SQLException e) {
-	        System.err.println("Error al obtener datos de la tabla PERSONAS: " + e.getMessage());
+	        System.err.println("Error al obtener datos de la tabla Usuarios: " + e.getMessage());
 	    }
-	    return personas;
+	    return usuarios;
 	}
-	
-	public void insertarPersona(int id, String nombre, String apellido, int edad, String email) {
-	    String sqlInsertPersona = """
-	        INSERT INTO PERSONAS (ID, NOMBRE, APELLIDO, EDAD, EMAIL)
-	        VALUES (?, ?, ?, ?, ?);
-	    """;
 
-	    try (PreparedStatement prepStmt = con.prepareStatement(sqlInsertPersona)) {
-	        prepStmt.setInt(1, id);
-	        prepStmt.setString(2, nombre);
-	        prepStmt.setString(3, apellido);
-	        prepStmt.setInt(4, edad);
-	        prepStmt.setString(5, email);
-	        prepStmt.executeUpdate();
-	        System.out.println("Persona insertada correctamente: " + nombre + " " + apellido);
-	    } catch (SQLException e) {
-	        System.err.println("Error al insertar persona: " + e.getMessage());
-	    }
-	}
-	
-	public void borrarPersona(int id) {
-	    String sqlDeletePersona = "DELETE FROM PERSONAS WHERE ID = ?";
+    // Método para insertar un nuevo usuario
+    public void insertarUsuario(int cd, String nombreApellido, String fecha, String pais, String imagen, String contraseña) {
+        String sqlInsertUsuario = """
+            INSERT INTO USUARIOS (CD, NOMBREAPELLIDO, FECHA, PAIS, IMAGEN, CONTRASEÑA)
+            VALUES (?, ?, ?, ?, ?, ?);
+        """;
 
-	    try (PreparedStatement prepStmt = con.prepareStatement(sqlDeletePersona)) {
-	        prepStmt.setInt(1, id);
-	        int rowsAffected = prepStmt.executeUpdate();
-	        if (rowsAffected > 0) {
-	            System.out.println("Persona con ID " + id + " eliminada correctamente.");
-	        } else {
-	            System.out.println("No se encontró una persona con ID " + id + ".");
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("Error al borrar persona: " + e.getMessage());
-	    }
-	}
+        try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+             PreparedStatement prepStmt = con.prepareStatement(sqlInsertUsuario)) {
+            
+            prepStmt.setInt(1, cd);
+            prepStmt.setString(2, nombreApellido);
+            prepStmt.setString(3, fecha);
+            prepStmt.setString(4, pais);
+            prepStmt.setString(5, imagen);
+            prepStmt.setString(6, contraseña);
+            prepStmt.executeUpdate();
+            System.out.println("Usuario insertado correctamente: " + nombreApellido);
+        } catch (SQLException e) {
+            System.err.println("Error al insertar usuario: " + e.getMessage());
+        }
+    }
+
+    // Método para borrar un usuario por CD
+    public void borrarUsuario(int cd) {
+        String sqlDeleteUsuario = "DELETE FROM USUARIOS WHERE CD = ?";
+
+        try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+             PreparedStatement prepStmt = con.prepareStatement(sqlDeleteUsuario)) {
+            
+            prepStmt.setInt(1, cd);
+            int rowsAffected = prepStmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Usuario con CD " + cd + " eliminado correctamente.");
+            } else {
+                System.out.println("No se encontró un usuario con CD " + cd + ".");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al borrar usuario: " + e.getMessage());
+        }
+    }
 	
 	
 	
@@ -387,26 +391,6 @@ public class GestorDB {
 	    return listaPost;
 	}
 	
-	public List<Usuario> obtenerUsuarios() {
-	    List<Usuario> usuarios = new ArrayList<>();
-	    String sql = "SELECT * FROM usuario";
-
-	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
-	         PreparedStatement stmt = con.prepareStatement(sql);
-	         ResultSet rs = stmt.executeQuery()) {
-
-	        while (rs.next()) {
-	                
-	                Usuario usuario = new Usuario(rs.getInt("id_usuario"), rs.getString("username"), LocalDate.parse(rs.getString("creacionCuenta")),
-			                rs.getString("pais"), rs.getString("foto"), rs.getString("contrasena"));
-	            
-	            usuarios.add(usuario);
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("Error al obtener datos de la tabla Usuarios: " + e.getMessage());
-	    }
-	    return usuarios;
-	}
 		
 	/**
 	 * Metodo que devuelve las series favoritas de un usuario
