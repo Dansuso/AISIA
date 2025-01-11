@@ -505,5 +505,60 @@ public class GestorDB {
 	    return seguidos;
 	}
 	
+	public void anadirFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) {
+		String sqlInsert = null;
+
+	    if (TIPO.PELICULA.equals(tipoContenido)) {
+	        sqlInsert = "INSERT OR IGNORE INTO PELICULA_FAVORITO (id_pelicula, id_usuario) VALUES (?, ?)";
+	    } else if (TIPO.SERIE.equals(tipoContenido)) {
+	        sqlInsert = "INSERT OR IGNORE INTO SERIE_FAVORITO (id_serie, id_usuario) VALUES (?, ?)";
+	    }
+	    
+	    if (sqlInsert != null) {
+	    	try {
+				PreparedStatement stmt = con.prepareStatement(sqlInsert);
+				stmt.setInt(1, idContenido);
+				stmt.setInt(2, idUsuario);
+				int rowsAffected = stmt.executeUpdate();
+
+	            if (rowsAffected > 0) {
+	                System.out.println("Contenido añadido a favoritos.");
+	            } else {
+	                System.out.println("El contenido ya estaba en favoritos.");
+	            }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	}
+	
+	public void eliminarDeFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) {
+	    String sqlDelete = null;
+
+	    if (TIPO.PELICULA.equals(tipoContenido)) {
+	        sqlDelete = "DELETE FROM PELICULA_FAVORITO WHERE id_pelicula = ? AND id_usuario = ?";
+	    } else if (TIPO.SERIE.equals(tipoContenido)) {
+	        sqlDelete = "DELETE FROM SERIE_FAVORITO WHERE id_serie = ? AND id_usuario = ?";
+	    }
+
+	    if (sqlDelete != null) {
+	        try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	             PreparedStatement prepStmt = con.prepareStatement(sqlDelete)) {
+	            prepStmt.setInt(1, idContenido);
+	            prepStmt.setInt(2, idUsuario);
+	            int rowsAffected = prepStmt.executeUpdate();
+
+	            if (rowsAffected > 0) {
+	                System.out.println("Contenido eliminado de favoritos.");
+	            } else {
+	                System.out.println("El contenido no estaba en favoritos.");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
 
 }
