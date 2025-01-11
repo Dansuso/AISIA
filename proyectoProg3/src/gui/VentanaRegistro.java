@@ -120,7 +120,7 @@ public class VentanaRegistro extends JFrame{
         mainPanel.add(fechaNacimiento);
 
         try {
-            MaskFormatter dateFormatter = new MaskFormatter("##/##/####");
+            MaskFormatter dateFormatter = new MaskFormatter("####-##-##");
             dateFormatter.setPlaceholderCharacter('_');
             txtFecha = new JFormattedTextField(dateFormatter);  // Usar la variable de instancia
         } catch (Exception e) {
@@ -265,52 +265,110 @@ public class VentanaRegistro extends JFrame{
 			        if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
 			            String nombre = txt3.getText();
 			            String apellidos = txt4.getText();
-			            String nombreCompleto = nombre + " " + apellidos; // Concatenar nombre y apellidos
-			            String fechaNacimiento = txtFecha.getText(); // Aquí tomamos la fecha directamente
+			            String nombreCompleto = nombre + apellidos; // Concatenar nombre y apellidos
+			            String fechaNacimiento = fecha;
 			            String pais = comboBoxPais.getSelectedItem().toString();
-			        
 			            String contraseña = new String(txt2.getPassword());
+			            // Verificar si el nombre completo ya existe
+			            
+			            if (nombreCompletoExiste(nombreCompleto)) {
+			                JOptionPane.showMessageDialog(null, "El nombre completo ya está registrado. Por favor, ingresa otro.");
+			                return; // Salir sin agregar el usuario
+			            }
 
 			            // Leer el último código del CSV para determinar el siguiente
 			            int nuevoCodigo = obtenerUltimoCodigo() + 1;
 
+			            // Ruta de la imagen por defecto
+			            String foto = "defautUsuario.png";
+
+			            // Datos del nuevo usuario
 			            String[] datosUsuario = {
-			                String.valueOf(nuevoCodigo), // Añadimos el nuevo código como primer elemento
-			                nombreCompleto,             // Nombre completo en una sola columna
-			                fechaNacimiento,
-			                pais,
-			                contraseña
+			                String.valueOf(nuevoCodigo), // Código
+			                nombreCompleto,              // Nombre completo
+			                fechaNacimiento,             // Fecha de nacimiento
+			                pais,                        // País
+			                foto,                        // Foto predeterminada
+			                contraseña                   // Contraseña
 			            };
 
-			            if (ventanaTabla == null) {
-			                ventanaTabla = new VentanaTablaUsuarios(datosUsuario);
-			            }
+			            // Agregar el usuario al CSV
+			           
 
+			            // Verificar si la ventana de la tabla ya está creada
+			            if (ventanaTabla == null) {
+			                ventanaTabla = new VentanaTablaUsuarios(datosUsuario);  // Si no existe, crearla
+			            }
+			            
+			            // Actualizar la tabla con el nuevo usuario
+			            
+
+			            // Hacer visible la ventana de la tabla
 			            ventanaTabla.setVisible(true);
+
+			            // Cerrar la ventana actual de registro
 			            dispose();
 			        } else {
 			            JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
 			        }
 			    }
+		
+
+			    private boolean nombreCompletoExiste(String nombreCompleto) {
+			        File archivoCSV = new File("resources/data/usuario.csv");
+			        
+			        // Verificar si el archivo existe
+			        if (!archivoCSV.exists()) {
+			            JOptionPane.showMessageDialog(null, "El archivo CSV no existe en la ruta especificada.");
+			            return false;
+			        }
+
+			        try (Scanner sc = new Scanner(archivoCSV)) {
+			            while (sc.hasNextLine()) {
+			                String linea = sc.nextLine().trim(); // Eliminar espacios en blanco al inicio y final
+			                if (linea.isEmpty()) {
+			                    continue; // Saltar las líneas vacías
+			                }
+			                String[] campos = linea.split(";");
+			                
+			                // Asegurarse de que la línea tenga suficientes campos
+			                if (campos.length > 1 && campos[1].equalsIgnoreCase(nombreCompleto)) {
+			                    return true; // Si el nombre completo ya existe
+			                }
+			            }
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			            JOptionPane.showMessageDialog(null, "Error al leer el archivo CSV: " + e.getMessage());
+			        }
+			        return false; // Si no se encontró el nombre completo
+			    }
+
 
 				private int obtenerUltimoCodigo() {
-					// TODO Auto-generated method stub
-					int ultimoCodigo = 0;
-				    File file = new File("resources/data/usuario.csv");
-				    try (Scanner scanner = new Scanner(file)) {
-				        while (scanner.hasNextLine()) {
-				            String linea = scanner.nextLine();
-				            String[] campos = linea.split(";");
-				            int codigo = Integer.parseInt(campos[0]);
-				            if (codigo > ultimoCodigo) {
-				                ultimoCodigo = codigo;
-				            }
-				        }
-				    } catch (IOException | NumberFormatException ex) {
-				        ex.printStackTrace();
-				    }
-				    return ultimoCodigo;
-				}
+			        int ultimoCodigo = 0;
+			        File file = new File("resources/data/usuario.csv");
+			        try (Scanner scanner = new Scanner(file)) {
+			            while (scanner.hasNextLine()) {
+			                String linea = scanner.nextLine();
+			                String[] campos = linea.split(";");
+			                if (campos.length > 0 && !campos[0].isEmpty()) {
+			                    try {
+			                        int codigo = Integer.parseInt(campos[0]);
+			                        if (codigo > ultimoCodigo) {
+			                            ultimoCodigo = codigo;
+			                        }
+			                    } catch (NumberFormatException ex) {
+			                        // Manejo del caso donde no se pueda convertir el código
+			                        System.err.println("Error al parsear el código: " + campos[0]);
+			                    }
+			                }
+			            }
+			        } catch (IOException ex) {
+			            ex.printStackTrace();
+			        }
+			        return ultimoCodigo;
+			    }
+
 			});
 
 			

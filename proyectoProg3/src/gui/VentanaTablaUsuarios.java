@@ -94,7 +94,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	        
 	        
 	        
-		
+	       // guardarEnArchivo(model);
 	        cargarDatosCSV("resources/data/usuario.csv", model);
 	        
 	        // Inicializar la tabla
@@ -344,33 +344,26 @@ public class VentanaTablaUsuarios extends JFrame {
 	                        String fechaStr = value.toString();
 	                        // Suponiendo que la fecha está en formato "yyyy-MM-dd"
 	                        LocalDate fecha = LocalDate.parse(fechaStr);
-	                        
-	                        // Determinar el trimestre (dependiendo del mes)
-	                        int trimestre = (fecha.getMonthValue() - 1) / 3 + 1; // 1 -> Enero-Marzo, 2 -> Abril-Junio, etc.
-	                        
-	                        // Asignar colores según el trimestre
-	                        switch (trimestre) {
-	                            case 1:  // Primer trimestre (Enero-Marzo)
-	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.CYAN); 
-	                                break;
-	                            case 2:  // Segundo trimestre (Abril-Junio)
-	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.YELLOW);
-	                                break;
-	                            case 3:  // Tercer trimestre (Julio-Septiembre)
-	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.GREEN);
-	                                break;
-	                            case 4:  // Cuarto trimestre (Octubre-Diciembre)
-	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.LIGHT_GRAY);
-	                                break;
-	                            default:
-	                                label.setBackground(Color.WHITE); // Si la fecha no encaja (no debería ocurrir)
-	                                break;
+
+	                        // Obtener el año de la fecha
+	                        int year = fecha.getYear();
+
+	                        // Asignar colores según el año
+	                        if (year == 2024) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.RED); // Color para 2024
+	                        } else if (year == 2025) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.YELLOW); // Color para 2025
+	                        } else if (year == 2026) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.GREEN); // Color para 2026
+	                        } else if (year > 2026) {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.LIGHT_GRAY); // Color para 2027 en adelante
+	                        } else {
+	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.PINK); // Color para 2023 y años anteriores
 	                        }
 	                    } catch (Exception e) {
 	                        // Si la fecha no se puede parsear, no aplicar colores
 	                    }
 	                }
-
 
 	                // Si la celda es seleccionada, sobrescribe el color
 	                if (isSelected) {
@@ -378,6 +371,10 @@ public class VentanaTablaUsuarios extends JFrame {
 	                }
 
 	                return label;
+
+
+
+	          
 	            }
 	        });
 	        
@@ -454,34 +451,39 @@ public class VentanaTablaUsuarios extends JFrame {
 	
 	
 
-	public void cargarDatosCSV(String n, DefaultTableModel datos){
-    	File f = new File(n);
-    	try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-			
-				String linea = sc.nextLine();
-				
-					String[] campos =  linea.split(";");
-					
-					datos.addRow(campos);
-					
-					HashMap<String,String> mapa = new HashMap<String, String>();
-	
-						mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]+ campos[5]);
-				
-					
-					
-				}			
-			sc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-    }	
+	public void cargarDatosCSV(String n, DefaultTableModel datos) {
+	    File f = new File(n);
+	    try {
+	        // Abrir el archivo CSV
+	        Scanner sc = new Scanner(f);
+
+	        // Recorremos las líneas del archivo CSV
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine().trim(); // Eliminar espacios en blanco al principio y al final
+
+	            // Asegurarnos de que la línea no esté vacía
+	            if (!linea.isEmpty()) {
+	                // Dividir la línea en campos usando el delimitador ';'
+	                String[] campos = linea.split(";");
+	                
+	                // Comprobamos si el número de campos es el esperado (6 en este caso)
+	                if (campos.length == 6) {
+	                    // Si la línea tiene el número correcto de campos, agregar la fila
+	                    datos.addRow(campos);
+	                } else {
+	                    // Si no tiene el número esperado de campos, mostrar un mensaje de advertencia
+	                    System.err.println("Advertencia: Línea con formato incorrecto, no tiene 6 campos: " + linea);
+	                }
+	            }
+	        }
+	        sc.close();
+	    } catch (IOException e) {
+	        e.printStackTrace(); // Capturar y mostrar cualquier error al abrir o leer el archivo
+	    }
+	}
+
 		
+	
 	public void guardarEnArchivo(DefaultTableModel model) {
 	    // Usando try-with-resources para garantizar que el archivo se cierre correctamente
 	    try (PrintWriter pw = new PrintWriter(new FileWriter("resources/data/usuario.csv", false))) {
