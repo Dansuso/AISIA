@@ -41,33 +41,25 @@ public class VentanaInicio extends JFrame{
 	
 	
 	//Cargamos los datos para ver luego si esta en la base de tados 
-	public void cargarDatosCSV(){
-    	File f = new File("resources/data/usuario.csv");
-    	try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-				String linea = sc.nextLine();
-				String[] campos =  linea.split(";");
-			
-				
-					
-					mapa.put(campos[1], campos[5]);
-					
-					
-					
-				}
-			
-				 	
-			sc.close();
-					
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-    }
+	public void cargarDatosCSV() {
+	    File f = new File("resources/data/usuario.csv");
+	    try (Scanner sc = new Scanner(f)) {
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine().trim();
+	            if (linea.isEmpty()) continue;  // Ignorar líneas vacías
+	            String[] campos = linea.split(";");
+	            
+	            if (campos.length > 5) {  // Asegurarse de que haya suficientes campos
+	                mapa.put(campos[1], campos[5]);  // Correo y Contraseña
+	            } else {
+	                System.out.println("Línea mal formateada: " + linea);  // Imprimir líneas mal formateadas
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 
 	
 

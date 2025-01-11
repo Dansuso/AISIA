@@ -264,7 +264,131 @@ public class VentanaTablaUsuarios extends JFrame {
 	    	
 	    	
 	    	//Interecccione con el raton
-	     
+	    	
+	    	// Botón Insertar
+	    	// Botón Insertar
+	    	// Botón Insertar
+	    	// Acción del botón Insertar
+	    	botonInsertar.addActionListener(new ActionListener() {
+	    	    @Override
+	    	    public void actionPerformed(ActionEvent e) {
+	    	        // Solicitar los datos al usuario
+	    	        String codigo = JOptionPane.showInputDialog("Ingrese el código:");
+	    	        String usuario = JOptionPane.showInputDialog("Ingrese el nombre de usuario:");
+	    	        String fecha = JOptionPane.showInputDialog("Ingrese la fecha (yyyy-MM-dd):");
+	    	        String pais = JOptionPane.showInputDialog("Ingrese el país:");
+	    	        String foto = JOptionPane.showInputDialog("Ingrese el nombre del archivo de foto:");
+	    	        String contraseña = JOptionPane.showInputDialog("Ingrese la contraseña:");
+
+	    	        // Validar si el código o el usuario ya existen en la tabla
+	    	        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    	        
+	    	        // Verificar si ya existe el código o el nombre de usuario
+	    	        for (int i = 0; i < model.getRowCount(); i++) {
+	    	            String existingCodigo = model.getValueAt(i, 0).toString(); // Obtener el código de la fila actual
+	    	            String existingUsuario = model.getValueAt(i, 1).toString(); // Obtener el usuario de la fila actual
+
+	    	            // Validar si el código ya existe
+	    	            if (existingCodigo.equals(codigo)) {
+	    	                JOptionPane.showMessageDialog(null, "El código '" + codigo + "' ya está en uso.");
+	    	                return; // Salir si el código ya está en uso
+	    	            }
+	    	            
+	    	            // Validar si el usuario ya existe
+	    	            if (existingUsuario.equals(usuario)) {
+	    	                JOptionPane.showMessageDialog(null, "El usuario '" + usuario + "' ya está en uso.");
+	    	                return; // Salir si el usuario ya está en uso
+	    	            }
+	    	        }
+
+	    	        // Validación de fecha (formato yyyy-MM-dd)
+	    	        try {
+	    	            // Intentamos parsear la fecha para verificar que tenga el formato correcto
+	    	            LocalDate.parse(fecha);
+	    	        } catch (Exception ex) {
+	    	            JOptionPane.showMessageDialog(null, "La fecha debe tener el formato 'yyyy-MM-dd'.");
+	    	            return; // Salir si la fecha no tiene el formato adecuado
+	    	        }
+
+	    	        // Si todo es válido, agregar la fila a la tabla
+	    	        String[] newRow = {codigo, usuario, fecha, pais, foto, contraseña};
+	    	        model.addRow(newRow);
+
+	    	        // Guardar el archivo después de insertar el nuevo dato
+	    	        guardarEnArchivo(model);
+
+	    	        // Confirmar que se ha agregado correctamente
+	    	        JOptionPane.showMessageDialog(null, "Nuevo usuario '" + usuario + "' agregado exitosamente.");
+	    	    }
+	    	});
+
+
+
+
+	    	// Botón Eliminar
+	    	botonEliminar.addActionListener(new ActionListener() {
+	    	    @Override
+	    	    public void actionPerformed(ActionEvent e) {
+	    	        // Pedir al usuario que ingrese el código que quiere eliminar
+	    	        String codigoEliminar = JOptionPane.showInputDialog("Ingrese el código del usuario que deseas eliminar:");
+
+	    	        // Verificar si el código no está vacío
+	    	        if (codigoEliminar != null && !codigoEliminar.trim().isEmpty()) {
+	    	            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+	    	            boolean encontrado = false;
+
+	    	            // Buscar el código en la tabla
+	    	            for (int i = 0; i < model.getRowCount(); i++) {
+	    	                String codigoFila = model.getValueAt(i, 0).toString(); // Obtener el código de la fila actual
+
+	    	                // Si el código coincide con el código ingresado por el usuario
+	    	                if (codigoFila.equals(codigoEliminar)) {
+	    	                    // Confirmar la eliminación
+	    	                    int confirmacion = JOptionPane.showConfirmDialog(frame, 
+	    	                        "¿Estás seguro de que deseas eliminar el usuario con el código '" + codigoEliminar + "'?", 
+	    	                        "Confirmar eliminación", 
+	    	                        JOptionPane.YES_NO_OPTION);
+
+	    	                    // Si se confirma la eliminación
+	    	                    if (confirmacion == JOptionPane.YES_OPTION) {
+	    	                        // Eliminar la fila
+	    	                        model.removeRow(i);
+
+	    	                        // Guardar los cambios en el archivo CSV
+	    	                        guardarEnArchivo(model);
+
+	    	                        // Indicar que la fila fue eliminada
+	    	                        JOptionPane.showMessageDialog(frame, "El usuario con código '" + codigoEliminar + "' ha sido eliminado.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+	    	                    }
+	    	                    encontrado = true;
+	    	                    break; // Salir del bucle después de encontrar y eliminar la fila
+	    	                }
+	    	            }
+
+	    	            // Si no se encuentra el código en la tabla
+	    	            if (!encontrado) {
+	    	                JOptionPane.showMessageDialog(frame, "No se encontró un usuario con el código '" + codigoEliminar + "'.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	            }
+	    	        } else {
+	    	            // Si el código está vacío o el usuario canceló
+	    	            JOptionPane.showMessageDialog(frame, "Debe ingresar un código válido para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	        }
+	    	    }
+	    	});
+	    	
+	    	botonGuardar.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					 JOptionPane.showMessageDialog(frame, "Los usuarios han sido guardados exitosamente.");
+					
+				}
+	    		
+	    	});
+
+
+	     //Boton alazar
 	        botonazar.addActionListener(new ActionListener() {
 				
 				@Override
