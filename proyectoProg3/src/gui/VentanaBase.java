@@ -95,13 +95,19 @@ public class VentanaBase extends JFrame {
 		JMenuItem menuItemPerfil = new JMenuItem("Perfil");
 		menuItemPerfil.setMnemonic(KeyEvent.VK_P);
 		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario(user)));
-		dispose();
 		// FEED
 		JMenuItem menuItemFeed = new JMenuItem("Feed");
 		menuItemFeed.setMnemonic(KeyEvent.VK_F);
 		menuItemFeed.addActionListener( e ->  {
 			SwingUtilities.invokeLater(() -> new VentanaFeed(user));
 			dispose();
+		});
+		
+		
+		JMenuItem menuItemCombinacion = new JMenuItem("Combinaciones");
+		menuItemFeed.setMnemonic(KeyEvent.VK_K);
+		menuItemCombinacion.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new CombinacionesContenido());
 		});
 	
 		// SALIR
@@ -113,6 +119,8 @@ public class VentanaBase extends JFrame {
 		menu.add(menuItemCatalogo);
 		menu.addSeparator();
 		menu.add(menuItemPerfil);
+		menu.addSeparator();
+		menu.add(menuItemCombinacion);
 		menu.addSeparator();
 		menu.add(menuItemFeed);
 		menu.addSeparator();  
