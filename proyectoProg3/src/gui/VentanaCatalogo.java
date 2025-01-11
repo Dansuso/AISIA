@@ -249,7 +249,7 @@ public class VentanaCatalogo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogoVistaAlterna();
+				new VentanaCatalogoVistaAlterna(null);
 				
 			}
         	

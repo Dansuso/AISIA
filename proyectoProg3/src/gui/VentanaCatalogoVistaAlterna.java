@@ -45,6 +45,7 @@ import db.GestorDB;
 import domain.Contenido;
 import domain.Usuario;
 import domain.Contenido.Genero;
+import domain.Contenido.TIPO;
 import utils.HttpRequestAPI;
 
 public class VentanaCatalogoVistaAlterna extends JFrame {
@@ -61,8 +62,13 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	protected DefaultListModel<Contenido> modelo;
 	protected JTable tablaFavoritos;
     protected DefaultTableModel modeloTabla;
+    private static Usuario usuario;
 
-	public VentanaCatalogoVistaAlterna() {
+	public VentanaCatalogoVistaAlterna(Usuario Usuario) {
+		
+		this.usuario = usuario;
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(640, 480);
 		setTitle("Ventana Catalogo");
@@ -243,6 +249,8 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                             contenidoSeleccionado.getCalificacion(),
                             contenidoSeleccionado.getDistribuidora()
                     });
+                    
+                    db.anadirFavoritos(1, listaContenidos.getSelectedValue().getId(), listaContenidos.getSelectedValue().getTipo());
                 }
 				
 			}
@@ -255,14 +263,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int filaSeleccionada = tablaFavoritos.getSelectedRow();
                 if (filaSeleccionada != -1) {
+                	String titulo = modeloTabla.getValueAt(filaSeleccionada, 0).toString();
+                    int idContenido = obtenerIdDesdeTitulo(titulo);
+                    Contenido.TIPO tipo = obtenerTipoDesdeTitulo(titulo);
                     // Eliminar la fila seleccionada del modelo
                     modeloTabla.removeRow(filaSeleccionada);
+                    db.eliminarDeFavoritos(1, idContenido, tipo);
                     JOptionPane.showMessageDialog(
                             VentanaCatalogoVistaAlterna.this,
                             "Fila eliminada correctamente",
                             "Fila eliminada",
                             JOptionPane.PLAIN_MESSAGE
                         );
+                    
                     
                 } else {
                     JOptionPane.showMessageDialog(
@@ -272,6 +285,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                     );
                 }
+                
 				
 			}
 			
@@ -639,9 +653,27 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
             System.out.println(contenido);
         }
     }
+	
+	private int obtenerIdDesdeTitulo(String titulo) {
+		for (Contenido contenido : contenidosBD) { // Asumiendo que listaContenidos es una lista de objetos Contenido
+	        if (contenido.getTitulo().equals(titulo)) {
+	            return contenido.getId();
+	        }
+	    }
+	    return -1; // Si no se encuentra el contenido
+	}
+	
+	private TIPO obtenerTipoDesdeTitulo(String titulo) {
+		for (Contenido contenido : contenidosBD) { // Asumiendo que listaContenidos es una lista de objetos Contenido
+	        if (contenido.getTitulo().equals(titulo)) {
+	            return contenido.getTipo();
+	        }
+	    }
+	    return null; // Si no se encuentra el contenido
+	}
 
 	public static void main(String[] args) {
-		VentanaCatalogoVistaAlterna ventana = new VentanaCatalogoVistaAlterna();
+		VentanaCatalogoVistaAlterna ventana = new VentanaCatalogoVistaAlterna(usuario);
         ventana.mostrarContenidos();
 
 	}
