@@ -138,9 +138,9 @@ public class VentanaRegistro extends JFrame{
          mainPanel.add(pais);
 
          String[] paises = {
-             "United States", "Canada", "United Kingdom", "Spain", "Mexico",
-             "Argentina", "Chile", "Colombia", "Venezuela", "Peru", "Brazil", "Uruguay"
-         };
+        		 "united states", "canada", "united kingdom", "spain", "mexico",
+        		    "argentina", "chile", "colombia", "venezuela", "peru", "brazil", "uruguay"
+        		};
          JComboBox<String> comboBoxPais = new JComboBox<>(paises);
          comboBoxPais.setBounds(100, 160, 150, 20);
          mainPanel.add(comboBoxPais);

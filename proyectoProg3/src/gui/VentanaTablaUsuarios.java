@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.net.URL;
-
+import java.time.LocalDate;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,7 +30,7 @@ import javax.swing.JButton;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -138,7 +138,7 @@ public class VentanaTablaUsuarios extends JFrame {
 
 	                    // Redimensionar la imagen al tamaño de la celda
 	                    Image img = icon.getImage(); // Obtener la imagen
-	                    Image resizedImage = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Redimensionar con un tamaño adecuado
+	                    Image resizedImage = img.getScaledInstance(50, 30, Image.SCALE_SMOOTH); // Redimensionar con un tamaño adecuado
 	                    label.setIcon(new ImageIcon(resizedImage));
 	                } else {
 	                    // Si no existe la imagen, mostrar un texto predeterminado o una imagen por defecto
@@ -336,21 +336,41 @@ public class VentanaTablaUsuarios extends JFrame {
 	                    label.setText("******");
 	                }
 
-	                // Personalizar según la edad (columna 2)
+	             // Personalizar según el trimestre (columna 2)
+	             // Personalizar según el trimestre (columna 2)
 	                if (column == 2) {
 	                    try {
-	                        int edad = Integer.parseInt(value.toString());
-	                        if (edad > 65) {
-	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.YELLOW); // Amarillo para mayores de 65
-	                        } else if (edad < 25) {
-	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.GREEN); // Verde para menores de 25
-	                        } else {
-	                            label.setBackground(filaMouseOver == row ? Color.CYAN : Color.LIGHT_GRAY); // Gris para edades intermedias
+	                        // Parsear la fecha que está en la columna
+	                        String fechaStr = value.toString();
+	                        // Suponiendo que la fecha está en formato "yyyy-MM-dd"
+	                        LocalDate fecha = LocalDate.parse(fechaStr);
+	                        
+	                        // Determinar el trimestre (dependiendo del mes)
+	                        int trimestre = (fecha.getMonthValue() - 1) / 3 + 1; // 1 -> Enero-Marzo, 2 -> Abril-Junio, etc.
+	                        
+	                        // Asignar colores según el trimestre
+	                        switch (trimestre) {
+	                            case 1:  // Primer trimestre (Enero-Marzo)
+	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.CYAN); 
+	                                break;
+	                            case 2:  // Segundo trimestre (Abril-Junio)
+	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.YELLOW);
+	                                break;
+	                            case 3:  // Tercer trimestre (Julio-Septiembre)
+	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.GREEN);
+	                                break;
+	                            case 4:  // Cuarto trimestre (Octubre-Diciembre)
+	                                label.setBackground(filaMouseOver == row ? Color.CYAN : Color.LIGHT_GRAY);
+	                                break;
+	                            default:
+	                                label.setBackground(Color.WHITE); // Si la fecha no encaja (no debería ocurrir)
+	                                break;
 	                        }
-	                    } catch (NumberFormatException e) {
-	                        // Si no se puede convertir a número, no aplicar colores
+	                    } catch (Exception e) {
+	                        // Si la fecha no se puede parsear, no aplicar colores
 	                    }
 	                }
+
 
 	                // Si la celda es seleccionada, sobrescribe el color
 	                if (isSelected) {
@@ -382,28 +402,43 @@ public class VentanaTablaUsuarios extends JFrame {
 	        });  
 	        
 
-	    	tabla.addMouseListener(new MouseAdapter() {
-	    		@Override
+	        tabla.addMouseListener(new MouseAdapter() {
+	            @Override
 	            public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-	    			
-	    		
-					
-					
-					int indice = tabla.getSelectedRow();
-	    			
-	    			String Codigo = model.getValueAt(indice, 0).toString();
-	    			String Usuario = model.getValueAt(indice, 1).toString();
-	    			String edad = model.getValueAt(indice, 2).toString();
-	    			String Correo = model.getValueAt(indice, 3).toString();
-	    			String contraseña = model.getValueAt(indice, 5).toString();
-	    			
-	    			VentanaDatos modificar = new VentanaDatos(Codigo,Usuario,edad,Correo,contraseña);
-					modificar.setVisible(true);
-					
-					
-	    		}
-	    	});
+	                // Obtener la fila seleccionada
+	                int indice = tabla.getSelectedRow();
+
+	                // Obtener los valores de las celdas de la fila
+	                String Codigo = model.getValueAt(indice, 0).toString();
+	                String Usuario = model.getValueAt(indice, 1).toString();
+	                String edad = model.getValueAt(indice, 2).toString();
+	                String Correo = model.getValueAt(indice, 3).toString();
+	                String contraseña = model.getValueAt(indice, 5).toString();
+
+	                // Mostrar un cuadro de diálogo pidiendo la contraseña
+	                String passwordInput = JOptionPane.showInputDialog(
+	                    tabla,
+	                    "Ingrese la contraseña para acceder:",
+	                    "Acceso a la ventana de detalles",
+	                    JOptionPane.PLAIN_MESSAGE
+	                );
+
+	                // Validar la contraseña
+	                if (passwordInput != null && passwordInput.equals("1234")) {
+	                    // Si la contraseña es correcta, abrir la ventana de detalles
+	                    VentanaDatos modificar = new VentanaDatos(Codigo, Usuario, edad, Correo, contraseña);
+	                    modificar.setVisible(true);
+	                } else {
+	                    // Si la contraseña es incorrecta, mostrar un mensaje de error
+	                    JOptionPane.showMessageDialog(
+	                        tabla,
+	                        "Contraseña incorrecta. No tienes acceso.",
+	                        "Error",
+	                        JOptionPane.ERROR_MESSAGE
+	                    );
+	                }
+	            }
+	        });
 
 	       
 	        
