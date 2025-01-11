@@ -62,11 +62,11 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	protected DefaultListModel<Contenido> modelo;
 	protected JTable tablaFavoritos;
     protected DefaultTableModel modeloTabla;
-    private static Usuario usuario;
+    protected Usuario usuarioPasado;
 
-	public VentanaCatalogoVistaAlterna(Usuario Usuario) {
+	public VentanaCatalogoVistaAlterna(Usuario UsuarioPasado) {
 		
-		this.usuario = usuario;
+		this.usuarioPasado = usuarioPasado;
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -250,7 +250,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                             contenidoSeleccionado.getDistribuidora()
                     });
                     
-                    db.anadirFavoritos(1, listaContenidos.getSelectedValue().getId(), listaContenidos.getSelectedValue().getTipo());
+                    db.anadirFavoritos(usuarioPasado.getCodigo(), listaContenidos.getSelectedValue().getId(), listaContenidos.getSelectedValue().getTipo());
                 }
 				
 			}
@@ -268,7 +268,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                     Contenido.TIPO tipo = obtenerTipoDesdeTitulo(titulo);
                     // Eliminar la fila seleccionada del modelo
                     modeloTabla.removeRow(filaSeleccionada);
-                    db.eliminarDeFavoritos(1, idContenido, tipo);
+                    db.eliminarDeFavoritos(usuarioPasado.getCodigo(), idContenido, tipo);
                     JOptionPane.showMessageDialog(
                             VentanaCatalogoVistaAlterna.this,
                             "Fila eliminada correctamente",
@@ -673,7 +673,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		VentanaCatalogoVistaAlterna ventana = new VentanaCatalogoVistaAlterna(usuario);
+		VentanaCatalogoVistaAlterna ventana = new VentanaCatalogoVistaAlterna(new Usuario(3, "Dani", LocalDate.now(), "España", "jpg", "12345"));
         ventana.mostrarContenidos();
 
 	}
