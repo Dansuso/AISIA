@@ -18,12 +18,13 @@ public class VentanaDatos extends JFrame {
         setTitle("Insertar Persona");
         setSize(400, 200);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(6, 2));
+        setLayout(new GridLayout(6, 2)); 
+        
 
         // Crear los campos y los componentes
-        JLabel etiquetaNombre = new JLabel("Nombre:");
+        JLabel etiquetaNombre = new JLabel("Codigo:");
         campoNombre = new JTextField();
-        JLabel etiquetaApellidos = new JLabel("Apellidos:");
+        JLabel etiquetaApellidos = new JLabel("Usario:");
         campoApellidos = new JTextField();
         JLabel etiquetaEdad = new JLabel("Edad:");
         campoEdad = new JTextField();

@@ -61,7 +61,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	//private int callMouseOver = -1;
 	private TableRowSorter<DefaultTableModel> sorter;
 	private JTextField searchField;
-	private HashMap<String, String> banderaUrls = new HashMap<>();
+
 
     
 	
@@ -74,7 +74,8 @@ public class VentanaTablaUsuarios extends JFrame {
 		setSize(1100,900);
 		setLocationRelativeTo(null);
 		
-		  String[] colubnas = {"Codigo", "Usuario", "Fecha","Pais", "Contraseña"};
+		  String[] colubnas = {"Codigo", "Usuario", "Fecha","Pais",
+		  		 "Foto", "Contraseña"};
 		
 		  DefaultTableModel model = new DefaultTableModel(colubnas, 0) {
 		        
@@ -89,9 +90,10 @@ public class VentanaTablaUsuarios extends JFrame {
 	                return false; // Ninguna celda es editable
 	            }
 	        };
-	        inicializarBanderaUrls();
+	      
 	        
-	
+	        
+	        
 		
 	        cargarDatosCSV("resources/data/usuario.csv", model);
 	        
@@ -99,46 +101,87 @@ public class VentanaTablaUsuarios extends JFrame {
 	        tabla = new JTable(model);
 	        tabla.setFillsViewportHeight(true);
 	       
-	        
+	        tabla.setRowHeight(50);  // Ajusta la altura de las filas para que las imágenes se vean mejor
+	        tabla.getColumnModel().getColumn(4).setPreferredWidth(50); 
 	    
 			if (vacio != null && vacio.length == colubnas.length) {
 	            model.addRow(vacio);
 	        }
-	        
-		      tabla.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
-		            @Override
-		            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		                JLabel label = new JLabel();
-		                label.setOpaque(true);
-		                label.setHorizontalAlignment(SwingConstants.CENTER);
-
-		                String pais = value.toString().toLowerCase();
-		                String url = banderaUrls.get(pais);
-
-		                if (url != null) {
-		                    try {
-		                        ImageIcon icon = new ImageIcon(new URL(url));
-		                        label.setIcon(icon);
-		                    } catch (Exception e) {
-		                        e.printStackTrace();
-		                    }
-		                } else {
-		                    label.setText("No Image");
-		                }
-
-		                if (isSelected) {
-		                    label.setBackground(table.getSelectionBackground());
-		                    label.setForeground(table.getSelectionForeground());
-		                } else {
-		                    label.setBackground(table.getBackground());
-		                    label.setForeground(table.getForeground());
-		                }
-
-		                return label;
-		            }
-		        });
+			File archivo = new File("resources/data/usuario.csv");
+	        if (archivo.exists()) {
+	            System.out.println("Archivo encontrado: " + archivo.getAbsolutePath());
+	        } else {
+	            System.out.println("El archivo no existe.");
+	        }
 		     
-		      
+	        
+	        tabla.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+	            /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	                JLabel label = new JLabel();
+
+	                // Obtener el nombre del país que está en la celda
+	                String pais = value.toString().toLowerCase().replace(" ", "_");
+	                
+	                // Cargar la imagen correspondiente desde la carpeta de recursos
+	                String imagePath = "resources/data/perfil/" + pais + ".png"; // Ruta del archivo de imagen
+
+	                // Intentar cargar la imagen
+	                File imageFile = new File(imagePath);
+	                if (imageFile.exists()) {
+	                    // Si la imagen existe, se carga en el JLabel
+	                    ImageIcon icon = new ImageIcon(imagePath);
+	                    label.setIcon(icon);
+	                } else {
+	                    // Si no existe la imagen, mostrar un texto predeterminado o una imagen por defecto
+	                    label.setText("No disponible");
+	                }
+
+	                // Estilo de la celda
+	                label.setHorizontalAlignment(JLabel.CENTER);
+	                label.setVerticalAlignment(JLabel.CENTER);
+	                
+	                // Estilos adicionales
+	                if (isSelected) {
+	                    label.setBackground(table.getSelectionBackground());
+	                    label.setForeground(table.getSelectionForeground());
+	                } else {
+	                    label.setBackground(table.getBackground());
+	                    label.setForeground(table.getForeground());
+	                }
+
+	                return label;
+	            }
+	        });
+	        
+	  
+
+	        // Configurar la columna de "Foto" para mostrar imágenes
+	        tabla.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
+	            @Override
+	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	                JLabel label = new JLabel();
+	                String imageName = value.toString();
+	                
+	                // Ruta de las imágenes
+	                String imagePath = "resources/images/recursos/perfil/" + imageName;
+	                ImageIcon icon = new ImageIcon(imagePath);
+
+	                // Redimensionar la imagen para ajustarse a la altura de la fila
+	                int rowHeight = table.getRowHeight();  // Obtener la altura de la fila
+	                Image img = icon.getImage();
+	                Image scaledImg = img.getScaledInstance(rowHeight, rowHeight, Image.SCALE_SMOOTH);  // Ajustar tamaño a la altura de la fila
+	                label.setIcon(new ImageIcon(scaledImg));
+
+	                return label;
+	            }
+	        });
+
 
 	        
 	        sorter = new TableRowSorter<>(model);
@@ -228,7 +271,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	        
 	        
 	     // Ocultar contraseñas
-	        tabla.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+	        tabla.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
 	            /**
 				 * 
 				 */
@@ -272,7 +315,7 @@ public class VentanaTablaUsuarios extends JFrame {
 	                }
 
 	                // Personalizar columna de contraseña
-	                if (column == 4) { // Contraseña
+	                if (column == 5) { // Contraseña
 	                    label.setForeground(Color.RED);
 	                    label.setText("******");
 	                }
@@ -333,13 +376,13 @@ public class VentanaTablaUsuarios extends JFrame {
 					
 					int indice = tabla.getSelectedRow();
 	    			
-	    			String nombre = model.getValueAt(indice, 0).toString();
-	    			String apellidos = model.getValueAt(indice, 1).toString();
+	    			String Codigo = model.getValueAt(indice, 0).toString();
+	    			String Usuario = model.getValueAt(indice, 1).toString();
 	    			String edad = model.getValueAt(indice, 2).toString();
 	    			String Correo = model.getValueAt(indice, 3).toString();
-	    			String contraseña = model.getValueAt(indice, 4).toString();
+	    			String contraseña = model.getValueAt(indice, 5).toString();
 	    			
-	    			VentanaDatos modificar = new VentanaDatos(nombre,apellidos,edad,Correo,contraseña);
+	    			VentanaDatos modificar = new VentanaDatos(Codigo,Usuario,edad,Correo,contraseña);
 					modificar.setVisible(true);
 					
 					
@@ -360,26 +403,6 @@ public class VentanaTablaUsuarios extends JFrame {
 	
 	
 
-	private void inicializarBanderaUrls() {
-		// TODO Auto-generated method stub
-		banderaUrls.put("united states", "https://flagcdn.com/us.png");
-        banderaUrls.put("canada", "https://flagcdn.com/ca.png");
-        banderaUrls.put("united kingdom", "https://flagcdn.com/gb.png");
-        banderaUrls.put("spain", "https://flagcdn.com/es.png");
-        banderaUrls.put("mexico", "https://flagcdn.com/mx.png");
-        banderaUrls.put("argentina", "https://flagcdn.com/ar.png");
-        banderaUrls.put("chile", "https://flagcdn.com/cl.png");
-        banderaUrls.put("colombia", "https://flagcdn.com/co.png");
-        banderaUrls.put("venezuela", "https://flagcdn.com/ve.png");
-        banderaUrls.put("peru", "https://flagcdn.com/pe.png");
-        banderaUrls.put("brazil", "https://flagcdn.com/br.png");
-        banderaUrls.put("uruguay", "https://flagcdn.com/uy.png");
-		
-	}
-
-
-
-
 	public void cargarDatosCSV(String n, DefaultTableModel datos){
     	File f = new File(n);
     	try {
@@ -394,7 +417,7 @@ public class VentanaTablaUsuarios extends JFrame {
 					
 					HashMap<String,String> mapa = new HashMap<String, String>();
 	
-						mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]);
+						mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]+ campos[5]);
 				
 					
 					
@@ -408,38 +431,22 @@ public class VentanaTablaUsuarios extends JFrame {
     	
     }	
 		
-
-	 public void guardarEnArchivo(DefaultTableModel model) {
-
-	        try (PrintWriter pw = new PrintWriter(new FileWriter("resources/data/usuario.csv",false))) {
-
-
-	            for (int i = 0; i < model.getRowCount(); i++) {
-
-	                for (int j = 0; j < model.getColumnCount(); j++) {
-
-	                    pw.print(model.getValueAt(i, j));
-
-	                    if (j < model.getColumnCount() - 1) {
-
-	                        pw.print(";");
-
-	                    }
-
+	public void guardarEnArchivo(DefaultTableModel model) {
+	    // Usando try-with-resources para garantizar que el archivo se cierre correctamente
+	    try (PrintWriter pw = new PrintWriter(new FileWriter("resources/data/usuario.csv", false))) {
+	        for (int i = 0; i < model.getRowCount(); i++) {
+	            for (int j = 0; j < model.getColumnCount(); j++) {
+	                pw.print(model.getValueAt(i, j));
+	                if (j < model.getColumnCount() - 1) {
+	                    pw.print(";");
 	                }
-
-	                pw.println();
-
 	            }
-
-	        } catch (IOException e) {
-
-	            e.printStackTrace();
+	            pw.println();
 	        }
-
-	           
-
+	    } catch (IOException e) {
+	        e.printStackTrace();
 	    }
+	}
 
 	
 	 public static void main(String[] args) {

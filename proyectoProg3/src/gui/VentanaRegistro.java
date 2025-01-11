@@ -268,6 +268,7 @@ public class VentanaRegistro extends JFrame{
 			            String nombreCompleto = nombre + " " + apellidos; // Concatenar nombre y apellidos
 			            String fechaNacimiento = txtFecha.getText(); // Aquí tomamos la fecha directamente
 			            String pais = comboBoxPais.getSelectedItem().toString();
+			        
 			            String contraseña = new String(txt2.getPassword());
 
 			            // Leer el último código del CSV para determinar el siguiente
