@@ -292,43 +292,63 @@ public class GestorDB {
 	    }
 	    return usuarios;
 	}
+	
+	public Usuario loginUsuario(String username, String pass) {
+		
+		String sqlSelectLogin = "SELECT * FROM USUARIO WHERE USERNAME = ? AND CONTRASENA =?";
+		try(PreparedStatement prepStmt = con.prepareStatement(sqlSelectLogin)){
+			prepStmt.setString(1, username);
+			prepStmt.setString(2, pass);
+			ResultSet rsLogin = prepStmt.executeQuery();
+			System.out.println(prepStmt);
+			while(rsLogin.next()) {
+				return new Usuario(rsLogin.getInt("ID_USUARIO"),rsLogin.getString("USERNAME"), 
+				null, rsLogin.getString("PAIS"), rsLogin.getString("FOTO"), rsLogin.getString("CONTRASENA"));
+			}
+			
+		} catch (SQLException e) {
+			System.err.println("Error con la consulta SQL de Login");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
     // Método para insertar un nuevo usuario
-    public void insertarUsuario(int cd, String nombreApellido, String fecha, String pais, String imagen, String contraseña) {
+    public void insertarUsuario(int id, String username, long creacioncuenta, String pais, String imagen, String contraseña) {
         String sqlInsertUsuario = """
-            INSERT INTO USUARIOS (CD, NOMBREAPELLIDO, FECHA, PAIS, IMAGEN, CONTRASEÑA)
+            INSERT INTO USUARIO (ID_USUARIO, USERNAME, CREACIONCUENTA, PAIS, FOTO, CONTRASENA)
             VALUES (?, ?, ?, ?, ?, ?);
         """;
 
         try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
              PreparedStatement prepStmt = con.prepareStatement(sqlInsertUsuario)) {
             
-            prepStmt.setInt(1, cd);
-            prepStmt.setString(2, nombreApellido);
-            prepStmt.setString(3, fecha);
+            prepStmt.setInt(1, id);
+            prepStmt.setString(2, username);
+            prepStmt.setLong(3, creacioncuenta);
             prepStmt.setString(4, pais);
             prepStmt.setString(5, imagen);
             prepStmt.setString(6, contraseña);
             prepStmt.executeUpdate();
-            System.out.println("Usuario insertado correctamente: " + nombreApellido);
+            System.out.println("Usuario insertado correctamente: " + username);
         } catch (SQLException e) {
             System.err.println("Error al insertar usuario: " + e.getMessage());
         }
     }
 
     // Método para borrar un usuario por CD
-    public void borrarUsuario(int cd) {
-        String sqlDeleteUsuario = "DELETE FROM USUARIOS WHERE CD = ?";
+    public void borrarUsuario(int id) {
+        String sqlDeleteUsuario = "DELETE FROM USUARIO WHERE ID_USUARIO = ?";
 
         try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
              PreparedStatement prepStmt = con.prepareStatement(sqlDeleteUsuario)) {
             
-            prepStmt.setInt(1, cd);
+            prepStmt.setInt(1, id);
             int rowsAffected = prepStmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Usuario con CD " + cd + " eliminado correctamente.");
+                System.out.println("Usuario con ID " + id + " eliminado correctamente.");
             } else {
-                System.out.println("No se encontró un usuario con CD " + cd + ".");
+                System.out.println("No se encontró un usuario con ID " + id + ".");
             }
         } catch (SQLException e) {
             System.err.println("Error al borrar usuario: " + e.getMessage());
