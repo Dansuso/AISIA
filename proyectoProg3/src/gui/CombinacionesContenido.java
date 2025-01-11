@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -33,6 +34,7 @@ public class CombinacionesContenido extends JDialog {
 	        this.setSize(800, 600);
 	        this.setMinimumSize(new Dimension(800,600));
 	        this.setLocationRelativeTo(null);
+	        this.setModal(true);
 	        
 	        GestorDB db = new GestorDB();
 	        
@@ -104,7 +106,7 @@ public class CombinacionesContenido extends JDialog {
 	            panelArbol.revalidate();
 	            panelArbol.repaint();
 	        });
-	        
+	        System.out.println("ABIERTO");
 	        this.add(panelCentral);
 	        this.setVisible(true);
 	    }	
@@ -135,12 +137,14 @@ public class CombinacionesContenido extends JDialog {
 
 	    return combinacionesFinales;
 	}
+	/*
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater( () -> new CombinacionesContenido());
+	}
+	*/
 
 	
-	public static void main(String[] args) {
-		new CombinacionesContenido();
-		
-	}
+
 	
 
 }

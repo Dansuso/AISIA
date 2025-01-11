@@ -296,7 +296,7 @@ public class VentanaFeed extends VentanaBase {
 		
 		JPanel post = new JPanel(new BorderLayout(10, 15));
 		post.setBorder(new EmptyBorder(10, 10, 10, 10));
-		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH::mm");
+		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
 		JLabel usuarioPost = new JLabel(postEscrito.getCreadorPost().getUsername() + " - " + postEscrito.getFechaPost().format(fechaFormato));
 		JTextArea mensajePost = new JTextArea(postEscrito.getContenido());
 		mensajePost.setBorder(new EmptyBorder(10, 10, 10, 10));
