@@ -13,14 +13,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import domain.Usuario;
+
 public class VentanaInfo extends JFrame {
+	
+	protected Usuario usuarioPasado;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaInfo(String tituloPasado, String generoPasado, String calificacionPasado, String distribuidoraPasado) {
+	public VentanaInfo(String tituloPasado, String generoPasado, String calificacionPasado, String distribuidoraPasado, Usuario UsuarioPasado) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Informacion");
 		setSize(640,480);
@@ -34,7 +38,7 @@ public class VentanaInfo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogo();
+				new VentanaCatalogo(usuarioPasado);
 				
 			}
 			

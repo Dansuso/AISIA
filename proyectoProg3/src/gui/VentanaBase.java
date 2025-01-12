@@ -87,7 +87,7 @@ public class VentanaBase extends JFrame {
 		JMenuItem menuItemCatalogo = new JMenuItem("Catalogo");
 		menuItemCatalogo.setMnemonic(KeyEvent.VK_C);
 		menuItemCatalogo.addActionListener(e ->  {
-		SwingUtilities.invokeLater(() -> new VentanaCatalogo());
+		SwingUtilities.invokeLater(() -> new VentanaCatalogo(user));
 		dispose();
 		});
 

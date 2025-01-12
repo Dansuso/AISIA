@@ -297,7 +297,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogo();
+				new VentanaCatalogo(usuarioPasado);
 				
 			}
 			
@@ -319,7 +319,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				Usuario user = new Usuario(3, "johndoe", LocalDate.parse("2024-01-01"), "united-states", "1.jpg", "12345");
+				Usuario user = usuarioPasado;
 				new VentanaUsuario(user);
 				
 			}
@@ -331,6 +331,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				new VentanaFeed(usuarioPasado);
 				//Por completar
 				
 			}

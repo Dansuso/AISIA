@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,12 +30,14 @@ import db.GestorDB;
 import domain.Contenido;
 import domain.Contenido.TIPO;
 import domain.Serie;
+import domain.Usuario;
 
 public class VentanaCatalogo extends JFrame {
 	
 	protected static HashMap<String, ArrayList<Contenido>> mapaContenido;
 	private List<JButton> botonesBusc;
 	private JPanel panelGrid;
+	protected Usuario usuarioPasado;
 	
 	/**
 	 * 
@@ -116,8 +119,9 @@ public class VentanaCatalogo extends JFrame {
 //			
 //			);
 
-	public VentanaCatalogo() {
+	public VentanaCatalogo(Usuario usuarioPasado) {
 		
+		this.usuarioPasado = usuarioPasado;
 		
 		
 		
@@ -236,7 +240,8 @@ public class VentanaCatalogo extends JFrame {
                     new VentanaInfo(contenidoSeleccionado.getTitulo(),
                             contenidoSeleccionado.getGenero().toString(),
                             String.valueOf(contenidoSeleccionado.getCalificacion()),
-                            contenidoSeleccionado.getDistribuidora());  // Llama a la nueva ventana
+                            contenidoSeleccionado.getDistribuidora(),
+                            usuarioPasado);  // Llama a la nueva ventana
                 }
             });
 
@@ -420,7 +425,7 @@ public class VentanaCatalogo extends JFrame {
 	}
 
 	public static void main(String[] args) {
-        new VentanaCatalogo();
+        new VentanaCatalogo(new Usuario(3, "Dani", LocalDate.now(), "España", "jpg", "12345"));
     }
 
 }
