@@ -291,8 +291,8 @@ public class VentanaInicio extends JFrame {
 							//Ventana pruba hasta que creemos la principal
 						
 							
-							VentanaCatalogo catalo = new VentanaCatalogo();
-							catalo.setVisible(true);
+							VentanaFeed f = new VentanaFeed(null);
+							f.setVisible(true);
 							
 						}else {
 							JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
@@ -357,5 +357,7 @@ public class VentanaInicio extends JFrame {
 
 	public static void main(String[] args) {
        new VentanaInicio();
+       System.out.println(mapa);
+
     }
 } 
