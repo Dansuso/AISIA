@@ -28,6 +28,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import db.GestorDB;
+import domain.Usuario;
 
 
 
@@ -275,40 +279,26 @@ public class VentanaInicio extends JFrame {
 			}
 		});;
 		
-	botonAgregar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-				
-					
-					String Correo = txt1.getText();
-					String contra = new String(txt2.getPassword());
-					
-					
-						if(mapa.containsKey(Correo) && mapa.get(Correo).equals(contra)) {
-							dispose();
-							
-							//Ventana pruba hasta que creemos la principal
-						
-							
-							VentanaFeed f = new VentanaFeed(null);
-							f.setVisible(true);
-							
-						}else {
-							JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-						}
-						
-					
-					
-					
-					
-					
-					
-				}
-			});
-         
+		botonAgregar.addActionListener(e -> {
+		    String username = txt1.getText().trim();
+		    String contrasena = String.valueOf(txt2.getPassword()).trim();
+
+		    if (username.isEmpty() || contrasena.isEmpty()) {
+		        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+		        return;
+		    }
+
+		    Usuario user = (Usuario) comprobarUsuarioExiste();
+		    if (user != null) {
+		        SwingUtilities.invokeLater(() -> new VentanaFeed(user).setVisible(true));
+		        dispose();
+		    } else {
+		        JOptionPane.showMessageDialog(this, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
+		    }
+		});
+
         
-        
+    	
         // Añadir panel principal a la ventana
        this.add(mainPanel);
        this.setVisible(true);
@@ -316,11 +306,27 @@ public class VentanaInicio extends JFrame {
     }
     
     
-
+	
    
 
 
  
+	private Object comprobarUsuarioExiste() {
+		// TODO Auto-generated method stub
+		GestorDB db = new GestorDB();
+		String username = txt1.getText();
+		String contrasena = String.valueOf(txt2.getPassword());
+	
+		Usuario u = db.loginUsuario(username, contrasena);
+		return u;
+	}
+
+
+
+
+
+
+
 	//Cargamos los datos para ver luego si esta en la base de tados 
 	public void cargarDatosCSV(){
     	File f = new File("resources/data/usuario.csv");
