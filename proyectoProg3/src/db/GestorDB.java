@@ -525,7 +525,7 @@ public class GestorDB {
 	    return seguidos;
 	}
 	
-	public void anadirFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) {
+	public void anadirFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) throws SQLException {
 		String sqlInsert = null;
 
 	    if (TIPO.PELICULA.equals(tipoContenido)) {
@@ -535,7 +535,6 @@ public class GestorDB {
 	    }
 	    
 	    if (sqlInsert != null) {
-	    	try {
 				PreparedStatement stmt = con.prepareStatement(sqlInsert);
 				stmt.setInt(1, idContenido);
 				stmt.setInt(2, idUsuario);
@@ -544,14 +543,17 @@ public class GestorDB {
 	            if (rowsAffected > 0) {
 	                System.out.println("Contenido añadido a favoritos.");
 	            } else {
-	                System.out.println("El contenido ya estaba en favoritos.");
+	            	throw new SQLException();
 	            }
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    }
+	    	}
+	    
 	}
+	    	
+	    
+	
+			
+	    
+	
 	
 	public void eliminarDeFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) {
 	    String sqlDelete = null;
