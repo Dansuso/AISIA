@@ -459,7 +459,15 @@ public class InitDatabase {
                 {7, "'Parasite' merece todos los premios que recibió. ¡Espectacular!", LocalDate.of(2024, 1, 8), 3}, // Usuario 3
                 {8, "'The Dark Knight' es mi película favorita de superhéroes.", LocalDate.of(2024, 1, 9), 4}, // Usuario 4
                 {9, "La animación en 'Spider-Man: Into the Spider-Verse' es increíble.", LocalDate.of(2024, 1, 10), 5}, // Usuario 5
-                {10, "'Pulp Fiction' tiene los mejores diálogos del cine.", LocalDate.of(2024, 1, 11), 6} // Usuario 6
+                {10, "'Pulp Fiction' tiene los mejores diálogos del cine.", LocalDate.of(2024, 1, 11), 6}, // Usuario 6
+                
+             // Usuario 13: 4 comentarios
+                {11, "La la land es un homenaje moderno a los clásicos musicales, con una historia conmovedora sobre sueños y sacrificios. "
+                		+ "La química entre Emma Stone y Ryan Gosling brilla tanto como su mágica banda sonora.", LocalDate.of(2024, 1, 2), 13},
+                {12, "El juego del calamar es impactante y brutal, aborda temas como desigualdad y desesperación humana en un contexto de juegos mortales. "
+                		+ "Cada episodio aumenta la tensión con giros inesperados y un mensaje social profundo.", LocalDate.of(2024, 1, 3), 13},
+                {13, "Peaky Blinders es un drama oscuro y elegante lleno de intrigas familiares y crímenes. La actuación de Cillian"
+                		+ " Murphy como Tommy Shelby es magistral, acompañado por una banda sonora moderna que sorprende gratamente.", LocalDate.of(2024, 1, 4), 13},
             };
 
         try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
@@ -529,6 +537,23 @@ public class InitDatabase {
 			prepStmt.setInt(1, 45);
 			prepStmt.executeUpdate();
 			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 23);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 24);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 34);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 49);
+			prepStmt.executeUpdate();
+			
 			con.close();
 
 		} catch (SQLException e) {
@@ -587,6 +612,14 @@ public class InitDatabase {
 			
 			prepStmt.setInt(2, 7);
 			prepStmt.setInt(1, 45);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 16);
 			prepStmt.executeUpdate();
 			
 			con.close();
@@ -653,7 +686,6 @@ public class InitDatabase {
 			prepStmt.setInt(1, 1);
 			prepStmt.executeUpdate();
 
-
 			prepStmt.setInt(2, 6);
 			prepStmt.setInt(1, 7);
 			prepStmt.executeUpdate();
@@ -662,10 +694,52 @@ public class InitDatabase {
 			prepStmt.setInt(1, 9);
 			prepStmt.executeUpdate();
 			
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 1);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 2);
+			prepStmt.executeUpdate();
+
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 3);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 4);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 5);
+			prepStmt.executeUpdate();
+
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 6);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 7);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 8);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 13);
+			prepStmt.setInt(1, 9);
+			prepStmt.executeUpdate();
+			
+			prepStmt.setInt(2, 9);
+			prepStmt.setInt(1, 13);
+			prepStmt.executeUpdate();
+			
 			con.close();
 
 		} catch (SQLException e) {
-			System.err.println("Error al insertar las peliculas favoritas! " + e.getMessage());
+			System.err.println("Error al insertar laos seguidores/seguidos! " + e.getMessage());
 			e.printStackTrace();
 		}
 

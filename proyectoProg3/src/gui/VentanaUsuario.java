@@ -489,7 +489,7 @@ public class VentanaUsuario extends JDialog{
 	
 	public static void main(String[] args) {
 		GestorDB bd = new GestorDB();
-		new VentanaUsuario(bd.obtenerUsuarios().get(0));
+		new VentanaUsuario(bd.obtenerUsuarios().get(12));
 	}
 	
 }

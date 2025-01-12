@@ -71,7 +71,7 @@ id,tipo,titulo,genero,calificacion,distribuidora,edad_recomendada,fecha_lanzamie
 20,Serie,The Boys,ACCION,8.7,Amazon,18,2019-07-26,,,,3,24,false
 21,Serie,Narcos,DRAMA,8.8,Netflix,18,2015-08-28,,,,3,30,true
 22,Serie,Silicon Valley,COMEDIA,8.5,HBO,16,2014-04-06,,,,6,53,true
-23,Serie,El Juego del Calamar,DRAMA,8.0,Netflix,18,2021-09-17,,,,1,9,true
+23,Serie,Squid Game,DRAMA,8.0,Netflix,18,2021-09-17,,,,1,9,true
 24,Serie,Peaky Blinders,DRAMA,8.8,Amazon,18,2013-09-12,,,,6,36,false
 25,Serie,Westworld,AVENTURA,8.6,HBO,18,2016-10-02,,,,4,36,true
 26,Serie,This Is Us,DRAMA,8.7,Universal,12,2016-09-20,,,,6,106,true
