@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.w3c.dom.UserDataHandler;
+
 import domain.Contenido;
 import domain.Pelicula;
 import domain.Post;
@@ -525,6 +527,25 @@ public class GestorDB {
 	    return seguidos;
 	}
 	
+	
+public boolean estaSiguiendo(Usuario usuarioSeguidor, Usuario usuarioSeguido) {
+	String sqlComprobarSeguidos = "SELECT * FROM SEGUIDORES WHERE ID_SEGUIDOR = ? AND ID_SEGUIDO = ?";
+	try(PreparedStatement prepStmt = con.prepareStatement(sqlComprobarSeguidos)){
+		prepStmt.setInt(1, usuarioSeguidor.getCodigo());
+		prepStmt.setInt(2, usuarioSeguido.getCodigo());
+		ResultSet rsSeguidos = prepStmt.executeQuery();
+		//Si devuelve una fila significa que si que sigue a esa persona. si no, no.
+		while(rsSeguidos.next()) {
+			return true;
+		}		
+	} catch (SQLException e) {
+		System.err.println("Error al comprobar seguidos");
+		e.printStackTrace();
+	}
+	return false;
+
+}
+	
 	public void anadirFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) throws SQLException {
 		String sqlInsert = null;
 
@@ -553,7 +574,7 @@ public class GestorDB {
 	
 			
 	    
-	
+
 	
 	public void eliminarDeFavoritos(int idUsuario, int idContenido, Contenido.TIPO tipoContenido) {
 	    String sqlDelete = null;
