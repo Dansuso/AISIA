@@ -46,6 +46,8 @@ import domain.Contenido;
 import domain.Usuario;
 import domain.Contenido.Genero;
 import domain.Contenido.TIPO;
+import domain.Pelicula;
+import domain.Serie;
 import utils.HttpRequestAPI;
 
 public class VentanaCatalogoVistaAlterna extends JFrame {
@@ -203,6 +205,29 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		panelTab.add("Datos", panelContenido);
 		panelTab.add("Favoritos", panelFavoritos);
 		this.add(panelTab, BorderLayout.CENTER);
+		
+		List<Serie> series = new ArrayList<Serie>();
+        List<Pelicula> peliculas = new ArrayList<Pelicula>();
+        peliculas = db.obtenerPelisFav(usuarioPasado.getCodigo());
+        series = db.obtenerSeriesFav(usuarioPasado.getCodigo());
+        
+        for (Pelicula pelicula : peliculas) {
+			modeloTabla.addRow(new Object[] {
+                            pelicula.getTitulo(),
+                            pelicula.getGenero(),
+                            pelicula.getCalificacion(),
+                            pelicula.getDistribuidora()
+                    });
+		}
+        
+        for (Serie serie : series) {
+			modeloTabla.addRow(new Object[] {
+                            serie.getTitulo(),
+                            serie.getGenero(),
+                            serie.getCalificacion(),
+                            serie.getDistribuidora()
+                    });
+		}
 		
 		
 		
