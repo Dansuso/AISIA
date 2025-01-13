@@ -36,3 +36,9 @@ dic 31, 2024 5:04:02 P. M. utils.HttpRequestAPI hacerPeticion
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
 dic 31, 2024 5:05:37 P. M. utils.HttpRequestAPI hacerPeticion
 INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+ene 13, 2025 10:52:17 A. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+ene 13, 2025 10:52:17 A. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo
+ene 13, 2025 10:53:48 A. M. utils.HttpRequestAPI hacerPeticion
+INFORMACIÓN: Se ha hecho una petición a BoxOfficeMojo

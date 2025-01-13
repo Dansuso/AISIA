@@ -355,7 +355,6 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				Usuario user = usuarioPasado;
 				new VentanaUsuario(user);
 				

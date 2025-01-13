@@ -63,12 +63,6 @@ public class VentanaInfo extends JFrame {
         panelGenero.add(genero);
         panelGenero.add(infoGenero);
         
-        JPanel panelDuracion = new JPanel();
-        JLabel duracion = new JLabel("Duracion: ");
-        JLabel infoDuracion = new JLabel("DatosDuracion");
-        panelDuracion.setLayout(new FlowLayout());
-        panelDuracion.add(duracion);
-        panelDuracion.add(infoDuracion);
         
         JPanel panelCalificacion = new JPanel();
         JLabel calificacion = new JLabel("Calificacion: ");
@@ -96,7 +90,6 @@ public class VentanaInfo extends JFrame {
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelPrincipal.add(panelTitulo);
         panelPrincipal.add(panelGenero);
-        panelPrincipal.add(panelDuracion);
         panelPrincipal.add(panelCalificacion);
         panelPrincipal.add(panelDistribuidora);
         panelPrincipal.add(panelPremios);
