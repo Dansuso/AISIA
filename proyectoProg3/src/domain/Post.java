@@ -8,6 +8,8 @@ import java.util.Objects;
  */
 public class Post {
 	
+
+
 	private int codigoPost;
 	private String contenido;
 	private LocalDateTime fechaPost;
@@ -22,6 +24,10 @@ public class Post {
 		this.contenido = contenido;
 		this.fechaPost = fechaPost;
 		this.creadorPost = creadorPost;
+	}
+	
+	public void setCodigoPost(int codigoPost) {
+		this.codigoPost = codigoPost;
 	}
 	
 	public Usuario getCreadorPost() {

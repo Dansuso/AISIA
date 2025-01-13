@@ -237,8 +237,8 @@ public class VentanaFeed extends VentanaBase {
 		    if (!postTextArea.getText().trim().isEmpty()) {
 		    	 
 		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario);
-				db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
-
+				int idAuto = db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
+				p.setCodigoPost(idAuto);
 		        JPanel p1 = crearPost(p);
 		        if (panelPosts.getComponentCount() >= 10) {
 		            panelPosts.remove(0);

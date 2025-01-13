@@ -122,18 +122,24 @@ public class GestorDB {
 	}
 	
 	
-	public void insertarPost(String contenido, long fechaPost, int idCreadorPost) {
+	public int insertarPost(String contenido, long fechaPost, int idCreadorPost) {
 		String sqlInsertarPost = "INSERT INTO POST (CONTENIDO,FECHA_POST,ID_USUARIO_CREADOR) VALUES(?,?,?)";
 		try(PreparedStatement prepStmt = con.prepareStatement(sqlInsertarPost)){
 			prepStmt.setString(1,contenido);
 			prepStmt.setLong(2, fechaPost); //Es un unix timestamp
 			prepStmt.setInt(3, idCreadorPost);
 			prepStmt.executeUpdate();
+			//Esto lo que hace es devolver el ID que se genera con el AUTOINCREMENT
+			ResultSet rsClave = prepStmt.getGeneratedKeys();
+			while(rsClave.next()) {
+				return rsClave.getInt(1);
+			}
 			prepStmt.close();
 		} catch (SQLException e) {
 			System.err.println("Error al insertar Post ! " + e.getMessage());
 			e.printStackTrace();
 		}
+		return -1;
 	}
 	
 	/**
