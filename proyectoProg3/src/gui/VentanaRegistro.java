@@ -33,6 +33,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
+import db.GestorDB;
+
 
 
 public class VentanaRegistro extends JFrame{
@@ -43,12 +45,14 @@ public class VentanaRegistro extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private VentanaTablaUsuarios ventanaTabla;
 	private JFormattedTextField txtFecha;
+	private GestorDB gestorBD;
 	
 	public VentanaRegistro() {
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Ventana Inicio");
 		setSize(640,450);
+		gestorBD = new GestorDB(); 
 		
 		// Panel para la imagen de fondo
         JPanel mainPanel = new JPanel(new GridBagLayout()) {
@@ -282,127 +286,109 @@ public class VentanaRegistro extends JFrame{
 					}
 				});
 		 
-		 
-		 
 		 botonAgregar.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
+			        // Validar los datos del formulario
 			        String fecha = txtFecha.getText();
-
-			        // Verificar si el campo de fecha está completamente lleno
 			        if (fecha.contains("_")) {
-			            JOptionPane.showMessageDialog(null, "Por favor, ingresa una fecha válida en el formato dd/MM/yyyy.");
+			            JOptionPane.showMessageDialog(null, "Por favor, ingresa una fecha válida en el formato yyyy-MM-dd.");
 			            return;
 			        }
 
 			        if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
 			            String nombre = txt3.getText();
 			            String apellidos = txt4.getText();
-			            String nombreCompleto = nombre + apellidos; // Concatenar nombre y apellidos
-			            String fechaNacimiento = fecha;
+			            String username = nombre + " " + apellidos;
+
+			            // Verificar si el nombre de usuario ya existe
+			            while (gestorBD.nombreCompletoExiste(username)) {
+			                JOptionPane.showMessageDialog(null, "El nombre completo ya está registrado. Por favor, ingresa otro.");
+			                return; 
+			            }
+
+			            // Continuar con el registro si el nombre no existe
+			            //String fechaNacimiento = fecha;
 			            String pais = comboBoxPais.getSelectedItem().toString();
 			            String contraseña = new String(txt2.getPassword());
-			            // Verificar si el nombre completo ya existe
 			            
-			            if (nombreCompletoExiste(nombreCompleto)) {
-			                JOptionPane.showMessageDialog(null, "El nombre completo ya está registrado. Por favor, ingresa otro.");
-			                return; // Salir sin agregar el usuario
-			            }
-
-			            // Leer el último código del CSV para determinar el siguiente
-			            int nuevoCodigo = obtenerUltimoCodigo() + 1;
+			            // Obtener el próximo ID de usuario
+			            int nuevoCodigo = gestorBD.obtenerUltimoIdUsuario() + 1;
 
 			            // Ruta de la imagen por defecto
-			            String foto = "defautUsuario.png";
+			            String imagen = "defautUsuario.png";
 
-			            // Datos del nuevo usuario
-			            String[] datosUsuario = {
-			                String.valueOf(nuevoCodigo), // Código
-			                nombreCompleto,              // Nombre completo
-			                fechaNacimiento,             // Fecha de nacimiento
-			                pais,                        // País
-			                foto,                        // Foto predeterminada
-			                contraseña                   // Contraseña
-			            };
+			            // Registrar el usuario
+			            gestorBD.insertarUsuario(nuevoCodigo, username, fecha, pais, imagen, contraseña);
 
-			            // Agregar el usuario al CSV
-			           
-
-			            // Verificar si la ventana de la tabla ya está creada
-			            if (ventanaTabla == null) {
-			                ventanaTabla = new VentanaTablaUsuarios(datosUsuario);  // Si no existe, crearla
-			            }
-			            
-			            // Actualizar la tabla con el nuevo usuario
-			            
-
-			            // Hacer visible la ventana de la tabla
-			            ventanaTabla.setVisible(true);
-
-			            // Cerrar la ventana actual de registro
-			            dispose();
+			            JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+			            VentanaFeed feed = new VentanaFeed(null);
+			            feed.setVisible(true);
+			            dispose(); // Cierra la ventana de registro
 			        } else {
 			            JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
 			        }
 			    }
+			});
+
 		
 
-			    private boolean nombreCompletoExiste(String nombreCompleto) {
-			        File archivoCSV = new File("resources/data/usuario.csv");
-			        
-			        // Verificar si el archivo existe
-			        if (!archivoCSV.exists()) {
-			            JOptionPane.showMessageDialog(null, "El archivo CSV no existe en la ruta especificada.");
-			            return false;
-			        }
-
-			        try (Scanner sc = new Scanner(archivoCSV)) {
-			            while (sc.hasNextLine()) {
-			                String linea = sc.nextLine().trim(); // Eliminar espacios en blanco al inicio y final
-			                if (linea.isEmpty()) {
-			                    continue; // Saltar las líneas vacías
-			                }
-			                String[] campos = linea.split(";");
-			                
-			                // Asegurarse de que la línea tenga suficientes campos
-			                if (campos.length > 1 && campos[1].equalsIgnoreCase(nombreCompleto)) {
-			                    return true; // Si el nombre completo ya existe
-			                }
-			            }
-			        } catch (IOException e) {
-			            e.printStackTrace();
-			            JOptionPane.showMessageDialog(null, "Error al leer el archivo CSV: " + e.getMessage());
-			        }
-			        return false; // Si no se encontró el nombre completo
-			    }
-
-
-				private int obtenerUltimoCodigo() {
-			        int ultimoCodigo = 0;
-			        File file = new File("resources/data/usuario.csv");
-			        try (Scanner scanner = new Scanner(file)) {
-			            while (scanner.hasNextLine()) {
-			                String linea = scanner.nextLine();
-			                String[] campos = linea.split(";");
-			                if (campos.length > 0 && !campos[0].isEmpty()) {
-			                    try {
-			                        int codigo = Integer.parseInt(campos[0]);
-			                        if (codigo > ultimoCodigo) {
-			                            ultimoCodigo = codigo;
-			                        }
-			                    } catch (NumberFormatException ex) {
-			                        // Manejo del caso donde no se pueda convertir el código
-			                        System.err.println("Error al parsear el código: " + campos[0]);
-			                    }
-			                }
-			            }
-			        } catch (IOException ex) {
-			            ex.printStackTrace();
-			        }
-			        return ultimoCodigo;
-			    }
-
-			});
+//			    private boolean nombreCompletoExiste(String nombreCompleto) {
+//			        File archivoCSV = new File("resources/data/usuario.csv");
+//			        
+//			        // Verificar si el archivo existe
+//			        if (!archivoCSV.exists()) {
+//			            JOptionPane.showMessageDialog(null, "El archivo CSV no existe en la ruta especificada.");
+//			            return false;
+//			        }
+//
+//			        try (Scanner sc = new Scanner(archivoCSV)) {
+//			            while (sc.hasNextLine()) {
+//			                String linea = sc.nextLine().trim(); // Eliminar espacios en blanco al inicio y final
+//			                if (linea.isEmpty()) {
+//			                    continue; // Saltar las líneas vacías
+//			                }
+//			                String[] campos = linea.split(";");
+//			                
+//			                // Asegurarse de que la línea tenga suficientes campos
+//			                if (campos.length > 1 && campos[1].equalsIgnoreCase(nombreCompleto)) {
+//			                    return true; // Si el nombre completo ya existe
+//			                }
+//			            }
+//			        } catch (IOException e) {
+//			            e.printStackTrace();
+//			            JOptionPane.showMessageDialog(null, "Error al leer el archivo CSV: " + e.getMessage());
+//			        }
+//			        return false; // Si no se encontró el nombre completo
+//			    }
+//
+//
+//				private int obtenerUltimoCodigo() {
+//			        int ultimoCodigo = 0;
+//			        File file = new File("resources/data/usuario.csv");
+//			        try (Scanner scanner = new Scanner(file)) {
+//			            while (scanner.hasNextLine()) {
+//			                String linea = scanner.nextLine();
+//			                String[] campos = linea.split(";");
+//			                if (campos.length > 0 && !campos[0].isEmpty()) {
+//			                    try {
+//			                        int codigo = Integer.parseInt(campos[0]);
+//			                        if (codigo > ultimoCodigo) {
+//			                            ultimoCodigo = codigo;
+//			                        }
+//			                    } catch (NumberFormatException ex) {
+//			                        // Manejo del caso donde no se pueda convertir el código
+//			                        System.err.println("Error al parsear el código: " + campos[0]);
+//			                    }
+//			                }
+//			            }
+//			        } catch (IOException ex) {
+//			            ex.printStackTrace();
+//			        }
+//			        return ultimoCodigo;
+//			    }
+//	
+			
 
 			
 //		 //Si tocas el boton 1 muestra la contraseña que hay hay en el txt2 
@@ -460,6 +446,7 @@ public class VentanaRegistro extends JFrame{
 	        setContentPane(mainPanel);
 	        setLocationRelativeTo(null); // Centrar la ventana
 	    	setVisible(true);
+	    	
 	        
 		
 	}

@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -322,7 +323,7 @@ public class GestorDB {
 	}
 
     // Método para insertar un nuevo usuario
-    public void insertarUsuario(int id, String username, long creacioncuenta, String pais, String imagen, String contraseña) {
+    public void insertarUsuario(int id, String username, String fecha, String pais, String imagen, String contraseña) {
         String sqlInsertUsuario = """
             INSERT INTO USUARIO (ID_USUARIO, USERNAME, CREACIONCUENTA, PAIS, FOTO, CONTRASENA)
             VALUES (?, ?, ?, ?, ?, ?);
@@ -333,7 +334,7 @@ public class GestorDB {
             
             prepStmt.setInt(1, id);
             prepStmt.setString(2, username);
-            prepStmt.setLong(3, creacioncuenta);
+            prepStmt.setString(3, fecha);
             prepStmt.setString(4, pais);
             prepStmt.setString(5, imagen);
             prepStmt.setString(6, contraseña);
@@ -608,6 +609,35 @@ public boolean estaSiguiendo(Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 	        }
 	    }
 	}
+
+	public int obtenerUltimoIdUsuario() {
+	    String sql = "SELECT MAX(ID_USUARIO) AS max_id FROM USUARIO;";
+	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	         Statement stmt = con.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        if (rs.next()) {
+	            return rs.getInt("max_id");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener el último ID de usuario: " + e.getMessage());
+	    }
+	    return 0; // Devuelve 0 si no hay usuarios
+	}
+	
+	   public boolean nombreCompletoExiste(String username) {
+	        String sql = "SELECT COUNT(*) AS count FROM USUARIO WHERE USERNAME = ?;";
+	        try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	             PreparedStatement prepStmt = con.prepareStatement(sql)) {
+	            prepStmt.setString(1, username);
+	            ResultSet rs = prepStmt.executeQuery();
+	            if (rs.next() && rs.getInt("count") > 0) {
+	                return true; // El usuario ya existe
+	            }
+	        } catch (SQLException e) {
+	            System.err.println("Error al verificar nombre completo: " + e.getMessage());
+	        }
+	        return false;
+	    }
 	
 
 }
