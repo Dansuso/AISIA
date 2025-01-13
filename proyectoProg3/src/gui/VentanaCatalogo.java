@@ -29,7 +29,6 @@ import javax.swing.JTextField;
 import db.GestorDB;
 import domain.Contenido;
 import domain.Contenido.TIPO;
-import domain.Serie;
 import domain.Usuario;
 
 public class VentanaCatalogo extends JFrame {
@@ -254,7 +253,7 @@ public class VentanaCatalogo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogoVistaAlterna(null);
+				new VentanaCatalogoVistaAlterna(usuarioPasado);
 				
 			}
         	

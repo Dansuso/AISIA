@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
     protected DefaultTableModel modeloTabla;
     protected Usuario usuarioPasado;
 
-	public VentanaCatalogoVistaAlterna(Usuario UsuarioPasado) {
+	public VentanaCatalogoVistaAlterna(Usuario usuarioPasado) {
 		
 		this.usuarioPasado = usuarioPasado;
 		
@@ -266,16 +267,27 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 				
 				Contenido contenidoSeleccionado = listaContenidos.getSelectedValue();
                 if (contenidoSeleccionado != null) {
-                	JOptionPane.showConfirmDialog(null, "Favorito anadido", "Favoritos", JOptionPane.PLAIN_MESSAGE);
-                    // Añadir contenido seleccionado a la tabla
-                    modeloTabla.addRow(new Object[] {
-                            contenidoSeleccionado.getTitulo(),
-                            contenidoSeleccionado.getGenero(),
-                            contenidoSeleccionado.getCalificacion(),
-                            contenidoSeleccionado.getDistribuidora()
-                    });
-                    
-                    db.anadirFavoritos(usuarioPasado.getCodigo(), listaContenidos.getSelectedValue().getId(), listaContenidos.getSelectedValue().getTipo());
+                   
+                    try {
+						db.anadirFavoritos(usuarioPasado.getCodigo(), listaContenidos.getSelectedValue().getId(), listaContenidos.getSelectedValue().getTipo());
+						JOptionPane.showConfirmDialog(null, "Favorito anadido", "Favoritos", JOptionPane.PLAIN_MESSAGE);
+	                    // Añadir contenido seleccionado a la tabla
+	                    modeloTabla.addRow(new Object[] {
+	                            contenidoSeleccionado.getTitulo(),
+	                            contenidoSeleccionado.getGenero(),
+	                            contenidoSeleccionado.getCalificacion(),
+	                            contenidoSeleccionado.getDistribuidora()
+	                    });
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						 JOptionPane.showMessageDialog(
+		                            VentanaCatalogoVistaAlterna.this,
+		                            "¡Este contenido ya esta en favoritos!",
+		                            "Favorito previamente añadido",
+		                            JOptionPane.ERROR_MESSAGE
+		                        );
+		                    
+					}
                 }
 				
 			}

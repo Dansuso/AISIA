@@ -237,8 +237,8 @@ public class VentanaFeed extends VentanaBase {
 		    if (!postTextArea.getText().trim().isEmpty()) {
 		    	 
 		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario);
-				db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
-
+				int idAuto = db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
+				p.setCodigoPost(idAuto);
 		        JPanel p1 = crearPost(p);
 		        if (panelPosts.getComponentCount() >= 10) {
 		            panelPosts.remove(0);
@@ -608,8 +608,10 @@ public class VentanaFeed extends VentanaBase {
 			Document doc = Jsoup.connect("https://www.boxofficemojo.com/year/world/" + ano).get();
 			//FUENTE-EXTERNA
 			//URL: https://stackoverflow.com/questions/15758685/how-to-write-logs-in-text-file-when-using-java-util-logging-logger
-			//ADAPTADO : Añadido cerrado del fichero, si no se cierra no se guarda bien
-			FileHandler fh = new FileHandler("log/logBoxOfficeMojo.txt",true);
+			//ADAPTADO : Añadido cerrado del fichero, si no se cierra no se guarda bien. Añadido parametros adicionales.
+			//1MB como mucho, rotacion de 3 archivos
+			FileHandler fh = new FileHandler("log/boxoOfficeMojo.txt", 1000000, 3, true);
+			
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);

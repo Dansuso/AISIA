@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
-
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -40,9 +40,15 @@ import domain.Usuario;
 public class VentanaInicio extends JFrame {
     
 
-	private JPasswordField txt2;
-	private JTextField txt1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPasswordField contrasenaField;
+	private JTextField usernameField;
 	protected static HashMap<String, String> mapa;
+    private static final Logger LOGGER = Logger.getLogger(VentanaInicio.class.getName());
+
 
     public VentanaInicio() {
         setTitle("Iniciar Sesion");
@@ -50,11 +56,8 @@ public class VentanaInicio extends JFrame {
         setSize(400, 300);
         this.setResizable(false);
         this.setLocationRelativeTo(null); //Que aparezca en el MEDIO
-        
-      //Inicializamos el mapa
-		 mapa = new HashMap<>();
-	     cargarDatosCSV();
-        
+    
+
         
         //MENU
         
@@ -129,19 +132,21 @@ public class VentanaInicio extends JFrame {
         nombreUsuarioPanel.setOpaque(false); // Transparente para la imagen de fondo
         JLabel usernameLabel = new JLabel("Username: ");
         usernameLabel.setForeground(Color.WHITE); // Cambiar el color del texto a blanco
+        
         nombreUsuarioPanel.add(usernameLabel);
-        txt1 = new JTextField(15);
-        nombreUsuarioPanel.add(txt1);
+        usernameField = new JTextField(15);
+        
+        nombreUsuarioPanel.add(usernameField);
         centerPanel.add(nombreUsuarioPanel);
         
         //Contrasena 
         JPanel panelContrasena = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelContrasena.setOpaque(false); // Transparente para la imagen de fondo
-        JLabel passwordLabel = new JLabel("Password:  ");
+        JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setForeground(Color.WHITE); // Cambiar el color del texto a blanco
         panelContrasena.add(passwordLabel);
-        txt2 = new JPasswordField(15);
-        panelContrasena.add(txt2);
+        contrasenaField = new JPasswordField(15);
+        panelContrasena.add(contrasenaField);
         
         
      
@@ -151,6 +156,10 @@ public class VentanaInicio extends JFrame {
         JButton ocultar = new JButton(foto1);
        
         
+        /*
+         * Rompe  la estructura y no quedan alineados los labels.
+         * Si se encuentra solucion, se puede retomar pero es importante
+         * que visualmente quede bien
      	
      	//Le quita el borde a las imagenes
      	 // Quitar el borde del botón
@@ -163,7 +172,7 @@ public class VentanaInicio extends JFrame {
      	ocultar.setFocusPainted(false);
 
         panelContrasena.add(ocultar);
-
+         */
         centerPanel.add(panelContrasena);
       
     
@@ -253,22 +262,22 @@ public class VentanaInicio extends JFrame {
     	
     	
     	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
-    	char valor = txt2.getEchoChar();
+    	char valor = contrasenaField.getEchoChar();
     	ocultar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Comprobamos en que modo de codificacion esta para cambiarlo de un a otro
 				//Ponemos la foto en depende de que modo este el formato del txt
-				if(txt2.echoCharIsSet()) {
+				if(contrasenaField.echoCharIsSet()) {
 					//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
-					 txt2.setEchoChar((char) 0);
+					 contrasenaField.setEchoChar((char) 0);
 					 ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotnover.png");
 					 ocultar.setIcon(foto1);
 					
 				}else {
 					//Y aqui al reves 
-					txt2.setEchoChar(valor);
+					contrasenaField.setEchoChar(valor);
 					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotover.png");
 					ocultar.setIcon(foto2);
 				}
@@ -278,22 +287,38 @@ public class VentanaInicio extends JFrame {
 				
 			}
 		});;
-		
+		/**
+		 * ACCION DE INICIAR SESION
+		 */
 		botonAgregar.addActionListener(e -> {
-		    String username = txt1.getText().trim();
-		    String contrasena = String.valueOf(txt2.getPassword()).trim();
+		    String username = usernameField.getText().trim();
+		    String contrasena = String.valueOf(contrasenaField.getPassword()).trim();
 
 		    if (username.isEmpty() || contrasena.isEmpty()) {
 		        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
 		        return;
 		    }
 
-		    Usuario user = (Usuario) comprobarUsuarioExiste();
+		    Usuario user = comprobarUsuarioExiste();
 		    if (user != null) {
+		    	
+		    	FileHandler fh;
+				try {
+					fh = new FileHandler("log/logUsuarios.txt", 1000000, 3, true);
+					LOGGER.addHandler(fh);
+					SimpleFormatter formatter = new SimpleFormatter();
+					fh.setFormatter(formatter);
+					LOGGER.setUseParentHandlers(false);
+					LOGGER.info("Usuario logeado " + user.getUsername());
+					fh.close();
+				} catch (SecurityException | IOException ex) {
+					System.err.println("Ha habido algun problema con la creacion de Log del Uusuario " + ex.getMessage());
+				}
+				
 		        SwingUtilities.invokeLater(() -> new VentanaFeed(user).setVisible(true));
 		        dispose();
 		    } else {
-		        JOptionPane.showMessageDialog(this, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog(this, "Error al iniciar sesion. Revisa tus credenciales o registrate!.", "Error", JOptionPane.ERROR_MESSAGE);
 		    }
 		});
 
@@ -304,18 +329,15 @@ public class VentanaInicio extends JFrame {
        this.setVisible(true);
         
     }
-    
-    
-	
-   
-
-
- 
-	private Object comprobarUsuarioExiste() {
+ /*
+  * Funcion que devuelve un usuario en el caso de que dicho usuario exista, o null si no existe
+  * De esta forma se comprueba si el usuario que se ha introducido esta registrado.
+  */
+	private Usuario comprobarUsuarioExiste() {
 		// TODO Auto-generated method stub
 		GestorDB db = new GestorDB();
-		String username = txt1.getText();
-		String contrasena = String.valueOf(txt2.getPassword());
+		String username = usernameField.getText();
+		String contrasena = String.valueOf(contrasenaField.getPassword());
 	
 		Usuario u = db.loginUsuario(username, contrasena);
 		return u;
@@ -325,8 +347,11 @@ public class VentanaInicio extends JFrame {
 
 
 
+/*
+ * @DEPRECIATED : YA NO SE USAN CSVS
+ */
 
-
+	/*
 	//Cargamos los datos para ver luego si esta en la base de tados 
 	public void cargarDatosCSV(){
     	File f = new File("resources/data/usuario.csv");
@@ -356,7 +381,7 @@ public class VentanaInicio extends JFrame {
     	
     }
 
-
+*/
 
     
 
