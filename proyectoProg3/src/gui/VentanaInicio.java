@@ -9,7 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,6 +47,8 @@ public class VentanaInicio extends JFrame {
 	private JPasswordField contrasenaField;
 	private JTextField usernameField;
 	protected static HashMap<String, String> mapa;
+    private static final Logger LOGGER = Logger.getLogger(VentanaInicio.class.getName());
+
 
     public VentanaInicio() {
         setTitle("Iniciar Sesion");
@@ -294,6 +301,20 @@ public class VentanaInicio extends JFrame {
 
 		    Usuario user = comprobarUsuarioExiste();
 		    if (user != null) {
+		    	
+		    	FileHandler fh;
+				try {
+					fh = new FileHandler("log/logUsuarios.txt", 1000000, 3, true);
+					LOGGER.addHandler(fh);
+					SimpleFormatter formatter = new SimpleFormatter();
+					fh.setFormatter(formatter);
+					LOGGER.setUseParentHandlers(false);
+					LOGGER.info("Usuario logeado " + user.getUsername());
+					fh.close();
+				} catch (SecurityException | IOException ex) {
+					System.err.println("Ha habido algun problema con la creacion de Log del Uusuario " + ex.getMessage());
+				}
+				
 		        SwingUtilities.invokeLater(() -> new VentanaFeed(user).setVisible(true));
 		        dispose();
 		    } else {

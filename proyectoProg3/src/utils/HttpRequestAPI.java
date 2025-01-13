@@ -39,7 +39,6 @@ public class HttpRequestAPI {
 			fh.close();
 		} catch (SecurityException | IOException e) {
 			System.err.println("Ha habido algun problema con la creacion de Logs de OMBDAPI " + e.getMessage());
-			e.printStackTrace();
 		}
 		
 		// RESPUESTA
