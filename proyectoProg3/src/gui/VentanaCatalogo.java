@@ -131,7 +131,7 @@ public class VentanaCatalogo extends JFrame {
 		this.setLocationRelativeTo(null);
 	
 		
-		mapaContenido = new HashMap<>();
+		
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -213,6 +213,8 @@ public class VentanaCatalogo extends JFrame {
 		//Sacamos el contenido
 		GestorDB db = new GestorDB();
 		List<Contenido> contenidos = db.obtenerContenidos();
+		
+		mapaContenido = crearMapa(new ArrayList<>(db.obtenerContenidos()), new HashMap<>());
 		
 
 		panelGrid = new JPanel();
