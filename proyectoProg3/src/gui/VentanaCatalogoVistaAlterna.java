@@ -526,6 +526,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		    }
 		});
 		
+		//Ayuda de la ia para completar este metodo recursivo
 		JButton botonPromedioFavoritos = new JButton("Promedio Favoritos");
 		botonPromedioFavoritos.addActionListener(new ActionListener() {
 		    @Override
@@ -658,6 +659,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 	    }
 	}
 	
+	//Ayuda de la ia para pensar este metodo recursivo
 	private double calcularPromedioRecursivo(List<Contenido> contenidos, int index, double suma) {
 	    // Caso base: si hemos recorrido toda la lista
 	    if (index == contenidos.size()) {

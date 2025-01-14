@@ -411,12 +411,13 @@ public class VentanaCatalogo extends JFrame {
 	}
 	
 	//Funcion para filtar los titulos de los contenidos para el listener del buscador
+	//Ayuda de la IA para completar este metodo
 	protected void filtrarElementos(String texto) {
 		panelGrid.removeAll();  // Limpiar el panel
 
         for (JButton boton : botonesBusc) {
             if (boton.getText().toLowerCase().contains(texto.toLowerCase())) {
-                panelGrid.add(boton);  // Añadir solo los botones que coincidan con la búsqueda
+                panelGrid.add(boton);
             }
             
         }
