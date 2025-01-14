@@ -176,6 +176,11 @@ public class VentanaCatalogo extends JFrame {
 		
 		menuCatalogo.addSeparator();
 		
+		JMenuItem feed = new JMenuItem("Feed");
+		menuCatalogo.add(feed);
+		
+		menuCatalogo.addSeparator();
+		
 		JMenuItem volver = new JMenuItem("Cerrar sesion");
 		menuCatalogo.add(volver);
 		
@@ -312,6 +317,17 @@ public class VentanaCatalogo extends JFrame {
 				}
 				panelGrid.revalidate();
 		        panelGrid.repaint();
+				
+			}
+        	
+        });
+        
+        feed.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new VentanaFeed(usuarioPasado);
 				
 			}
         	
