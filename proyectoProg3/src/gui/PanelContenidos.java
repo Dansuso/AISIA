@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import domain.Contenido;
+import domain.Contenido.TIPO;
 
 
 public class PanelContenidos extends JPanel {
@@ -40,9 +41,9 @@ public class PanelContenidos extends JPanel {
     	textoNota.setText(String.valueOf(c.getCalificacion()));
     	textoDistribuidora.setText(c.getDistribuidora());
     	
-    	if ("Peli".equals(c.getTipo())) {
+    	if (TIPO.PELICULA.equals(c.getTipo())) {
             radioButtonPeli.setSelected(true);
-        } else if ("Serie".equals(c.getTipo())) {
+        } else if (TIPO.SERIE.equals(c.getTipo())) {
             radioButtonSerie.setSelected(true);
         }
     }
