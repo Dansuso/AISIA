@@ -638,6 +638,60 @@ public boolean estaSiguiendo(Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 	        }
 	        return false;
 	    }
+	   
+	   
+	    // Método para abrir la conexión
+	    public void abrirConexion() {
+	        try {
+	            // Establecer la conexión con la base de datos
+	            String url = "jdbc:/resources/db/asia_database.db"; // Ajusta la URL
+	            String usuario = "miUsuario";  // Tu usuario de la base de datos
+	            String contrasena = "miContraseña";  // Tu contraseña de la base de datos
+	            
+	            con = DriverManager.getConnection(url, usuario, contrasena);
+	            System.out.println("Conexión exitosa.");
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al conectar a la base de datos.");
+	        }
+	    }
+
+	    // Método para cerrar la conexión
+	    public void cerrarConexion() {
+	        try {
+	            if (con != null && !con.isClosed()) {
+	            	con.close();  // Cerrar la conexión
+	                System.out.println("Conexión cerrada.");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al cerrar la conexión.");
+	        }
+	    }
+
+	    // Método para ejecutar una consulta SQL de lectura (como SELECT)
+	    public ResultSet ejecutarConsulta(String consulta) {
+	        ResultSet rs = null;
+	        try {
+	            Statement stmt = con.createStatement(); // Crear un Statement para ejecutar la consulta
+	            rs = stmt.executeQuery(consulta); // Ejecutar la consulta SELECT
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al ejecutar la consulta.");
+	        }
+	        return rs;  // Retorna el resultado de la consulta
+	    }
+
+	    // Método para ejecutar una actualización SQL (como INSERT, UPDATE, DELETE)
+	    public void ejecutarActualizacion(String consulta) {
+	        try {
+	            Statement stmt = con.createStatement(); // Crear un Statement
+	            stmt.executeUpdate(consulta); // Ejecutar la consulta de actualización (INSERT, UPDATE, DELETE)
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al ejecutar la actualización.");
+	        }
+	    }
 	
 
 }
