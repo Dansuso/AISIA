@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -322,7 +323,7 @@ public class GestorDB {
 	}
 
     // Método para insertar un nuevo usuario
-    public void insertarUsuario(int id, String username, long creacioncuenta, String pais, String imagen, String contraseña) {
+    public void insertarUsuario(int id, String username, String fecha, String pais, String imagen, String contraseña) {
         String sqlInsertUsuario = """
             INSERT INTO USUARIO (ID_USUARIO, USERNAME, CREACIONCUENTA, PAIS, FOTO, CONTRASENA)
             VALUES (?, ?, ?, ?, ?, ?);
@@ -333,7 +334,7 @@ public class GestorDB {
             
             prepStmt.setInt(1, id);
             prepStmt.setString(2, username);
-            prepStmt.setLong(3, creacioncuenta);
+            prepStmt.setString(3, fecha);
             prepStmt.setString(4, pais);
             prepStmt.setString(5, imagen);
             prepStmt.setString(6, contraseña);
@@ -608,6 +609,89 @@ public boolean estaSiguiendo(Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 	        }
 	    }
 	}
+
+	public int obtenerUltimoIdUsuario() {
+	    String sql = "SELECT MAX(ID_USUARIO) AS max_id FROM USUARIO;";
+	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	         Statement stmt = con.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        if (rs.next()) {
+	            return rs.getInt("max_id");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener el último ID de usuario: " + e.getMessage());
+	    }
+	    return 0; // Devuelve 0 si no hay usuarios
+	}
+	
+	   public boolean nombreCompletoExiste(String username) {
+	        String sql = "SELECT COUNT(*) AS count FROM USUARIO WHERE USERNAME = ?;";
+	        try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	             PreparedStatement prepStmt = con.prepareStatement(sql)) {
+	            prepStmt.setString(1, username);
+	            ResultSet rs = prepStmt.executeQuery();
+	            if (rs.next() && rs.getInt("count") > 0) {
+	                return true; // El usuario ya existe
+	            }
+	        } catch (SQLException e) {
+	            System.err.println("Error al verificar nombre completo: " + e.getMessage());
+	        }
+	        return false;
+	    }
+	   
+	   
+	    // Método para abrir la conexión
+	    public void abrirConexion() {
+	        try {
+	            // Establecer la conexión con la base de datos
+	            String url = "jdbc:/resources/db/asia_database.db"; // Ajusta la URL
+	            String usuario = "miUsuario";  // Tu usuario de la base de datos
+	            String contrasena = "miContraseña";  // Tu contraseña de la base de datos
+	            
+	            con = DriverManager.getConnection(url, usuario, contrasena);
+	            System.out.println("Conexión exitosa.");
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al conectar a la base de datos.");
+	        }
+	    }
+
+	    // Método para cerrar la conexión
+	    public void cerrarConexion() {
+	        try {
+	            if (con != null && !con.isClosed()) {
+	            	con.close();  // Cerrar la conexión
+	                System.out.println("Conexión cerrada.");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al cerrar la conexión.");
+	        }
+	    }
+
+	    // Método para ejecutar una consulta SQL de lectura (como SELECT)
+	    public ResultSet ejecutarConsulta(String consulta) {
+	        ResultSet rs = null;
+	        try {
+	            Statement stmt = con.createStatement(); // Crear un Statement para ejecutar la consulta
+	            rs = stmt.executeQuery(consulta); // Ejecutar la consulta SELECT
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al ejecutar la consulta.");
+	        }
+	        return rs;  // Retorna el resultado de la consulta
+	    }
+
+	    // Método para ejecutar una actualización SQL (como INSERT, UPDATE, DELETE)
+	    public void ejecutarActualizacion(String consulta) {
+	        try {
+	            Statement stmt = con.createStatement(); // Crear un Statement
+	            stmt.executeUpdate(consulta); // Ejecutar la consulta de actualización (INSERT, UPDATE, DELETE)
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Error al ejecutar la actualización.");
+	        }
+	    }
 	
 
 }
