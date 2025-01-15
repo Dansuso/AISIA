@@ -168,6 +168,8 @@ public class InitDatabase {
 			stmt.execute("DROP TABLE IF EXISTS NOTICIA");
 			stmt.execute("DROP TABLE IF EXISTS USUARIO");
 			stmt.execute("DROP TABLE IF EXISTS POST");
+			stmt.execute("DROP TABLE IF EXISTS SEGUIDORES");
+
 			stmt.execute(sqlTablaUsuario);
 			stmt.execute(sqlTablaPelicula);
 			stmt.execute(sqlTablaSerie);

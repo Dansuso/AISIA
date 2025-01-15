@@ -48,10 +48,12 @@ public class HttpRequestAPI {
 			HttpResponse<String> respuesta = cliente.send(request, HttpResponse.BodyHandlers.ofString());
 			json = JsonParser.parseString(respuesta.body()).getAsJsonObject();
 			
+			return json;
+
+			
 		} catch (IOException | InterruptedException e) {
-			System.err.println("Error!");
-			e.printStackTrace();
+			return new JsonObject();
 		}
-		return json;
+		
 	}
 }

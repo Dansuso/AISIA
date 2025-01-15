@@ -644,7 +644,6 @@ public boolean estaSiguiendo(Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 			   prepStmt.setInt(1, seguidor.getCodigo());
 			   prepStmt.setInt(2, seguido.getCodigo());
 			   prepStmt.executeUpdate();
-			   System.out.println(prepStmt);
 		   } catch (SQLException e) {
 			System.err.println("Error al introducir seguidor " + e.getMessage());
 			return false;
