@@ -110,33 +110,24 @@ public class VentanaRegistro extends JFrame{
 
 
         // Configuración de los componentes
-        JLabel usuario = new JLabel("Nombre:");
+        JLabel usuario = new JLabel("username:");
         usuario.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 0;
         mainPanel.add(usuario, gbc);
 
-        JTextField txt3 = new JTextField(16); // Campo de texto para "Nombre"
+        JTextField usernameField = new JTextField(16); // Campo de texto para "username"
         gbc.gridx = 1;
         gbc.gridy = 0;
-        mainPanel.add(txt3, gbc);
+        mainPanel.add(usernameField, gbc);
 
-        JLabel apellidos = new JLabel("Apellidos:");
-        apellidos.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        mainPanel.add(apellidos, gbc);
+      
 
-        JTextField txt4 = new JTextField(16); // Campo de texto para "Apellidos"
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        mainPanel.add(txt4, gbc);
-
-        JLabel fechaNacimiento = new JLabel("Fecha:");
-        fechaNacimiento.setForeground(Color.WHITE);
+        JLabel foto = new JLabel("Foto:");
+        foto.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        mainPanel.add(fechaNacimiento, gbc);
+        mainPanel.add(foto, gbc);
 
 
         try {
@@ -296,12 +287,9 @@ public class VentanaRegistro extends JFrame{
 			            return;
 			        }
 
-			        if (!txt3.getText().isEmpty() && txt2.getPassword().length > 0) {
-			            String nombre = txt3.getText();
-			            String apellidos = txt4.getText();
-			            String username = nombre + " " + apellidos;
-
-			            // Verificar si el nombre de usuario ya existe
+			        if (!usernameField.getText().isEmpty() && txt2.getPassword().length > 0) {
+			        	String username = usernameField.getText();
+			        		// Verificar si el nombre de usuario ya existe
 			            while (gestorBD.nombreCompletoExiste(username)) {
 			                JOptionPane.showMessageDialog(null, "El nombre completo ya está registrado. Por favor, ingresa otro.");
 			                return; 
