@@ -3,7 +3,6 @@ package main;
 import javax.swing.SwingUtilities;
 
 import gui.VentanaCarga;
-import gui.VentanaInicio;
 
 public class Main {
 

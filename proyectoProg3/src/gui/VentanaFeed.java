@@ -638,7 +638,6 @@ public class VentanaFeed extends VentanaBase {
 
 		} catch (IOException e) {
 			
-			e.printStackTrace();
 		}
 
 		// TODO Auto-generated method stub

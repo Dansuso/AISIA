@@ -446,28 +446,28 @@ public class InitDatabase {
         // Datos para los comentarios
         Object[][] posts = {
                 // Usuario 1: 4 comentarios
-                {1, "¡El Señor de los Anillos es mi trilogía favorita!", LocalDate.of(2024, 1, 2), 1},
-                {2, "Recientemente volví a ver 'Matrix' y sigue siendo impresionante.", LocalDate.of(2024, 1, 3), 1},
+                {1, "¡El Señor de los Anillos es mi trilogía favorita!", LocalDate.of(2024, 1, 1), 1},
+                {2, "Recientemente volví a ver 'Matrix' y sigue siendo impresionante.", LocalDate.of(2024, 1, 2), 1},
                 {3, "¿Alguien más ama las películas de Studio Ghibli?", LocalDate.of(2024, 1, 4), 1},
-                {4, "La dirección de Peter Jackson en 'El Hobbit' es fenomenal.", LocalDate.of(2024, 1, 5), 1},
+                {4, "La dirección de Peter Jackson en 'El Hobbit' es fenomenal.", LocalDate.of(2024, 1, 3), 1},
 
                 // Usuario 2: 2 comentarios
-                {5, "'Inception' me dejó pensando en cómo funcionan los sueños.", LocalDate.of(2024, 1, 6), 2},
-                {6, "¡No puedo esperar a la próxima película de Christopher Nolan!", LocalDate.of(2024, 1, 7), 2},
+                {5, "'Inception' me dejó pensando en cómo funcionan los sueños.", LocalDate.of(2024, 1, 4), 2},
+                {6, "¡No puedo esperar a la próxima película de Christopher Nolan!", LocalDate.of(2024, 1, 5), 2},
 
                 // Otros usuarios
-                {7, "'Parasite' merece todos los premios que recibió. ¡Espectacular!", LocalDate.of(2024, 1, 8), 3}, // Usuario 3
-                {8, "'The Dark Knight' es mi película favorita de superhéroes.", LocalDate.of(2024, 1, 9), 4}, // Usuario 4
-                {9, "La animación en 'Spider-Man: Into the Spider-Verse' es increíble.", LocalDate.of(2024, 1, 10), 5}, // Usuario 5
+                {7, "'Parasite' merece todos los premios que recibió. ¡Espectacular!", LocalDate.of(2024, 1, 6), 3}, // Usuario 3
+                {8, "'The Dark Knight' es mi película favorita de superhéroes.", LocalDate.of(2024, 1, 14), 6}, // Usuario 4
+                {9, "La animación en 'Spider-Man: Into the Spider-Verse' es increíble.", LocalDate.of(2024, 1, 6), 5}, // Usuario 5
                 {10, "'Pulp Fiction' tiene los mejores diálogos del cine.", LocalDate.of(2024, 1, 11), 6}, // Usuario 6
                 
              // Usuario 13: 4 comentarios
                 {11, "La la land es un homenaje moderno a los clásicos musicales, con una historia conmovedora sobre sueños y sacrificios. "
-                		+ "La química entre Emma Stone y Ryan Gosling brilla tanto como su mágica banda sonora.", LocalDate.of(2024, 1, 2), 13},
+                		+ "La química entre Emma Stone y Ryan Gosling brilla tanto como su mágica banda sonora.", LocalDate.of(2024, 1, 7), 13},
                 {12, "El juego del calamar es impactante y brutal, aborda temas como desigualdad y desesperación humana en un contexto de juegos mortales. "
-                		+ "Cada episodio aumenta la tensión con giros inesperados y un mensaje social profundo.", LocalDate.of(2024, 1, 3), 13},
+                		+ "Cada episodio aumenta la tensión con giros inesperados y un mensaje social profundo.", LocalDate.of(2024, 1, 8), 13},
                 {13, "Peaky Blinders es un drama oscuro y elegante lleno de intrigas familiares y crímenes. La actuación de Cillian"
-                		+ " Murphy como Tommy Shelby es magistral, acompañado por una banda sonora moderna que sorprende gratamente.", LocalDate.of(2024, 1, 4), 13},
+                		+ " Murphy como Tommy Shelby es magistral, acompañado por una banda sonora moderna que sorprende gratamente.", LocalDate.of(2024, 1, 9), 13},
             };
 
         try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {

@@ -94,7 +94,7 @@ public class VentanaInicio extends JFrame {
         			"Introduce los datos",  
         			JOptionPane.YES_NO_OPTION 
         			 
-        			 
+  
         	 
         		); 
         		if (resultado == JOptionPane.YES_OPTION) { 

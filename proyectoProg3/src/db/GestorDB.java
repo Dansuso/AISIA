@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.w3c.dom.UserDataHandler;
-
 import domain.Contenido;
 import domain.Pelicula;
 import domain.Post;
@@ -157,6 +155,7 @@ public class GestorDB {
 				JOIN USUARIO U ON P.ID_USUARIO_CREADOR =  U.ID_USUARIO
 				WHERE ID_USUARIO_CREADOR = ? OR ID_USUARIO_CREADOR IN 
 				(SELECT ID_SEGUIDO FROM SEGUIDORES WHERE ID_SEGUIDOR = ? )
+				ORDER BY FECHA_POST DESC;
 				""";
 		try(PreparedStatement prepStmt = con.prepareStatement(sqlObtenerPostFeed)){
 			prepStmt.setInt(1, idUsuario);
