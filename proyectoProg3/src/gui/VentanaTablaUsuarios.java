@@ -137,34 +137,48 @@ public class VentanaTablaUsuarios extends JFrame {
 		
 		tabla = new JTable(new ModeloTablaUsuarios(usuarios));
 		tabla.setRowHeight(50);
-		//Render de la columna del Pais
-		tabla.getColumnModel().getColumn(2).setCellRenderer(new TableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				
-				String pais = (String) value;
-
-			    JLabel label =  utils.BanderaUtil.obtenerBandera(pais);
-
 		
-
-				// Estilo de la celda: centrar la imagen
-				label.setHorizontalAlignment(JLabel.CENTER);
-				label.setVerticalAlignment(JLabel.CENTER);
-
-				// Estilos adicionales
-				if (isSelected) {
-					label.setBackground(table.getSelectionBackground());
-					label.setForeground(table.getSelectionForeground());
-				} else {
-					label.setBackground(table.getBackground());
-					label.setForeground(table.getForeground());
-				}
-
-				return label;
-			}
-		});
+		
+        tabla.getColumnModel().getColumn(2).setCellRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel();
+                // Obtener el nombre del país que está en la celda y convertirlo a minúsculas
+                String pais = value.toString().toLowerCase().replace(" ", "_"); // Reemplazar espacios por guiones bajos
+                // Imprimir el valor del país para depuración
+                System.out.println("Pais: " + pais);
+                // Crear la ruta de la imagen
+                String imagePath = "resources/images/recursos/Pais/" + pais + ".png"; // Ruta de la imagen
+                System.out.println("Ruta de la imagen: " + imagePath); // Imprimir la ruta completa para ver si está correcta
+                // Intentar cargar la imagen
+                File imageFile = new File(imagePath);
+                if (imageFile.exists()) {
+                    // Si la imagen existe, se carga en el JLabel
+                    ImageIcon icon = new ImageIcon(imagePath);
+                    // Redimensionar la imagen al tamaño de la celda
+                    Image img = icon.getImage(); // Obtener la imagen
+                    Image resizedImage = img.getScaledInstance(50, 30, Image.SCALE_SMOOTH); // Redimensionar con un tamaño adecuado
+                    label.setIcon(new ImageIcon(resizedImage));
+                } else {
+                    // Si no existe la imagen, mostrar un texto predeterminado o una imagen por defecto
+                    label.setText("No disponible");
+                    System.out.println("La imagen no fue encontrada en la ruta: " + imagePath); // Depuración si la imagen no se encuentra
+                }
+                // Estilo de la celda: centrar la imagen
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setVerticalAlignment(JLabel.CENTER);
+                // Estilos adicionales
+                if (isSelected) {
+                    label.setBackground(table.getSelectionBackground());
+                    label.setForeground(table.getSelectionForeground());
+                } else {
+                    label.setBackground(table.getBackground());
+                    label.setForeground(table.getForeground());
+                }
+                return label;
+            }
+        });
+        
 		// Configurar la columna de "Foto" para mostrar imágenes
 		tabla.getColumnModel().getColumn(1).setCellRenderer(new TableCellRenderer() {
 			@Override

@@ -14,6 +14,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -21,6 +25,7 @@ import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 
 import db.GestorDB;
@@ -46,6 +52,7 @@ public class VentanaRegistro extends JFrame{
 	private VentanaTablaUsuarios ventanaTabla;
 	private JFormattedTextField txtFecha;
 	private GestorDB gestorBD;
+	private File selectedImageFile;
 	
 	public VentanaRegistro() {
 
@@ -120,10 +127,11 @@ public class VentanaRegistro extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 0;
         mainPanel.add(usernameField, gbc);
-
+        
+        
       
 
-        JLabel foto = new JLabel("Foto:");
+        JLabel foto = new JLabel("Fecha:");
         foto.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -140,7 +148,8 @@ public class VentanaRegistro extends JFrame{
             LocalDate today = LocalDate.now(); // Fecha actual
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = today.format(formatter); // Formatear la fecha
-            txtFecha.setText(formattedDate); // Establecer la fecha en el campo de texto
+            txtFecha.setText(formattedDate); // Establecer la fecha en el campo de textoç
+            txtFecha.setEditable(false);
         } catch (Exception e) {
             txtFecha = new JFormattedTextField(); // Variable global reutilizada
         }
@@ -175,6 +184,12 @@ public class VentanaRegistro extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 4;
         mainPanel.add(txt2, gbc);
+        
+        JButton btnSeleccionarImagen = new JButton("Seleccionar imagen");
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        mainPanel.add(btnSeleccionarImagen, gbc);
+
 
 //        // Botón para mostrar/ocultar contraseña
 //        ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotover.png");
@@ -195,7 +210,7 @@ public class VentanaRegistro extends JFrame{
 
        
     	 gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.gridwidth = 3; // Ocupa tres columnas
         mainPanel.add(buttonPanel, gbc);
 
@@ -231,7 +246,17 @@ public class VentanaRegistro extends JFrame{
     	getContentPane().add(mainPanel, BorderLayout.CENTER);
     	
     
-    	
+        // Listeners
+        btnSeleccionarImagen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarImagen();
+            }
+
+            
+        });
+        
+
     	
     	//Iniciamos la ventantana Inicio
 		inicio.addActionListener(new ActionListener() {
@@ -438,7 +463,41 @@ public class VentanaRegistro extends JFrame{
 	        
 		
 	}
-	
+	private void seleccionarImagen() {
+	    JFileChooser fileChooser = new JFileChooser();
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif");
+	    fileChooser.setFileFilter(filter);
+	    int returnValue = fileChooser.showOpenDialog(null);
+	    if (returnValue == JFileChooser.APPROVE_OPTION) {
+	        File selectedFile = fileChooser.getSelectedFile();
+	        copiarImagenARecursos(selectedFile);
+	    }
+	}
+
+	private void copiarImagenARecursos(File file) {
+	    Path sourcePath = file.toPath();
+	    Path destinationPath = Paths.get("resources/recursos/perfil", file.getName());
+
+	    // Crear la carpeta de destino si no existe
+	    File directory = new File("resources/recursos/perfil");
+	    if (!directory.exists()) {
+	        directory.mkdirs();
+	    }
+
+	    try {
+	        System.out.println("Copiando desde: " + sourcePath);
+	        System.out.println("Copiando hacia: " + destinationPath);
+	        Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+	        JOptionPane.showMessageDialog(null, "Imagen copiada a: " + destinationPath.toString());
+	    } catch (IOException e) {
+	        JOptionPane.showMessageDialog(null, "Error al copiar la imagen: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	}
+
+
+    
+    
 	public static void main(String[] args) {
         new VentanaRegistro();
         
