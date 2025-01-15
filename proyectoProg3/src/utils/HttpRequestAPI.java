@@ -28,9 +28,9 @@ public class HttpRequestAPI {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://www.omdbapi.com/?apikey=623a06b6&t=" + nombreContenido)).GET().build();
 		
-		FileHandler fh;
 		try {
-			fh = new FileHandler("log/logOMBDApi.txt",true);
+			
+			FileHandler fh = new FileHandler("log/logOMBDApi.txt", 1000000, 3, true);
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
