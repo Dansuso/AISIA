@@ -83,7 +83,7 @@ public class VentanaUsuario extends JDialog{
 		
 		ImageIcon fotoPerfilDefecto = new ImageIcon(direccionPredeterminada + dirFoto);
 		// Reescalamos la imagen
-		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+		Image scaledImage = fotoPerfilDefecto.getImage().getScaledInstance(165, 165, Image.SCALE_SMOOTH);
         ImageIcon fotoPerfil = new ImageIcon(scaledImage);
         
 		JLabel etiquetaFotoPerfil = new JLabel(fotoPerfil);

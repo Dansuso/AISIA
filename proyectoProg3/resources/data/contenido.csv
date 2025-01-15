@@ -5,7 +5,7 @@ id,tipo,titulo,genero,calificacion,distribuidora,edad_recomendada,fecha_lanzamie
 4,Pelicula,Jurassic Park,AVENTURA,8.1,Universal,12,1993-06-11,false,127,,,,
 5,Pelicula,El Señor de los Anillos: La Comunidad del Anillo,FANTASIA,8.8,Warner,12,2001-12-19,true,178,,,,
 6,Pelicula,Inception,ACCION,8.8,Warner,12,2010-07-16,false,148,,,,
-7,Pelicula,El Rey León,AVENTURA,8.5,Disney,7,1994-06-15,true,89,,,,
+7,Pelicula,The lion king,AVENTURA,8.5,Disney,7,1994-06-15,true,89,,,,
 8,Pelicula,Forrest Gump,DRAMA,8.8,Universal,12,1994-07-06,true,142,,,,
 9,Pelicula,Matrix,ACCION,8.7,Warner,16,1999-03-31,false,136,,,,
 10,Pelicula,Parasitos,DRAMA,8.5,Sony,16,2019-05-30,true,132,,,,
