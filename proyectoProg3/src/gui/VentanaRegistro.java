@@ -20,7 +20,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,16 +44,17 @@ import db.GestorDB;
 
 
 
+
 public class VentanaRegistro extends JFrame{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private VentanaTablaUsuarios ventanaTabla;
+
 	private JFormattedTextField txtFecha;
 	private GestorDB gestorBD;
-	private File selectedImageFile;
+
 	
 	public VentanaRegistro() {
 
@@ -301,7 +303,6 @@ public class VentanaRegistro extends JFrame{
 						dispose();
 					}
 				});
-		 
 		 botonAgregar.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
@@ -313,36 +314,44 @@ public class VentanaRegistro extends JFrame{
 			        }
 
 			        if (!usernameField.getText().isEmpty() && txt2.getPassword().length > 0) {
-			        	String username = usernameField.getText();
-			        		// Verificar si el nombre de usuario ya existe
+			            String username = usernameField.getText();
+
+			            // Verificar si el nombre de usuario ya existe
 			            while (gestorBD.nombreCompletoExiste(username)) {
 			                JOptionPane.showMessageDialog(null, "El nombre completo ya está registrado. Por favor, ingresa otro.");
-			                return; 
+			                return;
 			            }
 
 			            // Continuar con el registro si el nombre no existe
-			            //String fechaNacimiento = fecha;
 			            String pais = comboBoxPais.getSelectedItem().toString();
 			            String contraseña = new String(txt2.getPassword());
-			            
+
 			            // Obtener el próximo ID de usuario
-			            int nuevoCodigo = gestorBD.obtenerUltimoIdUsuario() + 1;
+			            int nuevoCodigo = gestorBD.obtenerUltimoIdUsuario() +1 ;
 
-			            // Ruta de la imagen por defecto
-			            String imagen = "defautUsuario.png";
+			            // Obtener la imagen más reciente de la carpeta
+			            String imagen = obtenerUltima();
 
-			            // Registrar el usuario
+			            // Registrar el usuario con la imagen más reciente
 			            gestorBD.insertarUsuario(nuevoCodigo, username, fecha, pais, imagen, contraseña);
+			            
+			           
 
-			            JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
-			            VentanaFeed feed = new VentanaFeed(null);
-			            feed.setVisible(true);
-			            dispose(); // Cierra la ventana de registro
+			            // Comprobar que el usuario fue creado correctamente
+			           
+			                VentanaInicio inicio = new VentanaInicio(); // Pasar el usuario a VentanaFeed
+			                inicio.setVisible(true);
+			                dispose(); // Cierra la ventana de registro
+			                
+			           
 			        } else {
 			            JOptionPane.showMessageDialog(null, "No has escrito Nombre o Contraseña");
 			        }
 			    }
 			});
+
+
+			
 
 		
 
@@ -463,6 +472,39 @@ public class VentanaRegistro extends JFrame{
 	        
 		
 	}
+	private String obtenerUltima() {
+    // Ruta de la carpeta de destino
+    File directory = new File("resources/images/recursos/perfil");
+
+    // Crear la carpeta de destino si no existe
+    if (!directory.exists()) {
+        directory.mkdirs();
+    }
+
+    // Obtener los archivos existentes en la carpeta
+    File[] files = directory.listFiles();
+    int ultimoNumero = 0;
+    String extension = "";
+
+    // Si hay archivos, buscar el último número
+    if (files != null) {
+        for (File f : files) {
+            String nombreArchivo = f.getName();
+            // Buscar archivos con el formato numérico seguido de la extensión
+            if (nombreArchivo.matches("\\d+\\.\\w+")) { // Detectar cualquier extensión
+                int numero = Integer.parseInt(nombreArchivo.split("\\.")[0]); // Obtener solo el número
+                extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.')); // Obtener la extensión
+                ultimoNumero = Math.max(ultimoNumero, numero); // Guardar el último número
+            }
+        }
+    }
+
+    // Asignar el siguiente número disponible y usar la extensión detectada
+    int nuevoNumero = ultimoNumero ;
+    return nuevoNumero + extension; // Ejemplo: 13.png, 13.jpg, etc.
+}
+
+
 	private void seleccionarImagen() {
 	    JFileChooser fileChooser = new JFileChooser();
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif");
@@ -475,14 +517,45 @@ public class VentanaRegistro extends JFrame{
 	}
 
 	private void copiarImagenARecursos(File file) {
-	    Path sourcePath = file.toPath();
-	    Path destinationPath = Paths.get("resources/recursos/perfil", file.getName());
+	    // Obtener la extensión del archivo original
+	    String extension = "";
+	    String fileName = file.getName();
+	    int dotIndex = fileName.lastIndexOf('.');
+	    if (dotIndex > 0) {
+	        extension = fileName.substring(dotIndex); // Obtiene la extensión (ej. .jpg, .png)
+	    }
+	    
+	    // Ruta de la carpeta de destino
+	    File directory = new File("resources/images/recursos/perfil");
 
 	    // Crear la carpeta de destino si no existe
-	    File directory = new File("resources/recursos/perfil");
 	    if (!directory.exists()) {
 	        directory.mkdirs();
 	    }
+
+	    // Obtener los archivos existentes en la carpeta
+	    File[] files = directory.listFiles();
+	    int ultimoNumero = 0;
+
+	    // Si hay archivos, buscar el último número
+	    if (files != null) {
+	        for (File f : files) {
+	            String nombreArchivo = f.getName();
+	            // Buscar archivos con el formato numérico (sin la extensión)
+	            if (nombreArchivo.matches("\\d+\\.\\w+")) {
+	                int numero = Integer.parseInt(nombreArchivo.split("\\.")[0]);
+	                ultimoNumero = Math.max(ultimoNumero, numero);
+	            }
+	        }
+	    }
+
+	    // Asignar el siguiente número disponible
+	    int nuevoNumero = ultimoNumero + 1;
+	    String nuevoNombre = nuevoNumero + extension;
+
+	    // Definir la ruta de destino con el nuevo nombre
+	    Path sourcePath = file.toPath();
+	    Path destinationPath = Paths.get("resources/images/recursos/perfil", nuevoNombre);
 
 	    try {
 	        System.out.println("Copiando desde: " + sourcePath);
@@ -503,4 +576,3 @@ public class VentanaRegistro extends JFrame{
         
     }
 }
-
