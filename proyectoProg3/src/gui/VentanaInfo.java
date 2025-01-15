@@ -24,7 +24,10 @@ public class VentanaInfo extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public VentanaInfo(String tituloPasado, String generoPasado, String calificacionPasado, String distribuidoraPasado, Usuario UsuarioPasado) {
+	public VentanaInfo(String tituloPasado, String generoPasado, String calificacionPasado, String distribuidoraPasado, Usuario usuarioPasado) {
+		
+		this.usuarioPasado = usuarioPasado;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Informacion");
 		setSize(640,480);

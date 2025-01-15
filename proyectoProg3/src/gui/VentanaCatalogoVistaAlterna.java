@@ -72,7 +72,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 		this.usuarioPasado = usuarioPasado;
 		
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(640, 480);
 		setTitle("Ventana Catalogo");
 		setLocationRelativeTo(null);
@@ -98,7 +98,7 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 					);
 				
 				if (resultado == JOptionPane.YES_OPTION) {
-					System.exit(0);
+					dispose();
 				}
 				// se llama cuando el usuario intenta cerrar la ventana
 				}
@@ -378,7 +378,19 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				JLabel labelSalir = new JLabel("Desea salir de la aplicacion?");
+				
+				Object[] mensaje = {labelSalir};
+				
+				int resultado = JOptionPane.showConfirmDialog(null, 
+						mensaje, 
+						"Salir", 
+						JOptionPane.YES_NO_OPTION
+					);
+				
+				if(resultado == JOptionPane.YES_OPTION) {
+					dispose();
+				}
 				
 			}
 			
