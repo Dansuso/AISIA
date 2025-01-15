@@ -496,8 +496,18 @@ public class VentanaCatalogoVistaAlterna extends JFrame {
                 	
                 	
                 	new Thread(() -> {
-                		JsonElement descripcion = HttpRequestAPI.hacerPeticion(titulo).get("Plot");
-                        SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion.toString()));
+                		try {
+                            // Realizamos la petición y obtenemos la descripción
+                            JsonElement descripcion = HttpRequestAPI.hacerPeticion(titulo).get("Plot");
+
+                            // Actualizamos la UI de forma segura con el texto de la descripción
+                            SwingUtilities.invokeLater(() -> panelDescripcion.setText(descripcion != null ? descripcion.toString() : "Descripción no disponible"));
+                        } catch (Exception ex) {
+                            // En caso de error, mostramos "Descripción no disponible"
+                            SwingUtilities.invokeLater(() -> panelDescripcion.setText("Descripción no disponible"));
+                            ex.printStackTrace(); // Opcional: Imprimir el error para depuración
+                        }
+                        
                     }).start();
                 }
                 else if(filaSeleccionada != -1 && columnaSeleccionada == 3) {
