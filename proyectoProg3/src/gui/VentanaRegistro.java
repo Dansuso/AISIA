@@ -507,7 +507,7 @@ public class VentanaRegistro extends JFrame{
 
 	private void seleccionarImagen() {
 	    JFileChooser fileChooser = new JFileChooser();
-	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif");
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "gif");
 	    fileChooser.setFileFilter(filter);
 	    int returnValue = fileChooser.showOpenDialog(null);
 	    if (returnValue == JFileChooser.APPROVE_OPTION) {
