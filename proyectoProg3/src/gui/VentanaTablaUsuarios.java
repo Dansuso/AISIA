@@ -19,6 +19,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -27,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import javax.swing.table.DefaultTableModel;
@@ -124,6 +129,86 @@ public class VentanaTablaUsuarios extends JFrame{
 		setLocationRelativeTo(null);
 		db = new GestorDB();
 		List<Usuario> usuarios = db.obtenerUsuarios();
+		
+		
+		
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+
+		JMenu menu = new JMenu("Aisia");
+		menuBar.add(menu);
+		
+		// CATALOGO
+		JMenuItem menuItemCatalogo = new JMenuItem("Catalogo");
+		menuItemCatalogo.setMnemonic(KeyEvent.VK_C);
+		menuItemCatalogo.addActionListener(e ->  {
+		SwingUtilities.invokeLater(() -> new VentanaCatalogo(user));
+		dispose();
+		});
+
+		// PERFIL
+		JMenuItem menuItemPerfil = new JMenuItem("Perfil");
+		menuItemPerfil.setMnemonic(KeyEvent.VK_P);
+		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario(user)));
+		// FEED
+		JMenuItem menuItemFeed = new JMenuItem("Feed");
+		menuItemFeed.setMnemonic(KeyEvent.VK_F);
+		menuItemFeed.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaFeed(user));
+			dispose();
+		});
+		
+		
+		JMenuItem menuItemCombinacion = new JMenuItem("Combinaciones");
+		menuItemFeed.setMnemonic(KeyEvent.VK_K);
+		menuItemCombinacion.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new CombinacionesContenido());
+		});
+		
+		JMenuItem menuItemUsuario = new JMenuItem("Usuarios");
+		menuItemUsuario.setMnemonic(KeyEvent.VK_U);
+		menuItemUsuario.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaTablaUsuarios(user));
+		});
+		
+		// SALIR
+		JMenuItem menuItemCerrar = new JMenuItem("Cerrar Sesion");
+		menuItemCerrar.addActionListener(e ->  {
+			new VentanaInicio();
+			dispose();
+			
+			
+		});
+		menuItemCerrar.setMnemonic(KeyEvent.VK_C);
+	
+		// SALIR
+		JMenuItem menuItemSalir = new JMenuItem("Salir");
+		menuItemSalir.addActionListener(e -> cerrarVentanaConfirmacion());
+		menuItemSalir.setMnemonic(KeyEvent.VK_S);
+
+		// Añadimos al menu todos las opciones
+		menu.add(menuItemCatalogo);
+		menu.addSeparator();
+		menu.add(menuItemPerfil);
+		menu.addSeparator();
+		menu.add(menuItemCombinacion);
+		menu.addSeparator();
+		menu.add(menuItemFeed);
+		menu.addSeparator();  
+		menu.add(menuItemUsuario);
+		menu.addSeparator();  
+		menu.add(menuItemCerrar);
+		menu.addSeparator();  
+		menu.add(menuItemSalir);
+
+	
+		
+		
+		
+		
+		
+		
+		
 		
 		tabla = new JTable(new ModeloTablaUsuarios(usuarios));
 		tabla.setRowHeight(50);
@@ -366,6 +451,19 @@ public class VentanaTablaUsuarios extends JFrame{
 		});
 
 	}
+	
+	private void cerrarVentanaConfirmacion() {
+
+		// Preguntar por confirmacion
+		int quiereCerrarVentana = JOptionPane.showConfirmDialog(null, "Quiere cerrar la ventana?", "Salir",
+				JOptionPane.YES_NO_OPTION);
+		if (quiereCerrarVentana == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+
+	}
+	
+	
 
 
 	

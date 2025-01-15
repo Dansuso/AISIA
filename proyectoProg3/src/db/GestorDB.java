@@ -155,7 +155,7 @@ public class GestorDB {
 				JOIN USUARIO U ON P.ID_USUARIO_CREADOR =  U.ID_USUARIO
 				WHERE ID_USUARIO_CREADOR = ? OR ID_USUARIO_CREADOR IN 
 				(SELECT ID_SEGUIDO FROM SEGUIDORES WHERE ID_SEGUIDOR = ? )
-				ORDER BY FECHA_POST DESC;
+				ORDER BY FECHA_POST ASC;
 				""";
 		try(PreparedStatement prepStmt = con.prepareStatement(sqlObtenerPostFeed)){
 			prepStmt.setInt(1, idUsuario);
