@@ -3,170 +3,468 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.List;
 
-import javax.swing.DefaultListModel;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.AbstractTableModel;
+
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableCellRenderer;
 
+import javax.swing.table.TableRowSorter;
 
+import db.GestorDB;
 import domain.Usuario;
 
-public class VentanaTablaUsuarios extends JFrame {
-	 private  DefaultTableModel model;
-	
-    private static  JTable tabla;
-    protected JFrame frame;
-    protected Usuario perso;
-    protected HashMap<String, String> mapa;
-  
-    
-	
-    
+public class VentanaTablaUsuarios extends JFrame{
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 1L;
 
-	public VentanaTablaUsuarios(String [] datosUser) {
+	private JTable tabla;
+	private GestorDB db;
+	protected JFrame frame;
+	protected Usuario perso;
+	protected HashMap<String, String> mapa;
+	// private int callMouseOver = -1;
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField searchField;
+	private Usuario usuario;
+
+	private static class ModeloTablaUsuarios extends AbstractTableModel {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private List<Usuario> usuarios;
+		private String[] columnas = { "Nombre de Usuario", "Foto", "Pais", "Fecha de Creacion", "Seguidores" };
+		private GestorDB db = new GestorDB();
+
+		public ModeloTablaUsuarios(List<Usuario> usuarios) {
+			this.usuarios = usuarios;
+		}
+
+		@Override
+		public int getRowCount() {
+			// TODO Auto-generated method stub
+			return usuarios.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			// TODO Auto-generated method stub
+			return columnas.length;
+		}
+
+		@Override
+		public String getColumnName(int columnIndex) {
+			return columnas[columnIndex];
+
+		}
+		
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Usuario u = usuarios.get(rowIndex);
+
+			switch (columnIndex) {
+			case 0:
+				return u.getUsername();
+			case 1:
+				return u.getFoto();
+			case 2:
+				return u.getPais();
+			case 3:
+				return u.getCreacionCuenta();
+			case 4:
+				return db.obtenerSeguidores(u.getCodigo()).size();
+			}
+
+			return null;
+		}
+
+	}
+
+	public VentanaTablaUsuarios(Usuario user) {
+		this.usuario = user;
+
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Programa de de tabla de nombre");
-		setSize(640,640);
+		setSize(1100, 900);
+		setLocationRelativeTo(null);
+		db = new GestorDB();
+		List<Usuario> usuarios = db.obtenerUsuarios();
 		
 		
 		
-		
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
 
-		        
-		  String[] colubnas = {"Nombre", "Apellido", "Edad","Correo", "Contraseña"};
-		  // Agregar algunas columnas a las tablas
-		// Crear modelos de tabla
-	    
-		 
-		  DefaultTableModel model = new DefaultTableModel(colubnas, 0);
-	        cargarDatosCSV("resources/data/personas.csv", model);
-	        
-	        if (datosUser != null && datosUser.length == colubnas.length) {
-	            model.addRow(datosUser);
-	        }
-	      	        
-	        tabla = new JTable(model);
+		JMenu menu = new JMenu("Aisia");
+		menuBar.add(menu);
+		
+		// CATALOGO
+		JMenuItem menuItemCatalogo = new JMenuItem("Catalogo");
+		menuItemCatalogo.setMnemonic(KeyEvent.VK_C);
+		menuItemCatalogo.addActionListener(e ->  {
+		SwingUtilities.invokeLater(() -> new VentanaCatalogo(user));
+		dispose();
+		});
 
-	        
-	        guardarEnArchivo(model);
-	      	
-	      
-	       
-	       
-	        
-	        JScrollPane scroll = new JScrollPane(tabla);
-	        add(scroll, BorderLayout.CENTER);
-	        getContentPane().add(new JScrollPane(tabla), BorderLayout.CENTER);
-	        
-	      
-	        
+		// PERFIL
+		JMenuItem menuItemPerfil = new JMenuItem("Perfil");
+		menuItemPerfil.setMnemonic(KeyEvent.VK_P);
+		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario(user)));
+		// FEED
+		JMenuItem menuItemFeed = new JMenuItem("Feed");
+		menuItemFeed.setMnemonic(KeyEvent.VK_F);
+		menuItemFeed.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaFeed(user));
+			dispose();
+		});
 		
-		setVisible(true);
 		
-	    		
+		JMenuItem menuItemCombinacion = new JMenuItem("Combinaciones");
+		menuItemFeed.setMnemonic(KeyEvent.VK_K);
+		menuItemCombinacion.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new CombinacionesContenido());
+		});
 		
+		JMenuItem menuItemUsuario = new JMenuItem("Usuarios");
+		menuItemUsuario.setMnemonic(KeyEvent.VK_U);
+		menuItemUsuario.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaTablaUsuarios(user));
+		});
+		
+		// SALIR
+		JMenuItem menuItemCerrar = new JMenuItem("Cerrar Sesion");
+		menuItemCerrar.addActionListener(e ->  {
+			new VentanaInicio();
+			dispose();
+			
+			
+		});
+		menuItemCerrar.setMnemonic(KeyEvent.VK_C);
+	
+		// SALIR
+		JMenuItem menuItemSalir = new JMenuItem("Salir");
+		menuItemSalir.addActionListener(e -> cerrarVentanaConfirmacion());
+		menuItemSalir.setMnemonic(KeyEvent.VK_S);
+
+		// Añadimos al menu todos las opciones
+		menu.add(menuItemCatalogo);
+		menu.addSeparator();
+		menu.add(menuItemPerfil);
+		menu.addSeparator();
+		menu.add(menuItemCombinacion);
+		menu.addSeparator();
+		menu.add(menuItemFeed);
+		menu.addSeparator();  
+		menu.add(menuItemUsuario);
+		menu.addSeparator();  
+		menu.add(menuItemCerrar);
+		menu.addSeparator();  
+		menu.add(menuItemSalir);
+
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		tabla = new JTable(new ModeloTablaUsuarios(usuarios));
+		tabla.setRowHeight(50);
+		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		//IAG : Claude Sonnet @3.5. Adaptado (Ya he hecho muchos Renderers manualmente)
+		tabla.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+			
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				JLabel label = new JLabel(value.toString());
+		        label.setHorizontalAlignment(JLabel.CENTER);
+		        label.setBackground(new Color(51, 51, 51));  // Gris oscuro
+		        label.setForeground(Color.WHITE);
+		        label.setFont(getFont().deriveFont(Font.BOLD, 14f));
+		        label.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		        label.setOpaque(true);
+
+				return label;
+			}
+		});
+
+		//Render de la columna del Pais
+		tabla.getColumnModel().getColumn(2).setCellRenderer(new TableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				
+				String pais = (String) value;
+
+			    JLabel label =  utils.BanderaUtil.obtenerBandera(pais);
+				label.setOpaque(true);
+				
+
+
+			    if(db.estaSiguiendo(user, usuarios.get(row))) {
+					label.setBackground(new Color(29,161,242));
+
+				}
+
+				// Estilo de la celda: centrar la imagen
+				label.setHorizontalAlignment(JLabel.CENTER);
+				label.setVerticalAlignment(JLabel.CENTER);
+
+				// Estilos adicionales
+				if (isSelected) {
+					label.setBackground(table.getSelectionBackground());
+					label.setForeground(table.getSelectionForeground());
+				}
+
+				return label;
+			}
+		});
+		// Configurar la columna de "Foto" para mostrar imágenes
+	
+
+		// Crear un campo de texto para la búsqueda
+		searchField = new JTextField(20);
+		searchField.setToolTipText("Buscar por nombre...");
+		searchField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String query = searchField.getText().toLowerCase();
+
+				// Si la consulta está vacía, no aplicamos el filtro
+				if (query.trim().isEmpty()) {
+					sorter.setRowFilter(null); // Mostrar todo si no hay filtro
+				} else {
+					// Filtro usando la expresión regular
+					sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 1)); // "(?i)" hace que la búsqueda no
+																					// distinga entre
+																					// mayúsculas/minúsculas
+				}
+			}
+		});
+
+		/*
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new FlowLayout());
+		searchPanel.add(new JLabel("Buscar por Nombre:"));
+		searchPanel.add(searchField);
+		*/
+		// Panel para mostrar la tabla
+		JScrollPane scroll = new JScrollPane(tabla); // Esto solo debe aparecer una vez
+	//	add(searchPanel, BorderLayout.NORTH);
+		add(scroll, BorderLayout.CENTER); // Aquí se agrega el JScrollPane a la ventana
+
+		JPanel panelTabla = new JPanel(new BorderLayout());
+	//	panelTabla.add(searchPanel, BorderLayout.NORTH);
+		panelTabla.add(new JScrollPane(tabla), BorderLayout.CENTER);
+
+		add(panelTabla, BorderLayout.CENTER);
+
+	
+		
+		tabla.getColumnModel().getColumn(1).setCellRenderer(new TableCellRenderer() { 
+			@Override 
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+					boolean hasFocus, int row, int column) { 
+				JLabel label = new JLabel(); 
+				String imageName = value.toString(); 
+				label.setOpaque(true);
+
+				
+				if(db.estaSiguiendo(user, usuarios.get(row))) {
+					label.setBackground(new Color(29,161,242));
+
+				}
+ 
+				// Ruta de las imágenes 
+				String imagePath = "resources/images/recursos/perfil/" + imageName; 
+				ImageIcon icon = new ImageIcon(imagePath); 
+ 
+				// Obtener la imagen original 
+				Image originalImage = icon.getImage(); 
+ 
+				// Ajustar el tamaño de la imagen a 25x25 píxeles 
+				Image scaledImage = originalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH); 
+ 
+				// Crear un nuevo ImageIcon con la imagen redimensionada 
+				ImageIcon scaledIcon = new ImageIcon(scaledImage); 
+ 
+				// Asignar la imagen redimensionada al JLabel 
+				label.setIcon(scaledIcon); 
+ 
+				// Centrar la imagen en la celda 
+				label.setHorizontalAlignment(SwingConstants.CENTER); 
+				label.setVerticalAlignment(SwingConstants.CENTER); 
+				
+				if (isSelected) {
+					label.setBackground(table.getSelectionBackground());
+					label.setForeground(table.getSelectionForeground());
+				}
+ 
+				return label; 
+			} 
+		}); 
+ 
+
+		
+		
+		tabla.setDefaultRenderer(Object.class, new TableCellRenderer() {
+			
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+					JLabel labelGeneral = new JLabel(value.toString());
+					labelGeneral.setOpaque(true);
+
+					if(db.estaSiguiendo(user, usuarios.get(row))) {
+						labelGeneral.setBackground(new Color(29,161,242));
+
+					}
+					
+					if (isSelected) {
+						labelGeneral.setBackground(table.getSelectionBackground());
+						labelGeneral.setForeground(table.getSelectionForeground());
+					}
+
+
+					
+					
+					
+					return labelGeneral;
+				
+				
+				
+			}
+		});
+		
+		
+		
+		
+		JButton perfil = new JButton("Perfil");
+		perfil.addActionListener((e) -> new VentanaUsuario(usuarios.get(tabla.getSelectedRow())));
+
+		JPanel panelBotones = new JPanel();
+		JButton botonSeguir = new JButton("Seguir");
+		JButton dejarSeguir = new JButton("Dejar de Seguir");
+
+
+		panelBotones.add(perfil);
+		panelBotones.add(perfil);
+		panelBotones.add(botonSeguir);
+		
+		
+		
+		
+		
+		panelBotones.add(dejarSeguir);
+
+		getContentPane().add(panelBotones, BorderLayout.SOUTH);
+
+		this.setVisible(true);
+
+		
+		tabla.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(tabla.getSelectedRow() != -1 ) {
+					System.out.println("e");
+					
+					if(db.estaSiguiendo(usuario,usuarios.get(tabla.getSelectedRow()))) {
+						botonSeguir.setEnabled(false);
+						dejarSeguir.setEnabled(true);
+
+					}
+					else {
+						dejarSeguir.setEnabled(false);
+						botonSeguir.setEnabled(true);
+
+					}
+					repaint();
+					revalidate();
+
+				}
+			}
+		});
+	
+		botonSeguir.addActionListener(( e) -> {
+			if(tabla.getSelectedRow() != -1) {
+				db.insertarSeguidor(user, usuarios.get(tabla.getSelectedRow()));
+				botonSeguir.setEnabled(false);
+				dejarSeguir.setEnabled(true);
+				repaint();
+			}
+			
+		});
+		
+		dejarSeguir.addActionListener(( e) -> {
+			if(tabla.getSelectedRow() != -1) {
+				db.eliminarSeguidor(user, usuarios.get(tabla.getSelectedRow()));
+				dejarSeguir.setEnabled(false);
+				botonSeguir.setEnabled(true);
+				repaint();
+			}
+			
+		});
+
+	}
+	
+	private void cerrarVentanaConfirmacion() {
+
+		// Preguntar por confirmacion
+		int quiereCerrarVentana = JOptionPane.showConfirmDialog(null, "Quiere cerrar la ventana?", "Salir",
+				JOptionPane.YES_NO_OPTION);
+		if (quiereCerrarVentana == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+
 	}
 	
 	
+
+
 	
-
-	public void cargarDatosCSV(String n, DefaultTableModel datos){
-    	File f = new File(n);
-    	try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-			
-				String linea = sc.nextLine();
-				
-					String[] campos =  linea.split(";");
-					
-					datos.addRow(campos);
-					
-					HashMap<String,String> mapa = new HashMap<String, String>();
-	
-						mapa.put(campos[0], campos[1]  +campos[2] + campos[3] + campos[4]);
-				
-					
-					
-				}			
-			sc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-    }	
-		
-
-	 public void guardarEnArchivo(DefaultTableModel model) {
-
-	        try (PrintWriter pw = new PrintWriter(new FileWriter("personas.csv",false))) {
-
-
-	            for (int i = 0; i < model.getRowCount(); i++) {
-
-	                for (int j = 0; j < model.getColumnCount(); j++) {
-
-	                    pw.print(model.getValueAt(i, j));
-
-	                    if (j < model.getColumnCount() - 1) {
-
-	                        pw.print(";");
-
-	                    }
-
-	                }
-
-	                pw.println();
-
-	            }
-
-	        } catch (IOException e) {
-
-	            e.printStackTrace();
-	        }
-
-	           
-
-	    }
-	
-
-
-	public static void main(String[] args) {
-		String[] vacio = null;
-		 VentanaTablaUsuarios ventana = new VentanaTablaUsuarios(vacio);
-		 
-    }
-
-	   
 }
-	

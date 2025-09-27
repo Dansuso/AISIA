@@ -2,29 +2,23 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Rectangle;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -33,175 +27,166 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.SwingUtilities;
 
-import domain.Contenido;
-import gui.VentanaCatalogo;
-
+import db.GestorDB;
+import domain.Usuario;
 
 
-public class VentanaInicio extends JFrame{
-	protected 	Image fondo;
-	
-	//Añadimos el coreo y la contreseña a este mapa para luego preguntarle sio eesta 
+
+
+
+public class VentanaInicio extends JFrame {
+    
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPasswordField contrasenaField;
+	private JTextField usernameField;
 	protected static HashMap<String, String> mapa;
-	
-	
-	
-	//Cargamos los datos para ver luego si esta en la base de tados 
-	public void cargarDatosCSV(){
-    	File f = new File("resources/data/personas.csv");
-    	try {
-			Scanner sc = new Scanner(f);
-			while(sc.hasNextLine()) {
-				String linea = sc.nextLine();
-				String[] campos =  linea.split(";");
-			
-				
-					
-					mapa.put(campos[3], campos[4]);
-					
-					
-					
-				}
-			
-				 	
-			sc.close();
-					
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-    }
-
-	
-
-	public  VentanaInicio() {
-	
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setTitle("Ventana Inicio");
-		setSize(317,300);
-		
-		
-		//Inicializamos el mapa
-		 mapa = new HashMap<>();
-	     cargarDatosCSV();
-	     
-		
-		
-		
-		this.setLocationRelativeTo(null);
-		
-		
-		 // Panel para la imagen de fondo
-        JPanel mainPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon fondo = new ImageIcon("fondo.jpg"); // Ruta de tu imagen
-                g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        
-        mainPanel.setLayout(null);
-        
-        
-        //Creamos el menu y sus diferentes opciones
-        
-		JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-
-        JMenu fileMenu = new JMenu("Opciones de inicio");
-        menuBar.add(fileMenu);
-        
-
-        JMenuItem inicio = new JMenuItem("Iniciar sesión");
-        fileMenu.add(inicio);
-        
-
-        JMenuItem registro = new JMenuItem("Registarse");
-        fileMenu.add(registro);
-        
-        
-        fileMenu.addSeparator();
-        
-        JMenuItem cerrar = new JMenuItem("Cerrar sesión");
-        fileMenu.add(cerrar);
-        
-
-        fileMenu.addSeparator();
-
-        JMenuItem salir = new JMenuItem("Salir");
-        fileMenu.add(salir);
-        
-        
-        // Crear el panel personalizado para mostrar la imagen de fondo
-       
+    private static final Logger LOGGER = Logger.getLogger(VentanaInicio.class.getName());
 
 
-       JPanel panelBotones = new JPanel();
-      
+    public VentanaInicio() {
+        setTitle("Iniciar Sesion");
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setSize(400, 300);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null); //Que aparezca en el MEDIO
+    
+
         
+        //MENU
         
-     // Etiqueta para el nombre de usuario
-        JLabel nombre = new JLabel("Correo:");
-        nombre.setForeground(Color.WHITE); // Color del texto
-        nombre.setBounds(30, 50, 80, 25); // Posición y tamaño del componente
-        mainPanel.add(nombre);
-
-        // Campo de texto para el nombre de usuario
-        JTextField txt1 = new JTextField(20);
-        txt1.setBounds(100, 50, 150, 25); // Posición y tamaño del componente
-        mainPanel.add(txt1);
-
-        // Etiqueta para la contraseña
-        JLabel contraseña = new JLabel("Contraseña:");
-        contraseña.setForeground(Color.WHITE); // Color del texto
-        contraseña.setBounds(30, 100, 80, 25); // Posición y tamaño del componente
-        mainPanel.add(contraseña);
-
-        // Campo de texto para la contraseña
-        JPasswordField txt2 = new JPasswordField(20);
-        txt2.setBounds(100, 100, 150, 25); // Posición y tamaño del componente
-        mainPanel.add(txt2);
+    	JMenuBar menuBar = new JMenuBar(); 
+        setJMenuBar(menuBar); 
+ 
+        JMenu fileMenu = new JMenu("Opciones de inicio"); 
+        menuBar.add(fileMenu); 
+         
+ 
+        JMenuItem inicio = new JMenuItem("Iniciar sesión"); 
+        fileMenu.add(inicio); 
+         
+ 
+        JMenuItem registro = new JMenuItem("Registarse"); 
+        fileMenu.add(registro); 
+         
+         
+        fileMenu.addSeparator(); 
+         
         
-        ImageIcon foto1 = new ImageIcon("fotover.png");
-        JButton ocultar = new JButton(foto1);
-        ocultar.setBounds(210, 100, 120, 30); // Posición y tamaño del componente
+        JMenuItem salir = new JMenuItem("Salir"); 
+        fileMenu.add(salir); 
         
-       
-    	
-    	//Le quita el borde a las imagenes
-    	 // Quitar el borde del botón
-    	ocultar.setBorderPainted(false);
-
-        // Quitar el relleno del botón
-    	ocultar.setContentAreaFilled(false);
-
-        // Quitar el efecto de enfoque
-    	ocultar.setFocusPainted(false);
-
-        mainPanel.add(ocultar);
-
-      
-        
+        salir.addActionListener(new ActionListener() { 
+			 
+			@Override 
+			public void actionPerformed(ActionEvent e) { 
+				JLabel etiqueta1 = new JLabel("Quieres salir de la aplicación"); 
+        		Object[] message = { etiqueta1}; 
+        		// Mostrar el JOptionPane con los componentes en un array 
+        		int resultado = JOptionPane.showConfirmDialog(null,  
+        			message,  
+        			"Introduce los datos",  
+        			JOptionPane.YES_NO_OPTION 
+        			 
   
-     // Crear los botones
+        	 
+        		); 
+        		if (resultado == JOptionPane.YES_OPTION) { 
+        			System.exit(0); 
+        		} 
+        		 
+        	} 
+        	}); 
+         
+        
+        JPanel mainPanel = new JPanel() { 
+            /** 
+			 *  
+			 */ 
+			private static final long serialVersionUID = 1L; 
+ 
+			@Override 
+            protected void paintComponent(Graphics g) { 
+                super.paintComponent(g); 
+                ImageIcon fondo = new ImageIcon("resources/images/recursos/fondo.jpg"); // Ruta de tu imagen 
+                g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this); 
+            } 
+        }; 
+         
+        mainPanel.setLayout(new BorderLayout(10, 10)); 
+         
+        
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        centerPanel.setOpaque(false);
+        
+        // Username
+        JPanel nombreUsuarioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        nombreUsuarioPanel.setOpaque(false); // Transparente para la imagen de fondo
+        JLabel usernameLabel = new JLabel("Username: ");
+        usernameLabel.setForeground(Color.WHITE); // Cambiar el color del texto a blanco
+        
+        nombreUsuarioPanel.add(usernameLabel);
+        usernameField = new JTextField(15);
+        
+        nombreUsuarioPanel.add(usernameField);
+        centerPanel.add(nombreUsuarioPanel);
+        
+        //Contrasena 
+        JPanel panelContrasena = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelContrasena.setOpaque(false); // Transparente para la imagen de fondo
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setForeground(Color.WHITE); // Cambiar el color del texto a blanco
+        panelContrasena.add(passwordLabel);
+        contrasenaField = new JPasswordField(15);
+        panelContrasena.add(contrasenaField);
+        
+        
+     
+        
+        // Botón para mostrar/ocultar contraseña
+        ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotover.png");
+        JButton ocultar = new JButton(foto1);
+       
+        
+        /*
+         * Rompe  la estructura y no quedan alineados los labels.
+         * Si se encuentra solucion, se puede retomar pero es importante
+         * que visualmente quede bien
+     	
+     	//Le quita el borde a las imagenes
+     	 // Quitar el borde del botón
+     	ocultar.setBorderPainted(false);
+
+         // Quitar el relleno del botón
+     	ocultar.setContentAreaFilled(false);
+
+         // Quitar el efecto de enfoque
+     	ocultar.setFocusPainted(false);
+
+        panelContrasena.add(ocultar);
+         */
+        centerPanel.add(panelContrasena);
+      
+    
+        
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        
+        JPanel panelBotones = new JPanel();
+        // Crear los botones
     	JButton botonAgregar = new JButton("Iniciar");
     	JButton botonCerrar = new JButton("Cerrar");
     	
     	
 
-        
-        getContentPane().add(mainPanel, BorderLayout.CENTER);
-        
+    	
     
     	
     	panelBotones.add(botonAgregar);
@@ -209,23 +194,40 @@ public class VentanaInicio extends JFrame{
         
     	getContentPane().add(panelBotones, BorderLayout.SOUTH);
     	
-    
-    	
-    	//Inicioamos la ventana REgistro
-    	//Para que habra la ventana Registro
-    	registro.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dispose();
-				VentanaRegistro ventana = new VentanaRegistro();
-				ventana.setVisible(true);
-			}
-		});
+		registro.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						dispose();
+						VentanaRegistro ventana = new VentanaRegistro();
+						ventana.setVisible(true);
+					}
+				});
     	
     	
-    	
+        //CERRAR
+        this.addWindowListener(new WindowAdapter() { 
+       	 
+        	@Override 
+        	public void windowClosing(WindowEvent e) { 
+        	// se llama cuando el usuario intenta cerrar la ventana 
+        		JLabel etiqueta1 = new JLabel("Quieres salir de la aplicación"); 
+        		Object[] message = { etiqueta1}; 
+        		// Mostrar el JOptionPane con los componentes en un array 
+        		int resultado = JOptionPane.showConfirmDialog(null,  
+        			message,  
+        			"Salir",  
+        			JOptionPane.YES_NO_OPTION 
+        		
+        		); 
+        		if (resultado == JOptionPane.YES_OPTION) { 
+        			System.exit(0); 
+        		} 
+        		 
+        	} 
+        	}); 
+
     	//Boton salir
     	salir.addActionListener(new ActionListener() {
 			
@@ -248,8 +250,6 @@ public class VentanaInicio extends JFrame{
         		
         	}
         	});
-    	
-    	
     	//Boton cerrar
     	botonCerrar.addActionListener(new ActionListener() {
 			
@@ -260,29 +260,25 @@ public class VentanaInicio extends JFrame{
 			}
 		});
     	
-//    	ImageIcon foto = new ImageIcon();
-//    	boton.setIcon();
-    	
-    	
     	
     	// tocas el boton 1 muestra la contraseña que hay hay en el txt2 
-    	char valor = txt2.getEchoChar();
+    	char valor = contrasenaField.getEchoChar();
     	ocultar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Comprobamos en que modo de codificacion esta para cambiarlo de un a otro
 				//Ponemos la foto en depende de que modo este el formato del txt
-				if(txt2.echoCharIsSet()) {
+				if(contrasenaField.echoCharIsSet()) {
 					//Con este codigo pasamos de * a lo que ha escrito el usuario para que sepa la contraseña
-					 txt2.setEchoChar((char) 0);
+					 contrasenaField.setEchoChar((char) 0);
 					 ImageIcon foto1 = new ImageIcon("resources/images/recursos/fotnover.png");
 					 ocultar.setIcon(foto1);
 					
 				}else {
 					//Y aqui al reves 
-					txt2.setEchoChar(valor);
-					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotnover.png");
+					contrasenaField.setEchoChar(valor);
+					ImageIcon foto2 = new ImageIcon("resources/images/recursos/fotover.png");
 					ocultar.setIcon(foto2);
 				}
 				
@@ -291,78 +287,108 @@ public class VentanaInicio extends JFrame{
 				
 			}
 		});;
-		
-		
-		//Recorre el mapa y compruba si el usuario que a escrito eCorreo y contrasña y abrir una nueva pensatña
-		botonAgregar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			
+		/**
+		 * ACCION DE INICIAR SESION
+		 */
+		botonAgregar.addActionListener(e -> {
+		    String username = usernameField.getText().trim();
+		    String contrasena = String.valueOf(contrasenaField.getPassword()).trim();
+
+		    if (username.isEmpty() || contrasena.isEmpty()) {
+		        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+		        return;
+		    }
+
+		    Usuario user = comprobarUsuarioExiste();
+		    if (user != null) {
+		    	
+		    	FileHandler fh;
+				try {
+					fh = new FileHandler("log/logUsuarios.txt", 1000000, 3, true);
+					LOGGER.addHandler(fh);
+					SimpleFormatter formatter = new SimpleFormatter();
+					fh.setFormatter(formatter);
+					LOGGER.setUseParentHandlers(false);
+					LOGGER.info("Usuario logeado " + user.getUsername());
+					fh.close();
+				} catch (SecurityException | IOException ex) {
+					System.err.println("Ha habido algun problema con la creacion de Log del Uusuario " + ex.getMessage());
+				}
 				
-				String Correo = txt1.getText();
-				String contra = new String(txt2.getPassword());
-				
-				
-					if(mapa.containsKey(Correo) && mapa.get(Correo).equals(contra)) {
-						dispose();
-						
-						//Ventana pruba hasta que creemos la principal
-					
-						
-						VentanaCatalogo catalo = new VentanaCatalogo();
-						catalo.setVisible(true);
-						
-					}else {
-						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-					}
-					
-				
-				
-				
-				
-				
-				
-			}
+		        SwingUtilities.invokeLater(() -> new VentanaFeed(user).setVisible(true));
+		        dispose();
+		    } else {
+		        JOptionPane.showMessageDialog(this, "Error al iniciar sesion. Revisa tus credenciales o registrate!.", "Error", JOptionPane.ERROR_MESSAGE);
+		    }
 		});
-		 
-        addWindowListener(new WindowAdapter() {
-        	
-        	@Override
-        	public void windowClosing(WindowEvent e) {
-        	// se llama cuando el usuario intenta cerrar la ventana
-        		JLabel etiqueta1 = new JLabel("Quieres salir de la aplicación");
-        		Object[] message = { etiqueta1};
-        		// Mostrar el JOptionPane con los componentes en un array
-        		int resultado = JOptionPane.showConfirmDialog(null, 
-        			message, 
-        			"Introduce los datos", 
-        			JOptionPane.YES_NO_OPTION
-        			
-        			
-        			
-        	
-        		);
-        		if (resultado == JOptionPane.YES_OPTION) {
-        			System.exit(0);
-        		}
-        		
-        	}
-        	});
-        
+
         
     	
+        // Añadir panel principal a la ventana
+       this.add(mainPanel);
+       this.setVisible(true);
         
-		
-		setVisible(true);
-		
-	}
-	
-	
-	public static void main(String[] args) {
-        new VentanaInicio();
-        System.out.println(mapa);
     }
+ /*
+  * Funcion que devuelve un usuario en el caso de que dicho usuario exista, o null si no existe
+  * De esta forma se comprueba si el usuario que se ha introducido esta registrado.
+  */
+	private Usuario comprobarUsuarioExiste() {
+		// TODO Auto-generated method stub
+		GestorDB db = new GestorDB();
+		String username = usernameField.getText();
+		String contrasena = String.valueOf(contrasenaField.getPassword());
 	
+		Usuario u = db.loginUsuario(username, contrasena);
+		return u;
+	}
 
-}	
+
+
+
+
+/*
+ * @DEPRECIATED : YA NO SE USAN CSVS
+ */
+
+	/*
+	//Cargamos los datos para ver luego si esta en la base de tados 
+	public void cargarDatosCSV(){
+    	File f = new File("resources/data/usuario.csv");
+    	try {
+			Scanner sc = new Scanner(f);
+			while(sc.hasNextLine()) {
+				String linea = sc.nextLine();
+				String[] campos =  linea.split(";");
+			
+				
+					
+					mapa.put(campos[1], campos[5]);
+					
+					
+					
+				}
+			
+				 	
+			sc.close();
+					
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    }
+
+*/
+
+    
+
+
+	public static void main(String[] args) {
+       new VentanaInicio();
+       System.out.println(mapa);
+
+    }
+} 

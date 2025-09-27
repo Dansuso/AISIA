@@ -5,13 +5,10 @@ package gui;
  */
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,12 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import domain.Usuario;
+
 public class VentanaBase extends JFrame {
 	/**
 		 * 
 		 */
 	private static final long serialVersionUID = 1L;
 	protected final static String NOMBRE_FUENTE = "Calibri";
+	private Usuario user;
 
 	/**
 	 * Constructor de la ventana base o por defecto.
@@ -36,7 +36,8 @@ public class VentanaBase extends JFrame {
 	 * @param titulo Titulo de la ventana. Es OBLIGATORIO.
 	 * @throws IllegalArgumentException si no se pasa ningun titulo como parametro
 	 */
-	public VentanaBase(String titulo) {
+	public VentanaBase(String titulo,Usuario user) {
+		this.user = user;
 
 		if (titulo == "") {
 			throw new IllegalArgumentException("Es obligatorio que la ventana tenga un titulo");
@@ -81,23 +82,51 @@ public class VentanaBase extends JFrame {
 
 		JMenu menu = new JMenu("Aisia");
 		menuBar.add(menu);
-
+		
 		// CATALOGO
 		JMenuItem menuItemCatalogo = new JMenuItem("Catalogo");
 		menuItemCatalogo.setMnemonic(KeyEvent.VK_C);
-		menuItemCatalogo.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaCatalogo()));
-		
+		menuItemCatalogo.addActionListener(e ->  {
+		SwingUtilities.invokeLater(() -> new VentanaCatalogo(user));
+		dispose();
+		});
 
 		// PERFIL
 		JMenuItem menuItemPerfil = new JMenuItem("Perfil");
 		menuItemPerfil.setMnemonic(KeyEvent.VK_P);
-		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario()));
-		
+		menuItemPerfil.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaUsuario(user)));
 		// FEED
 		JMenuItem menuItemFeed = new JMenuItem("Feed");
 		menuItemFeed.setMnemonic(KeyEvent.VK_F);
-		menuItemFeed.addActionListener(e -> SwingUtilities.invokeLater(() -> new VentanaFeed()));
+		menuItemFeed.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaFeed(user));
+			dispose();
+		});
 		
+		
+		JMenuItem menuItemCombinacion = new JMenuItem("Combinaciones");
+		menuItemFeed.setMnemonic(KeyEvent.VK_K);
+		menuItemCombinacion.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new CombinacionesContenido());
+		});
+		
+		JMenuItem menuItemUsuario = new JMenuItem("Usuarios");
+		menuItemUsuario.setMnemonic(KeyEvent.VK_U);
+		menuItemUsuario.addActionListener( e ->  {
+			SwingUtilities.invokeLater(() -> new VentanaTablaUsuarios(user));
+			dispose();
+		});
+		
+		// SALIR
+		JMenuItem menuItemCerrar = new JMenuItem("Cerrar Sesion");
+		menuItemCerrar.addActionListener(e ->  {
+			new VentanaInicio();
+			dispose();
+			
+			
+		});
+		menuItemCerrar.setMnemonic(KeyEvent.VK_C);
+	
 		// SALIR
 		JMenuItem menuItemSalir = new JMenuItem("Salir");
 		menuItemSalir.addActionListener(e -> cerrarVentanaConfirmacion());
@@ -108,7 +137,13 @@ public class VentanaBase extends JFrame {
 		menu.addSeparator();
 		menu.add(menuItemPerfil);
 		menu.addSeparator();
+		menu.add(menuItemCombinacion);
+		menu.addSeparator();
 		menu.add(menuItemFeed);
+		menu.addSeparator();  
+		menu.add(menuItemUsuario);
+		menu.addSeparator();  
+		menu.add(menuItemCerrar);
 		menu.addSeparator();  
 		menu.add(menuItemSalir);
 
@@ -127,14 +162,10 @@ public class VentanaBase extends JFrame {
 		int quiereCerrarVentana = JOptionPane.showConfirmDialog(null, "Quiere cerrar la ventana?", "Salir",
 				JOptionPane.YES_NO_OPTION);
 		if (quiereCerrarVentana == JOptionPane.YES_OPTION) {
-			dispose();
+			System.exit(0);
 		}
 
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new VentanaBase("Prueba"));
-
-	}
 
 }

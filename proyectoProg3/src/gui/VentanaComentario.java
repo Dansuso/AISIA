@@ -9,19 +9,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class ventanaComentario {
-	public static ActionListener ventanacomentario(String comentario, String nombre, String calif, String foto) {
+import domain.Post;
+
+public class VentanaComentario {
+	public static ActionListener VentanaComent(Post post) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
             	Color colorAisia3 = new Color(235, 155, 195);
-                JFrame ventanaComentario = new JFrame();
+                JDialog ventanaComentario = new JDialog();
+                ventanaComentario.setModal(true);
+                ventanaComentario.setAlwaysOnTop(true);		// Para que se ponga delante
                 ventanaComentario.setTitle("Comentario");
                 ventanaComentario.setSize(640, 640);
                 ventanaComentario.setLayout(new GridLayout(2, 1));
@@ -33,44 +38,49 @@ public class ventanaComentario {
                 panelVentanaComentario.setBackground(colorAisia3);
 
                 
-                JTextArea areaComentario = new JTextArea(comentario);
+                
+                // Comentario en cuestión
+                JTextArea areaComentario = new JTextArea(post.getContenido());
                 areaComentario.setBackground(colorAisia3);
                 areaComentario.setLineWrap(true);       // Ajustar texto
                 areaComentario.setWrapStyleWord(true);	// Que no se partan las palabras
                 areaComentario.setEditable(false);
-        		areaComentario.setFont(new Font("Arial", Font.BOLD, 15));
+        		areaComentario.setFont(new Font("Arial", Font.BOLD, 19));
         		
         		JScrollPane deslizanteComentario = new JScrollPane(areaComentario);
                 panelVentanaComentario.add(deslizanteComentario);
                 
+                
+                // Panel con la fecha en la que se ha publicado el post
                 JPanel panelNombreCalif = new JPanel(new BorderLayout());
                 panelNombreCalif.setBackground(colorAisia3);
                 
-                JTextArea areaNombre = new JTextArea(" " + nombre);
-                areaNombre.setBackground(colorAisia3);
-                areaNombre.setLineWrap(true);       // Ajustar texto
-                areaNombre.setWrapStyleWord(true);	// Que no se partan las palabras
-                areaNombre.setEditable(false);
-        		areaNombre.setFont(new Font("Tahoma", Font.BOLD, 45));
-        		
-                panelNombreCalif.add(areaNombre, BorderLayout.NORTH);
                 
-                JTextArea areaCalif = new JTextArea(" " + calif);
-                areaCalif.setBackground(colorAisia3);
-                areaCalif.setLineWrap(true);       // Ajustar texto
-                areaCalif.setWrapStyleWord(true);	// Que no se partan las palabras
-                areaCalif.setEditable(false);
-        		areaCalif.setFont(new Font("emojiFont", Font.BOLD, 70));
+                JLabel areaFecha = VentanaUsuario.formatearFecha(post.getFechaPost());
+                areaFecha.setBackground(colorAisia3);
+        		areaFecha.setFont(new Font("Tahoma", Font.BOLD, 20));
+        		areaFecha.setForeground(Color.WHITE);
         		
-        		panelNombreCalif.add(areaCalif, BorderLayout.SOUTH);
+        		JLabel areaNombreUser = new JLabel(post.getCreadorPost().getUsername());
+        		areaNombreUser.setForeground(Color.RED);
+                areaNombreUser.setBackground(colorAisia3);
+        		areaNombreUser.setFont(new Font("Tahoma", Font.BOLD, 40));
+        		
+                panelNombreCalif.add(areaFecha, BorderLayout.NORTH);
+                panelNombreCalif.add(areaNombreUser, BorderLayout.CENTER);
                 
                 panelArriba.add(panelNombreCalif);
                 panelArriba.add(panelVentanaComentario);
-
+                
+                
                 JPanel fotoPanel = new JPanel(new BorderLayout());
                 fotoPanel.setBackground(colorAisia3);
-                ImageIcon caratula = new ImageIcon(foto);
-                Image escaladoCaratula = caratula.getImage().getScaledInstance(350, 450, Image.SCALE_SMOOTH);
+                String direccionPredeterminada = "resources/images/recursos/perfil/";
+                String dirFinal = direccionPredeterminada + post.getCreadorPost().getFoto();
+                
+                ImageIcon caratula = new ImageIcon(dirFinal);
+                Image escaladoCaratula = caratula.getImage().getScaledInstance(265, 265, Image.SCALE_SMOOTH);
+                
                 ImageIcon escaladoCaratulaFin = new ImageIcon(escaladoCaratula);
                 JLabel etiquetaCaratula = new JLabel(escaladoCaratulaFin);
                 fotoPanel.add(etiquetaCaratula, BorderLayout.CENTER);

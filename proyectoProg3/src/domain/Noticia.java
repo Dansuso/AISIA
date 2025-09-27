@@ -6,17 +6,25 @@ public class Noticia {
 	
 	private String url;
 	private String fuente;
-	private String tipo;
+	private int id;
 	
 	
-	public Noticia(String titulo, String resumen, String url, String fuente) {
+	public Noticia( int id,String titulo, String resumen, String url, String fuente) {
 		super();
+		this.id = id;
 		this.titulo = titulo;
 		this.resumen = resumen;
 		this.url = url;
 		this.fuente = fuente;
 		
 	}
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -43,8 +51,7 @@ public class Noticia {
 	}
 	@Override
 	public String toString() {
-		return "Noticia [titulo=" + titulo + ", resumen=" + resumen + ", url=" + url + ", fuente=" + fuente + ", tipo="
-				+ tipo + "]";
+		return "Noticia [titulo=" + titulo + ", resumen=" + resumen + ", url=" + url + ", fuente=" + fuente + "]";
 	}
 	
 	

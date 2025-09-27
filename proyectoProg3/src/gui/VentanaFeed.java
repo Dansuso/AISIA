@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,17 +13,27 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -34,50 +45,35 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import db.GestorDB;
 import domain.Noticia;
-import domain.Pelicula;
 import domain.Post;
+import domain.Usuario;
 
 /**
  * Clase que representa la ventana del feed, donde los usuarios podran enviar y
  * leer posts.
  */
 public class VentanaFeed extends VentanaBase {
+	
+	
+	private static final long serialVersionUID = 1L;
+	private JTable tablaTaquilla;
+	private LinkedHashMap<String, String> recaudacionPorPelicula = new LinkedHashMap<String, String>();
+	private JComboBox<String> comboBoxAnos;
+	private JLabel labelTaquilla;
+	private GestorDB db;
+	private final Usuario usuario;
+    private static final Logger LOGGER = Logger.getLogger(VentanaFeed.class.getName());
+
 
 	// CLASES INTERNAS
-
-	/**
-	 * Clase del Renderer de la Lista de Noticias.
-	 */
-	private class CellRendererNoticias extends DefaultListCellRenderer {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			// Guardamos en c el componente (Es un JLABEL) creado por el renderer.
-			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			// Casteamos el componente a JLabel
-
-			JLabel labelNoticia = (JLabel) c;
-
-			// El value es una instancia de Noticia, asi que casteamos tambien
-			Noticia noticia = (Noticia) value;
-
-			labelNoticia.setText(noticia.getTitulo());
-			// Cuando el usuario pase el raton por la noticia, mostrara el titulo completo.
-			labelNoticia.setToolTipText(noticia.getTitulo());
-			// Poner como icono el logo de la fuente de la noticia.
-			labelNoticia
-					.setIcon(new ImageIcon("resources/images/fuentes/" + noticia.getFuente().toLowerCase() + ".png"));
-
-			return labelNoticia;
-
-		}
-
-	}
 
 	/**
 	 * Clase para el TableModel de la Tabla.
@@ -87,23 +83,33 @@ public class VentanaFeed extends VentanaBase {
 		/**
 		 * 
 		 */
+
 		private static final long serialVersionUID = 1L;
-		private String[] nombreColumnas = { "Posicion", "Nombre", "Recaudacion", "Distribuidora", "Fecha", "Genero" };
-		private List<Pelicula> peliculas;
+		private String[] nombreColumnas = { "Posicion", "Nombre", "Recaudacion" };
+		private LinkedHashMap<String, String> recaudacionPorPelicula;
+		private ArrayList<String> peliculasModelLista = new ArrayList<String>();
 
 		/**
 		 * Constructor del TableModel
 		 * 
+		 * @param <T>
+		 * 
 		 * @param peliculas Una lista de Peliculas para que se muestren en la tabla
 		 */
-		public PeliculaTableModel(List<Pelicula> peliculas) {
-			this.peliculas = peliculas;
+		public PeliculaTableModel(LinkedHashMap<String, String> recaudacionPorPelicula) {
+			this.recaudacionPorPelicula = recaudacionPorPelicula;
+			peliculasModelLista.addAll(recaudacionPorPelicula.keySet());
 		}
+		
+		
 
+		public List<String> getModelLista(){
+			return peliculasModelLista;
+		}
 		@Override
 		public int getRowCount() {
 			// TODO Auto-generated method stub
-			return peliculas.size();
+			return recaudacionPorPelicula.size();
 		}
 
 		@Override
@@ -120,22 +126,14 @@ public class VentanaFeed extends VentanaBase {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			// Elegimos la pelicula
-			Pelicula pelicula = peliculas.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return rowIndex;
+				return rowIndex + 1;
 			case 1:
-				return pelicula.getTitulo();
+				return peliculasModelLista.get(rowIndex);
 			case 2:
-				return pelicula.getFacturacionTaquilla();
-			case 3:
-				return pelicula.getDistribuidora();
-			case 4:
-				return "2023"; // TODO: Añadir campo de Fecha
-			case 5:
-				return pelicula.getGenero(); // TODO GENERO DEBERIA SER UN ENUM.
+				return recaudacionPorPelicula.get(peliculasModelLista.get(rowIndex));
 
 			}
 			return null;
@@ -143,18 +141,20 @@ public class VentanaFeed extends VentanaBase {
 
 	}
 
-	/**
-	 * Clase que define el Renderer de la Tabla.
-	 * 
-	 */
+	
 
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor de la ventana de la Feed
+	 * @param idUsuario idUsuario que ha abierto esta ventana. Para simular las "cookies" de un navegador.
 	 */
-	public VentanaFeed() {
-		super("Feed");
+	public VentanaFeed(Usuario usuario) {
+		super("Feed",usuario);
+		this.usuario = usuario;
+
+		
+		db = new GestorDB();
+	
 		// this.setMinimumSize(new Dimension(400,800));
 
 		// Panel general de esta ventana, donde iran todos los demas componentes.
@@ -180,12 +180,20 @@ public class VentanaFeed extends VentanaBase {
 		panelHeader.add(feedTitulo, BorderLayout.CENTER);
 
 		// PANEL ENVIO POSTS
-		JPanel panelPostTextArea = new JPanel(new BorderLayout());
-		// JTextArea con un padding tambien de 10 pixeles
-		JTextArea postTextArea = new JTextArea();
-		postTextArea.setRows(3);
-		// BOTON ENVIAR
+		
+	
 		JButton botonEnviar = new JButton("Enviar");
+		
+		JPanel panelPostTextArea = new JPanel(new BorderLayout());
+		JTextArea postTextArea = new JTextArea();
+		postTextArea.setRows(6);  
+		postTextArea.setLineWrap(true);
+		postTextArea.setWrapStyleWord(true);
+
+		panelPostTextArea.add(new JScrollPane(postTextArea), BorderLayout.CENTER);
+	
+		panelPostTextArea.add(botonEnviar, BorderLayout.SOUTH);
+		
 		// 29 161 242 es el codigo RGB del azul de Twitter
 		botonEnviar.setBackground(new Color(29, 161, 242));
 		botonEnviar.setForeground(Color.white);
@@ -199,23 +207,72 @@ public class VentanaFeed extends VentanaBase {
 		// Eje VERTICAL, ya que la feed va para abajo.
 		JPanel panelPosts = new JPanel();
 		panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
-
-		for (int i = 0; i < 5; i++) {
+		/*
+		for (int i = 0; i < 3; i++) {
 			JPanel panelPostIndividual = crearPost(
-					new Post(i, "Este es mi post numero " + i, null, 0, i, i, null, null));
+					new Post(i, "Este es mi post numero " + i, LocalDateTime.now(),1));
 			panelPosts.add(panelPostIndividual);
+		}
+		*/
+		
+		List<Post> postsFeed = db.obtenerPostFeed(usuario.getCodigo());
+		for (Post post : postsFeed) {
+			JPanel panelPostIndividual = crearPost(post);
+			panelPosts.add(panelPostIndividual);
+			
 		}
 
 		JScrollPane scrollPosts = new JScrollPane(panelPosts);
+		
+		botonEnviar.addActionListener((e -> {
+			
+			//SACAR HORA DEL POST (En Unix epoch)
+		
+			// IAG Claude Sonnet 3.5
+			//ADAPTADO : Estaba hecho para LocalDate y UTC, cambiado a CET y LocalDateTime
+	
+			//Convertir a una fecha (LocalDateTime), a CET!!! 
+			long horaPost = e.getWhen();
+			LocalDateTime fechaPost = Instant.ofEpochMilli(horaPost).atZone(ZoneId.of("CET")).toLocalDateTime();
+		    if (!postTextArea.getText().trim().isEmpty()) {
+		    	 
+		        Post p = new Post(0, postTextArea.getText(),fechaPost,usuario);
+				int idAuto = db.insertarPost(p.getContenido(),horaPost, p.getCreadorPost().getCodigo());
+				p.setCodigoPost(idAuto);
+		        JPanel p1 = crearPost(p);
+		        if (panelPosts.getComponentCount() >= 10) {
+		            panelPosts.remove(0);
+		        }
+		        
+		        panelPosts.add(p1);
+		        
+		        //Limpiar el JTextAREA despues de añadir dicho evento
+		        postTextArea.setText("");
+		        //Hacer que la ScrollBar este siempre abajo (Para ver el ultimo post)
+		        SwingUtilities.invokeLater(() -> {
+		            JScrollBar barraVertical = scrollPosts.getVerticalScrollBar();
+		            barraVertical.setValue(barraVertical.getMaximum());
+		        });
 
-		panelCentral.add(panelHeader, BorderLayout.NORTH);
-		panelCentral.add(panelPostTextArea, BorderLayout.CENTER);
-		panelCentral.add(scrollPosts, BorderLayout.SOUTH);
+		        // Revalidar y repintar 
+		        panelPosts.revalidate();
+		        panelPosts.repaint();
+
+		    }
+		}));
+		
+
+
+		panelCentral.add(panelPostTextArea, BorderLayout.NORTH);
+		panelCentral.add(scrollPosts, BorderLayout.CENTER);
 
 		// Añadimos al panel Principal todo
 		panelPrincipal.add(setupPanelNoticias(), BorderLayout.EAST);
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		
+		
 
 		// Despues de acabar toda la configuracion, añadimos el panel general a la
 		// ventana
@@ -236,9 +293,11 @@ public class VentanaFeed extends VentanaBase {
 	 * @return Un Panel que representa un post
 	 */
 	private JPanel crearPost(Post postEscrito) {
+		
 		JPanel post = new JPanel(new BorderLayout(10, 15));
 		post.setBorder(new EmptyBorder(10, 10, 10, 10));
-		JLabel usuarioPost = new JLabel("Usuario");
+		DateTimeFormatter fechaFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
+		JLabel usuarioPost = new JLabel(postEscrito.getCreadorPost().getUsername() + " - " + postEscrito.getFechaPost().format(fechaFormato));
 		JTextArea mensajePost = new JTextArea(postEscrito.getContenido());
 		mensajePost.setBorder(new EmptyBorder(10, 10, 10, 10));
 		mensajePost.setEditable(false);
@@ -248,26 +307,53 @@ public class VentanaFeed extends VentanaBase {
 		// INTERACCIONES POSIBLES : RESPONDER, LIKE
 		JPanel interacciones = new JPanel();
 		interacciones.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JButton botonResponder = new JButton("Responder");
-		botonResponder.setBackground(new Color(0, 102, 204));
-		botonResponder.setForeground(Color.white);
-		JButton botonLike = new JButton("Like " + postEscrito.getNumLikes());
-		botonLike.setBackground(new Color(36, 160, 237));
-		botonLike.setForeground(Color.white);
+		
+	    // Boton de eliminar
+	    JButton botonEliminar = new JButton("Eliminar");
+	    botonEliminar.setBackground(Color.RED);
+	    botonEliminar.setForeground(Color.WHITE);
+	    botonEliminar.setBorder(new EmptyBorder(5, 10, 5, 10));
+	    
+	    //Boton de Perfil (Abre el perfil)
+	    JButton botonPerfil = new JButton("Perfil");
+	    botonPerfil.setBackground(new Color(29,161,242));
+	    botonPerfil.setForeground(Color.white);
+	    botonPerfil.setBorder(new EmptyBorder(5,10,5,10));
+	    botonPerfil.addActionListener( (e) -> {
+	    	SwingUtilities.invokeLater(( ) -> new VentanaUsuario(postEscrito.getCreadorPost()));
+	    });
+	    
+	    
+	    //Solamente aparecera el boton de Eliminar para los posts escritos por nosotros.
+	    if(postEscrito.getCreadorPost().getCodigo() == usuario.getCodigo())
+	    {
+	    interacciones.add(botonEliminar);
+	    }
+	    interacciones.add(botonPerfil);
 
-		interacciones.add(botonResponder);
-		interacciones.add(botonLike);
+	    // Acción del botón de eliminar
+	    botonEliminar.addActionListener(e -> {
+	        // Obtenemos el panel padre del panel de post
+	        Container parent = post.getParent();
+	        //Lo eliminamos y revalidamos y repintamos
+	        if (parent != null) {
+	            parent.remove(post);
+	            parent.revalidate();
+	            parent.repaint();
+	            db.borrarPost(postEscrito.getCodigoPost());
+	        }
+	    });
 
+		
 		post.add(usuarioPost, BorderLayout.NORTH);
 		post.add(mensajePost, BorderLayout.CENTER);
 		post.add(interacciones, BorderLayout.SOUTH);
+
 		return post;
 
 	}
 
-	/**
-	 * Clase interna que define el Renderer para la lista de Noticias
-	 */
+	
 
 	/**
 	 * Funcion para crear el panel de Noticias que saldra a la derecha en la Feed.
@@ -292,24 +378,8 @@ public class VentanaFeed extends VentanaBase {
 		// Dos JTabbedPane uno para las noticias de
 		JTabbedPane paneNoticias = new JTabbedPane();
 
-		// TODO : Hacer dos paneles , uno para peliculas y otro TV?
-
-		List<Noticia> noticias = List.of(
-				new Noticia("Netflix Password Crackdown Delivers Millions of New Customers", " ",
-						"https://www.wsj.com/business/earnings/netflix-nflx-q1-earnings-report-2024-78eababf", "wsj"),
-				new Noticia("Tom Cruise Eyeing ‘Days of Thunder’ Sequel for Paramount", " ",
-						"https://www.hollywoodreporter.com/movies/movie-news/tom-cruise-days-of-thunder-sequel-paramount-1236051723/",
-						"thr"),
-				new Noticia(
-						"Joker’ Box Office Shocker: ‘Folie à Deux’ Bombs With $37.8M Opening After Receiving D CinemaScore",
-						" ",
-						"https://www.hollywoodreporter.com/movies/movie-news/joker-folie-a-deux-box-office-d-cinemascore-1236025168/",
-						"thr"),
-				new Noticia("Disney Adds 5 Million Streaming Subscribers", " ",
-						"https://www.nytimes.com/2023/11/08/business/disney-5-million-streaming-subscribers.html?searchResultPosition=8",
-						"nyt"),
-				new Noticia("How Netflix won the streaming wars", " ",
-						"https://www.ft.com/content/465a2d0d-8973-4d8d-827d-8729737e6606", "ft"));
+		//TODO Substituir por lo que hay en la BD
+		List<Noticia> noticias = db.obtenerNoticias();	
 
 		DefaultListModel<Noticia> listModelNoticias = new DefaultListModel<Noticia>();
 		listModelNoticias.addAll(noticias);
@@ -321,7 +391,7 @@ public class VentanaFeed extends VentanaBase {
 		// TODO : TOOLTIP
 
 		listaNoticias.setCellRenderer(new CellRendererNoticias());
-		
+
 		// En vez de usar MouseListener que es una interfaz con metodos que no nos
 		// interesan
 		// Instanciamos una clase anonima de MouseAdapter y hacemos Override al metodo
@@ -331,13 +401,13 @@ public class VentanaFeed extends VentanaBase {
 			public void mouseClicked(MouseEvent e) {
 				// Solamente si es un DOBLE CLICK
 				if (e.getClickCount() == 2) {
-					// Sacamos la posicion en la que hemos clickado 
+					// Sacamos la posicion en la que hemos clickado
 					int posicion = listaNoticias.locationToIndex(e.getPoint());
 
-					//Obtenemos la noticia seleccionada
+					// Obtenemos la noticia seleccionada
 					Noticia noticiaSeleccionada = listModelNoticias.getElementAt(posicion);
 					try {
-						//ABRIMOS LA URL EN EL NAVEGADOR
+						// ABRIMOS LA URL EN EL NAVEGADOR
 						Desktop.getDesktop().browse(new URI(noticiaSeleccionada.getUrl()));
 					} catch (IOException ex) {
 						//
@@ -356,6 +426,33 @@ public class VentanaFeed extends VentanaBase {
 
 		// PANEL DE TAQUILLA
 		JPanel panelTaquilla = new JPanel(new BorderLayout());
+		labelTaquilla = new JLabel("");
+		labelTaquilla.setFont(new Font("Calibri", Font.BOLD, 32));
+		labelTaquilla.setHorizontalAlignment(JLabel.CENTER);
+		panelTaquilla.add(labelTaquilla, BorderLayout.SOUTH);
+		String[] anos = { "2019", "2020", "2021", "2022", "2023", "2024" };
+		comboBoxAnos = new JComboBox<String>(anos);
+
+		panelTaquilla.add(comboBoxAnos, BorderLayout.NORTH);
+
+		//Por defecto 
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());
+			}
+		});
+		t1.start();
+		
+		comboBoxAnos.addItemListener((e) -> {
+			comboBoxAnos.setEnabled(false);
+			Thread t2 = new Thread(() -> {
+					peliculasTaquillaScrapping(comboBoxAnos.getSelectedItem().toString());					
+			});
+
+			t2.start();
+
+		});
 
 		// HEADER DEL PANEL
 		JLabel labelTituloTaquilla = new JLabel("Taquilla", SwingConstants.CENTER);
@@ -365,35 +462,23 @@ public class VentanaFeed extends VentanaBase {
 
 		// TABLA
 
-		List<Pelicula> peliculas = List.of(
-				new Pelicula("Cine", 1, "El Señor de los Anillos: La Comunidad del Anillo", "Fantasía", 178.0, 91,
-						"New Line Cinema", 13, "Oscar", null, 871.5),
-				new Pelicula("Cine", 2, "Titanic", "Romance", 195.0, 89, "20th Century Fox", 13, "Oscar", null, 2200.0),
-				new Pelicula("Cine", 3, "Inception", "Ciencia Ficción", 148.0, 87, "Warner Bros.", 13, "Oscar", null,
-						829.9),
-				new Pelicula("Cine", 4, "The Dark Knight", "Acción", 152.0, 94, "Warner Bros.", 13, "Oscar", null,
-						1004.9),
-				new Pelicula("Cine", 5, "Toy Story", "Animación", 81.0, 100, "Pixar", 6, "Oscar", null, 373.6),
-				new Pelicula("Cine", 6, "Forrest Gump", "Drama", 142.0, 88, "Paramount Pictures", 13, "Oscar", null,
-						678.2),
-				new Pelicula("Cine", 7, "Avatar", "Ciencia Ficción", 162.0, 82, "20th Century Fox", 13, "Oscar", null,
-						2847.2),
-				new Pelicula("Cine", 8, "Gladiator", "Histórica", 155.0, 77, "Universal Pictures", 16, "Oscar", null,
-						460.5),
-				new Pelicula("Cine", 9, "Jurassic Park", "Aventura", 127.0, 91, "Universal Pictures", 13, "Oscar", null,
-						1029.2),
-				new Pelicula("Cine", 10, "The Matrix", "Ciencia Ficción", 136.0, 87, "Warner Bros.", 16, "Oscar", null,
-						466.3));
-
-		JTable tablaTaquilla = new JTable(new PeliculaTableModel(peliculas));
+		tablaTaquilla = new JTable(new PeliculaTableModel(recaudacionPorPelicula));
+		tablaTaquilla.setRowHeight(35);
 
 		// Renderer para las Columnas
 
 		JTableHeader headerTabla = tablaTaquilla.getTableHeader();
+		// NO permitir que se puedan reordenar las columnas.
+		headerTabla.setReorderingAllowed(false);
 		/**
-		 * Renderer para los Headers
+		 * Renderer para los Headers	
 		 */
 		headerTabla.setDefaultRenderer(new DefaultTableCellRenderer() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -407,93 +492,87 @@ public class VentanaFeed extends VentanaBase {
 				headerLabel.setFont(new Font(VentanaBase.NOMBRE_FUENTE, Font.BOLD, 14)); // Cambia la fuente
 				headerLabel.setBackground(new Color(173, 216, 230)); // Fondo azul claro
 				setForeground(Color.BLACK); // Texto
+				headerLabel.setHorizontalAlignment(JLabel.CENTER);
 				return headerLabel;
 			}
 
 		});
 
 		/**
-		 * Renderer para la columna "Recaudacion. Mostrara en color dorado las peliculas
-		 * que superan 1000 millones en recaudacion
-		 */
-
-		tablaTaquilla.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
-
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				JLabel recaudacionLabel = (JLabel) c;
-
-				// Sabemos que el value es un numero
-
-				if (((Double) value) > 1000.0) {
-					recaudacionLabel.setForeground(new Color(218, 165, 32)); //COLOR DORADO
-				}
-				// IMPORTANTE! Hay que tener una clausula ELSE, si no todos los colores seran
-				// Dorados
-				// Al parecer, TableCellRender REUSA El LABEL, no es un LABEL distinto.
-				//Asi que hay que RESETEAR el valor
-
-				else {
-					recaudacionLabel.setForeground(Color.BLACK); // Reset to black for lower values
-				}
-				
-				
-				//Por defecto nuestros renderer van  a alternar el color cada fila.
-				//Pero como la columna 2 tiene su propio renderer, no le afecta.
-				//Por eso añadimos explicitamente
-				
-				if (row % 2 == 0) {
-		            recaudacionLabel.setBackground(Color.WHITE);
-		        } else {
-		            recaudacionLabel.setBackground(new Color(240, 240, 240)); //Gris CLARO
-		        }
-				
-
-				return recaudacionLabel;
-			}
-
-		});
-		
-		/**
 		 * Renderer para cada fila vaya alternando de color
 		 */
-		
-		tablaTaquilla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+	
+
+		tablaTaquilla.setDefaultRenderer(Object.class, new TableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-				// TODO Auto-generated method stub
-				Component c =	super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				
-				//Casteamos el componente a un JLabel
-				
-				JLabel label = (JLabel) c;
-				//Si es par...
+				JLabel label = new JLabel(value.toString());
+				label.setOpaque(true);
+				label.setHorizontalAlignment(JLabel.CENTER);
+				// Fuente por defecto
+				label.setFont(table.getFont());
+				//FILA PAR, color Gris claro.
 				if(row % 2 == 0) {
-					label.setBackground(Color.white);
+					label.setBackground(new Color(211,211,211));
+				}
+			
+				//Mostrar como tooltip el nombre de la pelicula
+				if(column == 1) {
+					label.setToolTipText(value.toString());
+					//Añadir un poco de padding
+					label.setBorder(new EmptyBorder(0, 20, 0, 20));
+				}
+				
+
+				if (column == 2) {
+					// Convertimos el value en un Double
+					// Sabemos que es un STRING, pero primero le quitamos
+					String valueCadena = (String) value;
+					String valueSinDolar = valueCadena.replace("$", "").replace(",", "");
+
+					Double recuadacionValor = Double.parseDouble(valueSinDolar);
+					// Si la recaudacion es mayor a $1.000.0000.000 (Mil millones)
+					if (recuadacionValor > 1000000000) {
+						//COLOR DORADO+
+						label.setFont(new Font(label.getFont().getName(),Font.BOLD, label.getFont().getSize()));
+						label.setForeground(Color.black);
+					}
 					
 				}
-				//Sino
-				
-				else {
-					label.setBackground(new Color(240,240,240));
-				}
-				
-				
-				
+
 				return label;
 			}
+		});
 		
+		// Al hacer doble click en una fila , abrira un Dialog con el poster de la pelicula
+		tablaTaquilla.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Cuando hagamos doble click
+				if(e.getClickCount() == 2) {
+					//Hay que obtener que valor hemos obtenido
+					PeliculaTableModel ptm = (PeliculaTableModel) tablaTaquilla.getModel();
+					if(tablaTaquilla.getSelectedRow() !=-1) {
+						String peliculaClickada = ptm.getModelLista().get(tablaTaquilla.getSelectedRow());
+						new DialogoInfoTaquilla(peliculaClickada);
+						
+					}
+					
+					
+				
+				
+				}
+			}
 			
 			
 		});
 		
 		
-
+		
 		JScrollPane taquillaScroll = new JScrollPane(tablaTaquilla);
 		panelTaquilla.add(taquillaScroll);
 		// panelTaquilla.add(tablaTaquilla);
@@ -507,7 +586,66 @@ public class VentanaFeed extends VentanaBase {
 
 	}
 
+	/**
+	 * Metodo que descarga las 10 peliculas mas taquilleras del momento 
+	 * El scrapping lo hace desde boxofficemojo que suele actualizar la informacion
+	 * de taquilla basante frecuentemente
+	 * 
+	 * @return Lista de las 10 peliculas mas taquilleras del Mundo este año.
+	 */
+
+	
+	private void peliculasTaquillaScrapping(String ano) {
+
+		SwingUtilities.invokeLater(() -> labelTaquilla.setText("Cargando Taquilla..."));
+		// BORRAMOS EL MAPA POR DEFECTO
+		recaudacionPorPelicula.clear();
+
+		try {
+			// Devuelve el HTML de la lista de peliculas más taquilleras.
+			// Despues de scrappearlo, hay que parsearlo para obtener los datos que nos
+			// interesan.
+			Document doc = Jsoup.connect("https://www.boxofficemojo.com/year/world/" + ano).get();
+			//FUENTE-EXTERNA
+			//URL: https://stackoverflow.com/questions/15758685/how-to-write-logs-in-text-file-when-using-java-util-logging-logger
+			//ADAPTADO : Añadido cerrado del fichero, si no se cierra no se guarda bien. Añadido parametros adicionales.
+			//1MB como mucho, rotacion de 3 archivos
+			FileHandler fh = new FileHandler("log/boxoOfficeMojo.txt", 1000000, 3, true);
+			
+			LOGGER.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			LOGGER.setUseParentHandlers(false);
+			LOGGER.info("Se ha hecho una petición a BoxOfficeMojo para el año " + ano);
+			fh.close();
+			
+			// Vamos a obtener SOLO LOS NOMBRES
+			Elements filas = doc.select("#table tbody tr");
+			// Vamos a sacar los trs del 1-10 que son el TOP 10
+			for (int i = 1; i <= 10; i++) {
+				// Por cada fila obtener el NOMBRE de la pelicula, y el dinero recaudado (En
+				// todo el mundo
+				String nombrePelicula = filas.get(i).select("td.a-text-left.mojo-field-type-release_group a").text();
+				String recaudacion = filas.get(i).selectFirst("td.a-text-right.mojo-field-type-money").text();
+				recaudacionPorPelicula.put(nombrePelicula, recaudacion);
+
+			}
+			
+			SwingUtilities.invokeLater(() ->tablaTaquilla.setModel(new PeliculaTableModel(recaudacionPorPelicula)));
+			SwingUtilities.invokeLater(() -> labelTaquilla.setText(""));
+			SwingUtilities.invokeLater(() -> comboBoxAnos.setEnabled(true));
+
+
+		} catch (IOException e) {
+			
+		}
+
+		// TODO Auto-generated method stub
+	}
+	
+	
+	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new VentanaFeed());
+		SwingUtilities.invokeLater(() -> new VentanaFeed(new Usuario(3, "Dani", LocalDate.now(), "España", "jpg", "12345")));
 	}
 }

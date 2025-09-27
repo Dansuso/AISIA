@@ -1,36 +1,62 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Contenido {
 	
-	protected String tipo;
-	protected int contadorContenido;
+	public enum TIPO{
+		PELICULA,SERIE;
+	}
+	
+	public enum Genero {
+		ACCION, COMEDIA, DRAMA, TERROR, ROMANCE, AVENTURA, FANTASIA;
+		
+		public static Genero fromString(String genero) {
+	        if (genero == null) {
+	            throw new IllegalArgumentException("El valor de género no puede ser nulo.");
+	        }
+	        try {
+	            return Genero.valueOf(genero.trim().toUpperCase());
+	        } catch (IllegalArgumentException e) {
+	            throw new IllegalArgumentException("El valor '" + genero + "' no es un género válido.", e);
+	        }
+	        
+		}
+	}
+	protected int id;
+	protected TIPO tipo;
 	protected String titulo;
-	protected String genero;
-	protected double duracion;
+	protected Genero genero;
 	protected int calificacion;
 	protected String distribuidora;
 	protected int edadRecomendada;
-	protected String premios;
 	protected String caratula;
+	protected LocalDate fecha;
 	
-	public Contenido(String tipo, int contadorContenido, String titulo, String genero, double duracion, int calificacion,
-			String distribuidora, int edadRecomendada, String premios, String caratula) {
+	public Contenido(int id,TIPO tipo, String titulo, Genero genero, int calificacion,
+			String distribuidora, int edadRecomendada, String caratula,LocalDate fecha) {
 		super();
+		this.id = id;
 		this.tipo = tipo;
-		this.contadorContenido = contadorContenido;
 		this.titulo = titulo;
 		this.genero = genero;
-		this.duracion = duracion;
 		this.calificacion = calificacion;
 		this.distribuidora = distribuidora;
 		this.edadRecomendada = edadRecomendada;
-		this.premios = premios;
 		this.caratula = caratula;
+		this.fecha = fecha;
 	}
 	
 	
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
 	public String getCaratula() {
 		return caratula;
 	}
@@ -41,25 +67,17 @@ public abstract class Contenido {
 	}
 
 
-	public String getTipo() {
+	public TIPO getTipo() {
 		return tipo;
 	}
 
 
 
-	public void setTipo(String tipo) {
+	public void setTipo(TIPO tipo) {
 		this.tipo = tipo;
 	}
 
 
-
-	public int getContadorContenido() {
-		return contadorContenido;
-	}
-
-	public void setContadorContenido(int contadorContenido) {
-		this.contadorContenido = contadorContenido;
-	}
 
 	public String getTitulo() {
 		return titulo;
@@ -69,21 +87,15 @@ public abstract class Contenido {
 		this.titulo = titulo;
 	}
 
-	public String getGenero() {
+	public Genero getGenero() {
 		return genero;
 	}
 
-	public void setGenero(String genero) {
+	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
 
-	public double getDuracion() {
-		return duracion;
-	}
 
-	public void setDuracion(double duracion) {
-		this.duracion = duracion;
-	}
 
 	public int getCalificacion() {
 		return calificacion;
@@ -108,21 +120,18 @@ public abstract class Contenido {
 	public void setEdadRecomendada(int edadRecomendada) {
 		this.edadRecomendada = edadRecomendada;
 	}
+	
+	
 
-	public String getPremios() {
-		return premios;
-	}
 
-	public void setPremios(String premios) {
-		this.premios = premios;
-	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(calificacion, caratula, contadorContenido, distribuidora, duracion, edadRecomendada, genero,
-				premios, tipo, titulo);
+		return Objects.hash(calificacion, caratula, distribuidora, edadRecomendada, genero, id, tipo, titulo);
 	}
+
+
 
 
 	@Override
@@ -135,21 +144,23 @@ public abstract class Contenido {
 			return false;
 		Contenido other = (Contenido) obj;
 		return calificacion == other.calificacion && Objects.equals(caratula, other.caratula)
-				&& contadorContenido == other.contadorContenido && Objects.equals(distribuidora, other.distribuidora)
-				&& Double.doubleToLongBits(duracion) == Double.doubleToLongBits(other.duracion)
-				&& edadRecomendada == other.edadRecomendada && Objects.equals(genero, other.genero)
-				&& Objects.equals(premios, other.premios) && Objects.equals(tipo, other.tipo)
+				&& Objects.equals(distribuidora, other.distribuidora) && edadRecomendada == other.edadRecomendada
+				&& genero == other.genero && id == other.id && tipo == other.tipo
 				&& Objects.equals(titulo, other.titulo);
 	}
 
 
+
+
 	@Override
 	public String toString() {
-		return "Contenido [tipo=" + tipo + ", contadorContenido=" + contadorContenido + ", titulo=" + titulo
-				+ ", genero=" + genero + ", duracion=" + duracion + ", calificacion=" + calificacion
-				+ ", distribuidora=" + distribuidora + ", edadRecomendada=" + edadRecomendada + ", premios=" + premios
-				+ ", caratula=" + caratula + "]";
+		return "Contenido [id=" + id + ", tipo=" + tipo + ", titulo=" + titulo + ", genero=" + genero
+				+ ", calificacion=" + calificacion + ", distribuidora=" + distribuidora + ", edadRecomendada="
+				+ edadRecomendada + ", caratula=" + caratula + "]";
 	}
+
+
+
 
 	
 	
